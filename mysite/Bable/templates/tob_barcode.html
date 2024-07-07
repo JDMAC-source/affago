@@ -51,7 +51,7 @@ const barcodeDetector = new BarcodeDetector({ formats: ["ean_13", "ean_8", "upc_
 
 async function check() {
 	// Let's scan barcodes forever
-document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: true });
+document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: {facingMode:{exact:'environment'}} });
 var video = document.querySelector('video');
 while(true) {
 	const barcodeDetector = new BarcodeDetector({ formats: ["ean_13", "ean_8", "upc_a", "upc_e"] });

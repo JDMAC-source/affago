@@ -13,7 +13,9 @@ import os
 import psycopg2
 import environ
 env = environ.Env()
-environ.Env.read_env()
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -108,8 +110,8 @@ DATABASES = {
         # CREATE USER default WITH SUPERUSER PASSWORD 'default';        # \q
         # issues in psycopg2: makemigrations Bable
         'NAME': 'db2',                                                   
-        'USER': 'jackmclovin',                                                   
-        'PASSWORD': 'thattickles',                                      
+        'USER': 'adenhandasyde',                                                   
+        'PASSWORD': '',                                      
         'HOST': '127.0.0.1',                                                     
         'PORT': '5432',  
     }
