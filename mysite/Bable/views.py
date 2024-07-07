@@ -296,7 +296,7 @@ def barcode_ai(request, numbers):
 		print(n)
 		angel_numbers.append(AngelNumber.objects.get(numbers=n))
 		
-	chat_completion = client.chat.completions.create(messages=[{"role": "user","content": "I have the following content about a given numerological number: "+ numbers + "Write me a single sentence that fits this number. "}],model="gpt-3.5-turbo",)
+	chat_completion = client.chat.completions.create(messages=[{"role": "user","content": "I have the following content about a given numerological number: "+ numbers + "Write me a single paragraph that fits this number. "}],model="gpt-3.5-turbo",)
 
 	return JsonResponse(chat_completion.choices[0].message.content, safe=False)
 
