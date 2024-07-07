@@ -31,7 +31,7 @@ Skitzophrenia - {{ request.META.HTTP_HOST|stripwww }}
 {% block authenticatedposts %}
 <script src="https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.9.15/dist/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@undecaf/barcode-detector-polyfill@0.9.20/dist/index.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 <!-- Show the camera feed to help the user capture the barcode -->
 <video autoplay></video>
 
@@ -51,10 +51,9 @@ const barcodeDetector = new BarcodeDetector({ formats: ["ean_13", "ean_8", "upc_
 
 async function check() {
 	// Let's scan barcodes forever
-document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: {facingMode:{exact:'environment'}} });
+document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: {facingMode: {exact: "environment"}} });
 var video = document.querySelector('video');
 while(true) {
-	const barcodeDetector = new BarcodeDetector({ formats: ["ean_13", "ean_8", "upc_a", "upc_e"] });
 
     // Try to detect barcodes in the current video frame.
     var barcodes = await barcodeDetector.detect(video);
@@ -96,9 +95,8 @@ while(true) {
     // Give the user time to find another product to scan
     await new Promise(r => setTimeout(r, 1000));
 }
-}
+};
 check();
-
 </script>
 
 {% endblock %}
@@ -106,7 +104,6 @@ check();
 {% block unauthenticated_posts %}
 <script src="https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.9.15/dist/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@undecaf/barcode-detector-polyfill@0.9.20/dist/index.js"></script>
-
 <!-- Show the camera feed to help the user capture the barcode -->
 <video autoplay></video>
 
@@ -126,21 +123,33 @@ const barcodeDetector = new BarcodeDetector({ formats: ["ean_13", "ean_8", "upc_
 
 async function check() {
 	// Let's scan barcodes forever
-document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: true });
-var video = document.querySelector('video');
+	try{
+document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: {facingMode: {exact: "environment"}} })
+} catch{
+	document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: true })
+
+};
+var video = await document.querySelector('video');
 while(true) {
 	const barcodeDetector = new BarcodeDetector({ formats: ["ean_13", "ean_8", "upc_a", "upc_e"] });
 
     // Try to detect barcodes in the current video frame.
-    var barcodes = await barcodeDetector.detect(video);
-
+    try{ var barcodes = await barcodeDetector.detect(video);
+	} catch {
+		var barcodes = [];
+	}
+    
     // Continue loop if no barcode was found.
     if (barcodes.length == 0)
     {
         // Scan interval 50 ms like in other barcode scanner demos.
         // The higher the interval the longer the battery lasts.
         await new Promise(r => setTimeout(r, 50));
+
+
         continue;
+
+
     }
 
     // We expect a single barcode.

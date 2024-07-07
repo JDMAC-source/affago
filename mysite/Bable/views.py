@@ -263,6 +263,8 @@ def ShowAngelNumber(request, number):
 OPEN_AI_API_KEY = settings.OPEN_AI_API_KEY
 from openai import OpenAI
 import json
+from django.http import JsonResponse
+
 def barcode_ai(request, numbers):
 	client = OpenAI(api_key=OPEN_AI_API_KEY)
 
@@ -293,14 +295,10 @@ def barcode_ai(request, numbers):
 	for n in numbers:
 		print(n)
 		angel_numbers.append(AngelNumber.objects.get(numbers=n))
-	context = {}
-	json_data = json.dumps(context)
-	for a in angel_numbers:
-		print(json.loads(json_data))
-		json_data = json.dumps([json.loads(json_data),{"role":"user","content": a.description,}])
-	chat_completion = client.chat.completions.create(messages=[({"role": "user","content": "I have the following content about a given numerological number:",},context,{"role": "user","content": "Write me a single sentence that fits this number: "+numbers,})],model="gpt-3.5-turbo",)
+		
+	chat_completion = client.chat.completions.create(messages=[{"role": "user","content": "I have the following content about a given numerological number: "+ numbers + "Write me a single sentence that fits this number. "}],model="gpt-3.5-turbo",)
 
-	return HttpResponse(chat_completion.choices[0].message.content)
+	return JsonResponse(chat_completion.choices[0].message.content, safe=False)
 
 
 
