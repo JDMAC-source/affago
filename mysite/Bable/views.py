@@ -267,6 +267,38 @@ from django.http import JsonResponse
 
 def barcode_ai(request, numbers):
 	client = OpenAI(api_key=OPEN_AI_API_KEY)
+	page_views, created = Pageviews.objects.get_or_create(page="barcode_ai")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+	ip_addy, created = IpAddress.objects.get_or_create(ip_address=ip)
+	page_views.ip_addresses.add(ip_addy)
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		if loggedinanon.false_wallet < 10:
+			return HttpResponse("Buy more credits.")
+		else:
+			loggedinanon.false_wallet -= 10
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
+		pages_view = UserViews.objects.create(page_view="barcode_ai", anon=loggedinanon)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+	else:
+		if not created:
+			return HttpResponse("Too many barcodes scanned, create an account to buy credits. Costs 1 cent per barcode")
 
 	it = 0
 	double_count = 0

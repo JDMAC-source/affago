@@ -1993,9 +1993,14 @@ class UserViews(models.Model):
 	previous_view_date = models.DateTimeField(default=timezone.now)
 	previous_view_time_between_pages = models.DurationField(default=datetime.timedelta(days=0, seconds=1))
 
+class IpAddress(models.Model):
+	ip_address = models.TextField(default='', max_length=200)
+	
+
 class Pageviews(models.Model):
 	page = models.CharField(max_length=200, default='')
 	views = models.IntegerField(default=0)
+	ip_addresses = models.ManyToManyField(IpAddress, default=None)
 	user_views = models.ManyToManyField(UserViews, default=None)
 	translation = models.CharField(max_length=2, default='en')
 
