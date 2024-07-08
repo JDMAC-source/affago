@@ -300,33 +300,6 @@ def barcode_ai(request, numbers):
 		if not created:
 			return HttpResponse("Too many barcodes scanned, create an account to buy credits. Costs 1 cent per barcode")
 
-	it = 0
-	double_count = 0
-	triple_count = 0
-	double = []
-	triple = []
-	if numbers[it] == numbers[1]:
-		double[double_count] = it
-		double_count += 1
-	while it < len(numbers) - 2:
-		if numbers[it] == numbers[it+1] == numbers[it+2]:
-			triple[triple_count] = it
-			triple_count += 1
-		if numbers[it+1] == numbers[it+2]:
-			double[double_count] = it+1
-			double_count += 1
-		it += 1
-	angel_numbers = []
-	if not AngelNumber.objects.first():
-		for a in range(10):
-			AngelNumber.objects.create(digits=1, numbers=a, description="This number"+str(a)+" means something special to do with how it sounds")
-	for d in double:
-		angel_numbers.append(AngelNumber.obejcts.get(numbers=numbers[d]))
-	for t in triple:
-		angel_numbers.append(AngelNumber.objects.get(numbers=numbers[t]))
-	for n in numbers:
-		print(n)
-		angel_numbers.append(AngelNumber.objects.get(numbers=n))
 		
 	chat_completion = client.chat.completions.create(messages=[{"role": "user","content": "I have the following content about a given numerological number: "+ numbers + "Write me a single paragraph that fits this number. "}],model="gpt-3.5-turbo",)
 
