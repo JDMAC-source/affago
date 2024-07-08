@@ -106,6 +106,7 @@ while(true) {
 
     $("form#barcode_form").submit(
     	function(event) {
+    		event.stopImmediatePropagation();
     		event.preventDefault();
     		var digit_url = "{% url 'Bable:barcode_ai' 0 %}".replace("0", document.getElementById("barcode_input").value)
 	    	$.ajax({
@@ -222,6 +223,7 @@ while(true) {
      $("form#barcode_form").submit(
 
     	function(event) {
+    		event.stopImmediatePropagation();
     		event.preventDefault();
     		var digit_url = "{% url 'Bable:barcode_ai' 0 %}".replace("0", document.getElementById("barcode_input").value)
 	    	$.ajax({
