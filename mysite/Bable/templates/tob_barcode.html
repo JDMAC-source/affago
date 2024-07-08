@@ -37,6 +37,10 @@ Skitzophrenia - {{ request.META.HTTP_HOST|stripwww }}
 
 <!-- Let's simply display the barcode data and have "Waiting..." as placeholder. -->
 <p id="barcode">Waiting...</p>
+<form id="barcode_form">
+	<input id="barcode_input" type="number">
+	<button id="barcode_button" type="submit">Get Numerology</button>
+</form>
 <p id="barcode_numerology">For...</p>
 <script>
 
@@ -51,7 +55,17 @@ const barcodeDetector = new BarcodeDetector({ formats: ["ean_13", "ean_8", "upc_
 
 async function check() {
 	// Let's scan barcodes forever
-document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: {facingMode: {exact: "environment"}} });
+document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: {facingMode: {exact: "environment"}} },
+	(stream) => {
+      const video = document.querySelector("video");
+      video.srcObject = stream;
+      video.onloadedmetadata = (e) => {
+        video.play();
+      };
+    },
+    (err) => {
+      document.getElementById("barcode_numerology").innerText = err.name;
+    },);
 var video = document.querySelector('video');
 while(true) {
 
@@ -70,19 +84,24 @@ while(true) {
     // We expect a single barcode.
     // It's possible to compare X/Y coordinates to get the center-most one.
     // One can also do "preferred symbology" logic here.
-    document.getElementById("barcode").innerText = barcodes[0].rawValue;
+    document.getElementById("barcode_input").value = barcodes[0].rawValue;
     var digit = barcodes[0].rawValue.toString().split("")
-    var digit_url = "{% url 'Bable:barcode_ai' 0 %}".replace("0", barcodes[0].rawValue)
-    $.ajax({
-        url: digit_url,
-        method: "GET",
-		dataType: "json",
-		error: function() {
-		  console.log("error");
-		},
-		success: function(data) {
-		  document.getElementById("barcode_numerology").innerText = data
-		}
+    
+
+    $("form#barcode_form").submit(
+    	function(event) {
+    		var digit_url = "{% url 'Bable:barcode_ai' 0 %}".replace("0", document.getElementById("barcode_input").value)
+	    	$.ajax({
+	        url: digit_url,
+	        method: "GET",
+			dataType: "json",
+			error: function() {
+			  console.log("error");
+			},
+			success: function(data) {
+			  document.getElementById("barcode_numerology").innerText = data
+			}
+	    });
     });
 	
 
@@ -109,6 +128,10 @@ check();
 
 <!-- Let's simply display the barcode data and have "Waiting..." as placeholder. -->
 <p id="barcode">Waiting...</p>
+<form id="barcode_form">
+	<input id="barcode_input" type="number">
+	<button id="barcode_button" type="submit">Get Numerology</button>
+</form>
 <p id="barcode_numerology">For...</p>
 <script>
 
@@ -124,9 +147,30 @@ const barcodeDetector = new BarcodeDetector({ formats: ["ean_13", "ean_8", "upc_
 async function check() {
 	// Let's scan barcodes forever
 	try{
-document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: {facingMode: {exact: "environment"}} })
+document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: {facingMode: {exact: "environment"}} },
+	(stream) => {
+      const video = document.querySelector("video");
+      video.srcObject = stream;
+      video.onloadedmetadata = (e) => {
+        video.play();
+      };
+    },
+    (err) => {
+      document.getElementById("barcode_numerology").innerText = err.name;
+    },)
 } catch{
-	document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: true })
+	document.querySelector('video').srcObject = await navigator.mediaDevices.getUserMedia({ video: true },
+		(stream) => {
+      const video = document.querySelector("video");
+      video.srcObject = stream;
+      video.onloadedmetadata = (e) => {
+        video.play();
+      };
+    },
+    (err) => {
+    	document.getElementById("barcode_numerology").innerText = err.name;
+      
+    },)
 
 };
 var video = await document.querySelector('video');
@@ -155,19 +199,24 @@ while(true) {
     // We expect a single barcode.
     // It's possible to compare X/Y coordinates to get the center-most one.
     // One can also do "preferred symbology" logic here.
-    document.getElementById("barcode").innerText = barcodes[0].rawValue;
+    document.getElementById("barcode_input").value = barcodes[0].rawValue;
     var digit = barcodes[0].rawValue.toString().split("")
-    var digit_url = "{% url 'Bable:barcode_ai' 0 %}".replace("0", barcodes[0].rawValue)
-    $.ajax({
-        url: digit_url,
-        method: "GET",
-		dataType: "json",
-		error: function() {
-		  console.log("error");
-		},
-		success: function(data) {
-		  document.getElementById("barcode_numerology").innerText = data
-		}
+    
+     $("form#barcode_form").submit(
+
+    	function(event) {
+    		var digit_url = "{% url 'Bable:barcode_ai' 0 %}".replace("0", document.getElementById("barcode_input").value)
+	    	$.ajax({
+	        url: digit_url,
+	        method: "GET",
+			dataType: "json",
+			error: function() {
+			  console.log("error");
+			},
+			success: function(data) {
+			  document.getElementById("barcode_numerology").innerText = data
+			}
+	    });
     });
 	
     // Notify user that a barcode has been found.
