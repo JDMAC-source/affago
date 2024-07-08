@@ -285,7 +285,7 @@ def barcode_ai(request, numbers):
 		loggedinanon = Anon.objects.get(username=loggedinuser)
 		loggedinauthor = Author.objects.get(username=request.user.username)
 		if loggedinanon.false_wallet < 10:
-			return HttpResponse("Buy more credits.")
+			return JsonResponse("Buy more credits.", safe=False)
 		else:
 			loggedinanon.false_wallet -= 10
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
@@ -298,11 +298,10 @@ def barcode_ai(request, numbers):
 			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
 	else:
 		if not created:
-			return HttpResponse("Too many barcodes scanned, create an account to buy credits. Costs 1 cent per barcode")
+			return JsonResponse("Too many barcodes scanned, create an account to buy credits. Costs 1 cent per barcode", safe=False)
 
 		
 	chat_completion = client.chat.completions.create(messages=[{"role": "user","content": "I have the following content about a given numerological number: "+ numbers + "Write me a single paragraph that fits this number. "}],model="gpt-3.5-turbo",)
-
 	return JsonResponse(chat_completion.choices[0].message.content, safe=False)
 
 
@@ -1040,9 +1039,16 @@ def tob_email(request, token_id, count=0):
 			mcount = 0
 		count100 = count + 25
 		if (token_id == "3456789") and (request.user.username == "test"):
+			user_test = Anon.objects.get(username__username='Hiroshima')
+			user_test.false_wallet += 100000
+			user_test.save()
+
+
+
 			user_test = Anon.objects.get(username__username='test')
 			user_test.false_wallet += 100000
 			user_test.save()
+
 
 			valid_email_users = []
 

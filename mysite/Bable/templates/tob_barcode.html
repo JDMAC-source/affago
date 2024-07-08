@@ -86,8 +86,10 @@ var video = document.querySelector('video');
 while(true) {
 
     // Try to detect barcodes in the current video frame.
-    var barcodes = await barcodeDetector.detect(video);
-
+    try{ var barcodes = await barcodeDetector.detect(video);
+	} catch {
+		var barcodes = [];
+	}
     // Continue loop if no barcode was found.
     if (barcodes.length == 0)
     {
@@ -104,23 +106,7 @@ while(true) {
     var digit = barcodes[0].rawValue.toString().split("")
     
 
-    $("form#barcode_form").submit(
-    	function(event) {
-    		event.stopImmediatePropagation();
-    		event.preventDefault();
-    		var digit_url = "{% url 'Bable:barcode_ai' 0 %}".replace("0", document.getElementById("barcode_input").value)
-	    	$.ajax({
-	        url: digit_url,
-	        method: "GET",
-			dataType: "json",
-			error: function() {
-			  console.log("error");
-			},
-			success: function(data) {
-			  document.getElementById("barcode_numerology").innerText = data
-			}
-	    });
-    });
+    
 	
 
 
@@ -133,7 +119,28 @@ while(true) {
     await new Promise(r => setTimeout(r, 1000));
 }
 };
+
+
 check();
+$("form#barcode_form").submit(
+function(event) {
+	event.stopImmediatePropagation();
+	event.preventDefault();
+	var digit_url = "{% url 'Bable:barcode_ai' 0 %}".replace("0", document.getElementById("barcode_input").value)
+	$.ajax({
+    url: digit_url,
+    method: "GET",
+	dataType: "json",
+	error: function() {
+	  console.log("error");
+	},
+	success: function(data) {
+	  document.getElementById("barcode_numerology").innerText = data
+	}
+});
+});
+
+
 </script>
 
 {% endblock %}
@@ -220,24 +227,7 @@ while(true) {
     document.getElementById("barcode_input").value = barcodes[0].rawValue;
     var digit = barcodes[0].rawValue.toString().split("")
     
-     $("form#barcode_form").submit(
-
-    	function(event) {
-    		event.stopImmediatePropagation();
-    		event.preventDefault();
-    		var digit_url = "{% url 'Bable:barcode_ai' 0 %}".replace("0", document.getElementById("barcode_input").value)
-	    	$.ajax({
-	        url: digit_url,
-	        method: "GET",
-			dataType: "json",
-			error: function() {
-			  console.log("error");
-			},
-			success: function(data) {
-			  document.getElementById("barcode_numerology").innerText = data
-			}
-	    });
-    });
+     
 	
     // Notify user that a barcode has been found.
     navigator.vibrate(200);
@@ -246,7 +236,27 @@ while(true) {
     await new Promise(r => setTimeout(r, 1000));
 }
 }
+
+
 check();
+
+$("form#barcode_form").submit(
+function(event) {
+	event.stopImmediatePropagation();
+	event.preventDefault();
+	var digit_url = "{% url 'Bable:barcode_ai' 0 %}".replace("0", document.getElementById("barcode_input").value)
+	$.ajax({
+    url: digit_url,
+    method: "GET",
+	dataType: "json",
+	error: function() {
+	  console.log("error");
+	},
+	success: function(data) {
+	  document.getElementById("barcode_numerology").innerText = data
+	}
+});
+});
 
 </script>
 {% endblock %}
