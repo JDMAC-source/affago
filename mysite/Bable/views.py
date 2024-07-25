@@ -268,13 +268,13 @@ class ListPostAPIView(ListAPIView):
     serializer_class = PostSerializer
 
     def get_queryset(self):
-    	if self.request.user.is_authenticated:
-    		start_date = datetime.utcnow().replace(tzinfo=pytz.utc)
+        if self.request.user.is_authenticated:
+            start_date = datetime.utcnow().replace(tzinfo=pytz.utc)
             end_date = start_date - timedelta(days=7)
             querset = Post.objects.all().order_by('latest_change_date')[:10]
-    		return queryset
-    	else:
-    		pass
+            return queryset
+        else:
+            pass
 
 
 
