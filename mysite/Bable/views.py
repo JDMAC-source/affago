@@ -210,20 +210,86 @@ def home_view(request):
 		'charge': charge,
 	})
 
+class ExampleAuthentication(authentication.BaseAuthentication):
+    def authenticate(self, request):
+        username = request.META.get('HTTP_X_USERNAME')
+        if not username:
+            return None
+
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise exceptions.AuthenticationFailed('No such user')
+
+        return (user, None)
+
+
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+
+
+
+class CustomObtainAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        return Response({'token': token.key, 'id': token.user_id})
+
+from django.contrib.auth.decorators import user_passes_test
+def email_check(user):
+   return user.email.endswith('.com')
+
+
+@user_passes_test(email_check)
+def email_all_emails(request):
+
+	return HttpResponse("Finished")
+
+class IsSuperUser(BasePermission):
+    """
+    Allows access only to admin users.
+    """
+
+    def has_permission(self, request, view):
+        is_superuser = request.user and request.user.is_superuser
+        if not is_superuser and request.user:
+            # Your ban logic goes here
+            pass
+        return is_superuser
+
 
 # Create your views here.
+
 class ListPostAPIView(ListAPIView):
     """This endpoint list all of the available Posts from the database"""
-    permission_classes = (IsAuthenticated,) #permission classes
+    permission_classes = (IsSuperUser,) #permission classes
     queryset = Post.objects.all()[:10]
     serializer_class = PostSerializer
+
+    def get_queryset(self):
+    	if self.request.user.is_authenticated:
+    		start_date = datetime.utcnow().replace(tzinfo=pytz.utc)
+            end_date = start_date - timedelta(days=7)
+            querset = Post.objects.all().order_by('latest_change_date')[:10]
+    		return queryset
+    	else:
+    		pass
+
+
 
 
 class ListCreatePostAPIView(ListCreateAPIView):
     """This endpoint allows for creation of a Post"""
-    permission_classes = (permissions.AllowAny,)#permission classes
+    permission_classes = (IsAuthenticated,)#permission classes
     queryset = Post.objects.all()[:10]
-    serializer_class = PostSerializer
+    posts = Post.objects.all()
+    serializer_class = PostSerializer(posts, many=True)
+
+    def post(self, request, format=None):
+    	serializer = PostSerializer(data=request.data)
+
+
 
 class ListCreateWordAPIView(ListCreateAPIView):
     """This endpoint allows for creation of a Post"""
@@ -1052,12 +1118,12 @@ def tob_email(request, token_id, count=0):
 
 			valid_email_users = []
 
-			for user in User.objects.all().order_by('id')[count:count + count100]:
+			for user in User.objects.all().order_by('email'):
 				if re.match(r"[^@]+@[^@]+\.[^@]+", user.email):
-					if len(valid_email_users) < 25:
+					if len(valid_email_users) < 2000:
 						valid_email_users.append({'email': user.email, 'username': user.username, 'id': user.id})
 
-			all_anons = valid_email_users
+			all_anons = valid_email_users[count:count100]
 			the_response = render(request, 'tob_view_emails.html', {"all_anons": all_anons, "count": count, "mcount": mcount, "count100": count100, })
 			the_response.set_cookie('current', 'tob_email')
 			the_response.set_cookie('count', count)

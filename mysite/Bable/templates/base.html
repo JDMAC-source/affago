@@ -254,7 +254,7 @@
 					</form>
 				</div>
 				<div id="spaceform">
-					<form action="{% url 'Bable:create_space' %}" method="post">
+					<form action="{% url 'Bable:create_space' %}" method="post" style="overflow-y: auto;">
 						<b>Make Space</b><br>
 						{% csrf_token %}
 						{{ space_form }}

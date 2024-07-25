@@ -117,7 +117,7 @@ def nodic_word_up(value):
 						for def1 in att1.definitions.all():
 							attribute_div1 += '<div>'+def1.the_definition_itself+'</div>'
 					attribute_div1 += wordsponsordiv + '</div>'
-					value = value.replace('{}'.format(word.the_word_itself), '&nbsp;<div class="inner-{}-{} inner" style="cursor: pointer; width: fit-content; display: inline-block;"><a class="plain1 overlay" style="color: yellow;" href="{}">{}</a><script>$("a.plain1").one("click", function() {{if( $(this).attr("href") > 0) {{$(this).attr("data", $(this).attr("href")); $(this).attr("href", "");$(this).addClass("active");$(".dropdown-menu-1").addClass("active");}} else {{$(this).attr("href", $(this).attr("data"));$(this).removeClass("active");$(".dropdown-menu-1").removeClass("active");}};$(".dropdown-menu-1").addClass("active");return false;}});</script></div>'.format(str(word.id), str(wordlen), reverse('Bable:tob_word', kwargs={'word_id':word.id}), word.the_word_itself+attribute_div1))
+					value = value.replace(' {} '.format(word.the_word_itself), '&nbsp;<div class="inner-{}-{} inner" style="cursor: pointer; width: fit-content; display: inline-block;"><a class="plain1 overlay" style="color: yellow;" href="{}">{}</a><script>$("a.plain1").one("click", function() {{if( $(this).attr("href") > 0) {{$(this).attr("data", $(this).attr("href")); $(this).attr("href", "");$(this).addClass("active");$(".dropdown-menu-1").addClass("active");}} else {{$(this).attr("href", $(this).attr("data"));$(this).removeClass("active");$(".dropdown-menu-1").removeClass("active");}};$(".dropdown-menu-1").addClass("active");return false;}});</script></div>'.format(str(word.id), str(wordlen), reverse('Bable:tob_word', kwargs={'word_id':word.id}), word.the_word_itself+attribute_div1))
 					exclude += '<div class="inner-{}-{} inner" style="cursor: pointer; width: fit-content; display: inline-block;"><a class="plain1 overlay" style="color: yellow;" href="{}">{}</a></div>'.format(str(word.id), str(wordlen), reverse('Bable:tob_word', kwargs={'word_id':word.id}), word.the_word_itself+attribute_div1)
 			exclude += '<a class=plain href="{}">{}</a>'.format(reverse('Bable:tob_word', kwargs={'word_id':word.id}), word.the_word_itself)
 
@@ -147,7 +147,7 @@ def word_up(value, dictionaries):
 							for def1 in att1.definitions.all():
 								attribute_div1 += '<div>'+def1.the_definition_itself+'</div>'
 						attribute_div1 += wordsponsordiv + '</div>'
-						value = value.replace('{}'.format(word.the_word_itself), '&nbsp;<div class="inner-{}-{} inner" style="cursor: pointer; width: fit-content; display: inline-block;"><a class="plain1 overlay" style="color: yellow;" href="{}">{}</a><script>$("a.plain1").one("click", function() {{if( $(this).attr("href") > 0) {{$(this).attr("data", $(this).attr("href")); $(this).attr("href", "");$(this).addClass("active");$(".dropdown-menu-1").addClass("active");}} else {{$(this).attr("href", $(this).attr("data"));$(this).removeClass("active");$(".dropdown-menu-1").removeClass("active");}};$(".dropdown-menu-1").addClass("active");return false;}});</script></div>'.format(str(word.id), str(wordlen), reverse('Bable:tob_users_dic_word_count', kwargs={'user':dic.author.username, 'dictionary':dic.the_dictionary_itself, 'word':word.the_word_itself, 'count':0}), word.the_word_itself+attribute_div1))
+						value = value.replace(' {} '.format(word.the_word_itself), '&nbsp;<div class="inner-{}-{} inner" style="cursor: pointer; width: fit-content; display: inline-block;"><a class="plain1 overlay" style="color: yellow;" href="{}">{}</a><script>$("a.plain1").one("click", function() {{if( $(this).attr("href") > 0) {{$(this).attr("data", $(this).attr("href")); $(this).attr("href", "");$(this).addClass("active");$(".dropdown-menu-1").addClass("active");}} else {{$(this).attr("href", $(this).attr("data"));$(this).removeClass("active");$(".dropdown-menu-1").removeClass("active");}};$(".dropdown-menu-1").addClass("active");return false;}});</script></div>'.format(str(word.id), str(wordlen), reverse('Bable:tob_users_dic_word_count', kwargs={'user':dic.author.username, 'dictionary':dic.the_dictionary_itself, 'word':word.the_word_itself, 'count':0}), word.the_word_itself+attribute_div1))
 						exclude += '<div class="inner-{}-{} inner" style="cursor: pointer; width: fit-content; display: inline-block;"><a class="plain1 overlay" style="color: yellow;" href="{}">{}</a></div>'.format(str(word.id), str(wordlen), reverse('Bable:tob_users_dic_word_count', kwargs={'user':dic.author.username, 'dictionary':dic.the_dictionary_itself, 'word':word.the_word_itself, 'count':0}), word.the_word_itself+attribute_div1)
 				exclude += '<a class=plain href="{}">{}</a>'.format(reverse('Bable:tob_users_dic_word_count', kwargs={'user':dic.author.username, 'dictionary':dic.the_dictionary_itself, 'word':word.the_word_itself, 'count':0}), word.the_word_itself)
 
@@ -203,7 +203,7 @@ def fontypes(value, words):
 			
 			replace_to = '&nbsp;<div class="inner-{}-{} inner" style="cursor: pointer; width: fit-content; display: inline-block;"><a class="plain{} plain overlay" data-text="{}" style="color: yellow; font-style: url(\'{}\'); font-size: {}em; position: relative; display: inline-block;" href="{}">{}</a><style>{} p {{display: inline-block;}}</style><script>$("a.plain{}").one("click", function() {{if( $(this).attr("href") > 0) {{$(this).attr("data", $(this).attr("href")); $(this).attr("href", "");$(this).addClass("active");$(".dropdown-menu-1").addClass("active");}} else {{$(this).attr("href", $(this).attr("data"));$(this).removeClass("active");$(".dropdown-menu-1").removeClass("active");}};$(".dropdown-menu-1").addClass("active");return false;}});</script></div>{}'.format(str(word.id), str(wordlen), word.id, word.the_word_itself, word.fontstyle, word.fontsize, reverse('Bable:tob_word', kwargs={'word_id':word.id}), word.the_word_itself, word.fontype, word.id, attribute_div1)
 
-			value = value.replace('{}'.format(word.the_word_itself), replace_to)
+			value = value.replace(' {} '.format(word.the_word_itself), replace_to)
 			print(value)
 	return value
 
@@ -232,7 +232,7 @@ def fontype(value, word):
 		
 		replace_to = '&nbsp;<div class="inner-{}-{} inner" style="cursor: pointer; width: fit-content; display: inline-block;"><a class="plain{} plain overlay" data-text="{}" style="color: yellow; font-style: url(\'{}\'); font-size: {}em; position: relative; display: inline-block;" href="{}">{}</a><style>{} p {{display: inline-block;}}</style><script>$("a.plain{}").one("click", function() {{if( $(this).attr("href") > 0) {{$(this).attr("data", $(this).attr("href")); $(this).attr("href", "");$(this).addClass("active");$(".dropdown-menu-1").addClass("active");}} else {{$(this).attr("href", $(this).attr("data"));$(this).removeClass("active");$(".dropdown-menu-1").removeClass("active");}};$(".dropdown-menu-1").addClass("active");return false;}});</script></div>{}'.format(str(word.id), str(wordlen), word.id, word.the_word_itself, word.fontstyle, word.fontsize, reverse('Bable:tob_word', kwargs={'word_id':word.id}), word.the_word_itself, word.fontype, word.id, attribute_div1)
 
-		value = value.replace('{}'.format(word.the_word_itself), replace_to)
+		value = value.replace(' {} '.format(word.the_word_itself), replace_to)
 		print(value)
 	return value
 
@@ -254,7 +254,7 @@ def directive_jump_up(value, dictionaries):
 					if color == "03":
 						color = "green"
 					delay = datetime.strptime(value[start+2:], '%M:%S')
-					value = value.replace('{}'.format(pointforward.the_word_itself), '<div class=delay style:"transition-delay = {}; color = {};">{}</div>'.format(delay, color, pointfrward.the_word_itself))
+					value = value.replace(' {} '.format(pointforward.the_word_itself), '<div class=delay style:"transition-delay = {}; color = {};">{}</div>'.format(delay, color, pointfrward.the_word_itself))
 	return value
 
 
