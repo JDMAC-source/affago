@@ -49,7 +49,7 @@ from rest_framework.generics import DestroyAPIView
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import UpdateAPIView
 from rest_framework.generics import ListCreateAPIView
-from rest_framework.permissions import IsAuthenticated # new import
+from rest_framework.permissions import IsAuthenticated, BasePermission # new import
 
 # Create your views here.
 from Bable.models import Post
