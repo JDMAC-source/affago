@@ -202,7 +202,7 @@ EMAIL_PORT = 587
 # https://www.youtube.com/watch?v=Z5dBopZWOzo
 #django-paypal settings
 # https://github.com/tijptjik/django-paypal-subscription/blob/master/setup.py
-PAYPAL_RECEIVER_EMAIL = 'kranked_354@hotmail.com'
+PAYPAL_RECEIVER_EMAIL = 'donkeycon@protonmail.com'
 PAYPAL_TEST = False
 
 #import dj_database_url
