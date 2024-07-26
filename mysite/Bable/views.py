@@ -1408,7 +1408,28 @@ def create_space(request):
 	else:
 		elected_sponsorships = False
 
-	new_space = Space.objects.create(the_space_itself=Word.objects.get(the_word_itself=defaultfilters.slugify(unidecode(space_data['the_space_itself'])), home_dictionary=dic_source_for_ss, author=loggedinauthor), author=loggedinauthor, sidebar=request.POST.get('sidebar'), public=public, for_sale=for_sale, free_sponsorships=free_sponsorships, anyone_can_edit=anyone_can_edit, elected_sponsorships=elected_sponsorships, entry_fee=request.POST.get('entry_fee'), continuation_fee=request.POST.get('continuation_fee'), invite_only=invite_only, invite_active=invite_active, invite_code=request.POST.get('invite_code'))
+	if request.POST.get('elected_administrative') == 'on':
+		elected_administrative = True
+	else:
+		elected_administrative = False
+
+	if request.POST.get('elected_legislative') == 'on':
+		elected_legislative = True
+	else:
+		elected_legislative = False
+
+	if request.POST.get('elected_executive') == 'on':
+		elected_executive = True
+	else:
+		elected_executive = False
+
+	if request.POST.get('elected_judiciary') == 'on':
+		elected_judiciary = True
+	else:
+		elected_judiciary = False
+
+
+	new_space = Space.objects.create(the_space_itself=Word.objects.get(the_word_itself=defaultfilters.slugify(unidecode(space_data['the_space_itself'])), home_dictionary=dic_source_for_ss, author=loggedinauthor), author=loggedinauthor, sidebar=request.POST.get('sidebar'), public=public, for_sale=for_sale, free_sponsorships=free_sponsorships, anyone_can_edit=anyone_can_edit, elected_sponsorships=elected_sponsorships, entry_fee=request.POST.get('entry_fee'), continuation_fee=request.POST.get('continuation_fee'), invite_only=invite_only, invite_active=invite_active, invite_code=request.POST.get('invite_code'), values=request.POST.get('values'), mission=request.POST.get('mission'), vision=request.POST.get('vision'), elected_administrative=elected_administrative, elected_legislative=elected_legislative, elected_executive=elected_executive, elected_judiciary=elected_judiciary, administrative_level=request.POST.get('administrative_level'), legislative_level=request.POST.get('legislative_level'), executive_level=request.POST.get('executive_level'), judiciary_level=request.POST.get('judiciary_level'))
 	new_space.approved_voters.add(loggedinauthor)
 	new_space.save()
 	spaces_home_word = Word.objects.get(author=loggedinauthor, the_word_itself=defaultfilters.slugify(unidecode(space_data['the_space_itself'])), home_dictionary=dic_source_for_ss)
