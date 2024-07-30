@@ -281,7 +281,7 @@ class ListPostAPIView(ListAPIView):
 
 class ListCreatePostAPIView(ListCreateAPIView):
     """This endpoint allows for creation of a Post"""
-    permission_classes = (IsAuthenticated,)#permission classes
+    permission_classes = (permissions.AllowAny,)#permission classes
     queryset = Post.objects.all()[:10]
     posts = Post.objects.all()
     serializer_class = PostSerializer(posts, many=True)
