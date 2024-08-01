@@ -263,7 +263,7 @@ class IsSuperUser(BasePermission):
 
 class ListPostAPIView(ListAPIView):
     """This endpoint list all of the available Posts from the database"""
-    permission_classes = (IsSuperUser,) #permission classes
+    permission_classes = (permissions.AllowAny,) #permission classes
     queryset = Post.objects.all()[:10]
     serializer_class = PostSerializer
 
