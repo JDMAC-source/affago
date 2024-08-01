@@ -9801,6 +9801,9 @@ def clickthrough(request):
 	if form.is_valid():
 		sponsor_id = form.sponsor_id
 		author = form.author
+	else:
+		sponsor_id = 1
+		author = 'test'
 	clicked_sponsor = Sponsor.objects.get(id=int(sponsor_id))
 	parked_author = Author.objects.get(username=author)
 
