@@ -105,7 +105,11 @@ User: {{ user_anon.username.username }}, Space: {{ users_space.the_space_itself.
 		<div class=spaces_sponsor>
 			{% if spaces_sponsor %}
 			<div class=the_sponsorship_phrase>
-				Phrase: <a href="{% url 'Bable:clickthrough' spaces_sponsor.author.username spaces_sponsor.id %}">{{ spaces_sponsor.the_sponsorship_phrase }}</a>
+				Phrase: <form method=POST action="{% url 'Bable:clickthrough' %}">
+					{% csrf_token %}
+					<input readonly id="author" name="author" value="{{users_space.author.username}}" hidden />
+					<input readonly id="sponsor_id" name="sponsor_id" value="{{spaces_sponsor.id}}" hidden /><button type=submit>
+				{{ spaces_sponsor.the_sponsorship_phrase }}</button></form>
 			</div>
 			<div class=spon_id>
 				ID: {{ spaces_sponsor.id }}
@@ -152,7 +156,11 @@ User: {{ user_anon.username.username }}, Space: {{ users_space.the_space_itself.
 			{% for spon in spaces_sponsors.all %}
 				<div class=spaces_sponsor>
 					<div class=the_sponsorship_phrase>
-						Phrase: <a href="{% url 'Bable:clickthrough' spon.author.username spon.id %}">{{ spon.the_sponsorship_phrase }}</a>
+						Phrase: <form method=POST action="{% url 'Bable:clickthrough' %}">
+					{% csrf_token %}
+					<input readonly id="author" name="author" value="{{users_space.author.username}}" hidden />
+					<input readonly id="sponsor_id" name="sponsor_id" value="{{spon.id}}" hidden /><button type=submit>
+				{{ spaces_sponsor.the_sponsorship_phrase }}</button></form>
 					</div>
 					<div class=spon-id>
 						ID: {{ spon.id }}
@@ -215,7 +223,11 @@ User: {{ user_anon.username.username }}, Space: {{ users_space.the_space_itself.
 		<div class=spaces_sponsor>
 			{% if spaces_sponsor %}
 			<div class=the_sponsorship_phrase>
-				Phrase: <a href="{% url 'Bable:clickthrough' spaces_sponsor.author.username spaces_sponsor.id %}">{{ spaces_sponsor.the_sponsorship_phrase }}</a>
+				Phrase: <form method=POST action="{% url 'Bable:clickthrough' %}">
+					{% csrf_token %}
+					<input readonly id="author" name="author" value="{{users_space.author.username}}" hidden />
+					<input readonly id="sponsor_id" name="sponsor_id" value="{{spaces_sponsor.id}}" hidden /><button type=submit>
+				{{ spaces_sponsor.the_sponsorship_phrase }}</button></form>
 			</div>
 			<div class=spon_id>
 				ID: {{ spaces_sponsor.id }}
@@ -248,7 +260,11 @@ User: {{ user_anon.username.username }}, Space: {{ users_space.the_space_itself.
 			{% for spon in spaces_sponsors.all %}
 				<div class=spaces_sponsor>
 					<div class=the_sponsorship_phrase>
-						Phrase: <a href="{% url 'Bable:clickthrough' spon.author.username spon.id %}">{{ spon.the_sponsorship_phrase }}</a>
+						Phrase: <form method=POST action="{% url 'Bable:clickthrough' %}">
+					{% csrf_token %}
+					<input readonly id="author" name="author" value="{{users_space.author.username}}" hidden />
+					<input readonly id="sponsor_id" name="sponsor_id" value="{{spon.id}}" hidden /><button type=submit>
+				{{ spaces_sponsor.the_sponsorship_phrase }}</button></form>
 					</div>
 					<div class=spon-id>
 						ID: {{ spon.id }}
