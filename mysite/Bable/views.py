@@ -266,15 +266,17 @@ class ListPostAPIView(ListAPIView):
     permission_classes = (permissions.AllowAny,) #permission classes
     queryset = Post.objects.all()[:10]
     serializer_class = PostSerializer
-
+    '''
     def get_queryset(self):
+    	
         if self.request.user.is_authenticated:
             start_date = datetime.utcnow().replace(tzinfo=pytz.utc)
             end_date = start_date - timedelta(days=7)
-            querset = Post.objects.all().order_by('latest_change_date')[:10]
+            queryset = Post.objects.all().order_by('latest_change_date')[:10]
             return queryset
         else:
             pass
+    '''
 
 
 
@@ -284,11 +286,9 @@ class ListCreatePostAPIView(ListCreateAPIView):
     permission_classes = (permissions.AllowAny,)#permission classes
     queryset = Post.objects.all()[:10]
     posts = Post.objects.all()
-    serializer_class = PostSerializer(posts, many=True)
+    serializer_class = PostSerializer
 
-    def post(self, request, format=None):
-    	serializer = PostSerializer(data=request.data)
-
+    
 
 
 class ListCreateWordAPIView(ListCreateAPIView):

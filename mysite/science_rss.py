@@ -16,12 +16,12 @@ for rss_url in urls:
     # To disable limit simply do not provide the argument or use None
     feed = feedparser.parse(xml)
     # Print out feed meta data
-    print(feed.feed.title_detail.language)
+    #print(feed.feed.title_detail.language)
     
     # Iteratively print feed items
     for item in feed.entries:
-        print(item.title)
-        print(item.summary)
+        #print(item.title)
+        #print(item.summary)
         
         r = requests.post('https://www.predictionary.us/B/posts/',data={'title':item.title, "body":item.summary, "url": item.links[0].href})
         print(r.status_code)
