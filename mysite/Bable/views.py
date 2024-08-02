@@ -7009,8 +7009,8 @@ def want_to_purchase_dic(request, dicid, invitecode):
 	
 
 
-	if Dictionary.objects.get(id=dicid):
-		buying_dic = Dictionary.objects.get(id=dicid)
+	if Dictionary.objects.get(id=int(dicid)):
+		buying_dic = Dictionary.objects.get(id=int(dicid))
 		user_anon = Anon.objects.get(username__username=buying_dic.author.username)
 		if request.method == 'POST':
 			if buying_dic.invite_only:
@@ -7023,7 +7023,7 @@ def want_to_purchase_dic(request, dicid, invitecode):
 				else:
 					return base_redirect(request, 'invalid')
 			else:
-				return redirect('Bable:buy_dic', dicid=dicid)
+				return redirect('Bable:buy_dic', dicid=int(dicid))
 		return render(request, 'want_to_purchase_dic.html', {"loggedinanon": loggedinanon, "users_dic": buying_dic, "user_anon": user_anon, "invite_code_form": invite_code_form, "dic_form": dic_form, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
 			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
 	return base_redirect(request, 0)
@@ -7615,6 +7615,7 @@ def tob_users_votes(request, user, count):
 	return the_response
 
 def tob_users_dic(request, user, dictionary, count):
+	count = int(count)
 	if User.objects.get(username=user):
 		user_themself = User.objects.get(username=user)
 		user_anon = Anon.objects.get(username=user_themself)
@@ -7652,9 +7653,9 @@ def tob_users_dic(request, user, dictionary, count):
 		apply_dic_form = ApplyDictionaryForm(request)
 		exclude_dic_form = ExcludeDictionaryAuthorForm()
 
-		dics_words = sort_words(users_dic.words, loggedinanon.word_sort, count, 100)
+		dics_words = sort_words(users_dic.words, loggedinanon.word_sort, count, count+100)
 	else:
-		dics_words = sort_words(users_dic.words, 'viewcount', count, 100)
+		dics_words = sort_words(users_dic.words, 'viewcount', count, count+100)
 
 	#if request.user.is_authenticated:
 		# something about what if the user is logged in, show the dic's words?

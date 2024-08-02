@@ -7,13 +7,13 @@
 {% load static %}
 
 {% block title %}
-User: {{ user_anon.username }}'s Dic: {{ users_dic.the_dictionary_itself }} - Dream Cloud Middle Men
+User: {{ user_anon.username }}'s Dic: {{ users_dic.the_dictionary_itself }} - Predictionary.us
 {% endblock %}
 
 
 {% block inserts %}
 <meta name="viewport" content="width=device-width">
-<meta property="og:description" content="User: {{ user_anon.username }}'s Dic: {{ users_dic.the_dictionary_itself }} - Dream Cloud Middle Men">
+<meta property="og:description" content="User: {{ user_anon.username }}'s Dic: {{ users_dic.the_dictionary_itself }} - Predictionary.us">
 <meta property="og:image" content="{% static 'babylonpolice.jpg' %}">
 {% endblock %}
 
@@ -75,10 +75,10 @@ User: {{ user_anon.username }}'s Dic: {{ users_dic.the_dictionary_itself }} - Dr
 			</div>
 			<div class=dictionary_price>
 				{% if users_dic.public %}
-					<a href="{% url 'Bable:want_to_purchase_dic' users_dic.id 0 %}">Price: e{{ users_dic.entry_fee }} + c{{ users_dic.continuation_fee }}/mth</a>
+					<a href="{% url 'Bable:want_to_purchase_dic' users_dic.id 0 %}" style="color: green;">Price: BUY NOW e{{ users_dic.entry_fee }} + c{{ users_dic.continuation_fee }}/mth</a>
 				{% else %}
 					{% if users_dic.for_sale %}
-						<a href="{% url 'Bable:want_to_purchase_dic' users_dic.id 0 %}">Price: e{{ users_dic.entry_fee }} + c{{ users_dic.continuation_fee }}/mth (Invite Only)</a>
+						<a href="{% url 'Bable:want_to_purchase_dic' users_dic.id 0 %}" style="color: green;">Price: BUY NOW e{{ users_dic.entry_fee }} + c{{ users_dic.continuation_fee }}/mth (Invite Only)</a>
 					{% else %}
 						Price: Not For Sale
 					{% endif %}
