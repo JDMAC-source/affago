@@ -1208,6 +1208,9 @@ class Post(models.Model):
 	comments = models.ManyToManyField(Comment, default=None)
 	sum_comments = models.IntegerField(default=0)
 	sponsors = models.ManyToManyField(Sponsor, default=None)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
 	sum_sponsors = models.IntegerField(default=0)
 	viewcount = models.IntegerField(default=0)
 	change_count = models.IntegerField(default=0)
@@ -1269,7 +1272,10 @@ class Post(models.Model):
 	def max_sponsor(self):
 		max_sponsor = self.sponsors.all().order_by('-price_limit').first()
 		if not max_sponsor:
-			return Sponsor.objects.all().order_by('-price_limit').first()
+			max_sponsor = Sponsor.objects.all().order_by('-price_limit').first()
+		self.max_sponsor_id = max_sponsor.id
+		self.max_sponsor_img = max_sponsor.img
+		self.max_sponsor_url = max_sponsor.url2
 		return max_sponsor
 
 	def max_url(self):

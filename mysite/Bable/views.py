@@ -4173,11 +4173,7 @@ def tower_of_bable(request):
 		file_form = FileForm()
 		post_sort_form = PostSortForm(request)
 		
-		posts_values = list(posts_by_viewcount.values('img', 'url2', 'author__username', 'id', 'title', 'body', 'viewcount', 'votes_count', 'votes_uniques', 'latest_change_date'))
-		for i in range(0,len(posts_values)):
-			img, __id = posts_by_viewcount[i].max_img_id()
-			posts_values[i]['max_img'] = img
-			posts_values[i]['max_id'] = __id
+		posts_values = list(posts_by_viewcount.values('img', 'url2', 'author__username', 'id', 'title', 'body', 'viewcount', 'votes_count', 'votes_uniques', 'latest_change_date', 'max_sponsor_id', 'max_sponsor_img'))
 		postscount = 25
 		posts_by_viewcount = posts_values
 		
@@ -4186,11 +4182,7 @@ def tower_of_bable(request):
 	else:
 		posts_by_viewcount = Post.objects.order_by('viewcount')[:25]
 		postscount = 25
-		posts_values = list(posts_by_viewcount.values('img', 'url2', 'author__username', 'id', 'title', 'body', 'viewcount', 'votes_count', 'votes_uniques', 'latest_change_date'))
-		for i in range(0,len(posts_values)):
-			img, __id = posts_by_viewcount[i].max_img_id()
-			posts_values[i]['max_img'] = img
-			posts_values[i]['max_id'] = __id
+		posts_values = list(posts_by_viewcount.values('img', 'url2', 'author__username', 'id', 'title', 'body', 'viewcount', 'votes_count', 'votes_uniques', 'latest_change_date', 'max_sponsor_id', 'max_sponsor_img'))
 		
 		posts_by_viewcount = posts_values
 		the_response = render(request, 'tower_of_bable.html', {"basic_price": basic_price, "postscount": postscount, "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "total": total, "count": lower, "mcount": mcount, "count100": count100, "posts": posts_by_viewcount, 'loginform': loginform, 'registerform': registerform, })
@@ -6506,7 +6498,7 @@ def tob_users_post(request, user, post, count=0):
 	registerform = UserCreationForm()
 	
 		
-	
+	users_post.max_sponsor()
 
 	posts_by_viewcount = Post.objects.order_by('viewcount')[:100]
 	count = 0
