@@ -5118,10 +5118,135 @@ def tob_product(request, product_id):
 	else:
 		the_response = render(request, "tob_product.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "users_product": users_product, "user_anon": user_anon, "registerform": registerform,  "loginform": loginform})
 	the_response.set_cookie('current', 'tob_post')
-	the_response.set_cookie('post', product_id)
+	the_response.set_cookie('product', product_id)
 	the_response.set_cookie('count', 0)
 	return the_response
 
+
+
+
+def tob_products(request, count):
+	count = int(count)
+	products = Price.objects.order_by('-latest_change_date')[count:count+100]
+	
+	page_views, created = Pageviews.objects.get_or_create(page="tob_products")
+	page_views.views += 1
+	page_views.save()
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
+		pages_view = UserViews.objects.create(page_view="tob_products__"+str(count), anon=loggedinanon)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+	
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+
+		product_sort_form = ProductSortForm(request)
+		products = Price.objects.order_by(loggedinanon.product_sort_char)[count:count+100]
+	
+
+	
+		file_form = FileForm() 
+		the_response = render(request, "tob_products.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "file_form": file_form, "loggedinanon": loggedinanon, "products": products, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		the_response = render(request, "tob_products.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "products": products, "registerform": registerform,  "loginform": loginform})
+	the_response.set_cookie('current', 'tob_products')
+	the_response.set_cookie('count', count)
+	return the_response
+
+
+
+def storefronts(request, count):
+	count = int(count)
+	storefronts = Storefront.objects.order_by('-latest_change_date')[count:count+100]
+	
+	page_views, created = Pageviews.objects.get_or_create(page="tob_products")
+	page_views.views += 1
+	page_views.save()
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
+		pages_view = UserViews.objects.create(page_view="storefronts__"+str(count), anon=loggedinanon)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+	
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+
+		storefront_sort_form = StorefrontSortForm(request)
+
+		storefronts = Storefront.objects.order_by(loggedinanon.storefront_sort_char)[count:count+100]
+	
+
+	
+		file_form = FileForm() 
+		the_response = render(request, "tob_storefronts.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "file_form": file_form, "loggedinanon": loggedinanon, "products": products, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		the_response = render(request, "tob_storefronts.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "products": products, "registerform": registerform,  "loginform": loginform})
+	the_response.set_cookie('current', 'storefronts')
+	the_response.set_cookie('count', count)
+	return the_response
 
 
 
@@ -7324,6 +7449,7 @@ def create_checkout_session(request, price_id, post_id, storefront_id):
 	if request.method == 'POST':
 		sale_form = SaleForm(request.POST)
 		if sale_form.is_valid():
+
 			sale = sale_form.save()
 			if int(post_id):
 				post = Post.objects.get(id=int(post_id))
@@ -7372,8 +7498,11 @@ def create_checkout_session(request, price_id, post_id, storefront_id):
 			#     customer_email=email,
 			#     product=product, ......
 			# )
-			Invoice.objects.create(amount=int(price), item_name="Bread", author=Author.objects.get(username=request.user.username), success=True)
-
+			invoice = Invoice.objects.create(amount=int(price), item_name="Bread", author=Author.objects.get(username=request.user.username), success=True)
+			if int(price_id):
+				price.invoices.add(invoice)
+				price.sum_invoices += 1
+				price.save()
 			# return JsonResponse({'data': checkout_session})
 			return JsonResponse({'sessionId': checkout_session.id})
 	return base_redirect(request, 0)

@@ -23,6 +23,9 @@ Sponsor ({{ sponsor.id }}): {{ sponsor.the_sponsorship_phrase }}'s Sponsor - Pre
 	<div class=spon-id>
 		ID: {{ sponsor.id }}
 	</div>
+	<div class=spon-phrase>
+		Phrase: {{ sponsor.the_sponsorship_phrase }}
+	</div>
 	<div class=spon_latest>
 		Latest: {{ sponsor.latest_change_date }}
 	</div>
@@ -31,7 +34,7 @@ Sponsor ({{ sponsor.id }}): {{ sponsor.the_sponsorship_phrase }}'s Sponsor - Pre
 		<a href="{% url 'Bable:delete_own_spons' sponsor.id %}"><h4>X</h4></a>
 	</div>
 	{% endif %}
-	{% if sponsor.img %}<img src='{{ spon.img }}' style="height: 6em; width: 6em;"/>{% endif %}
+	{% if sponsor.img %}<img src='{{ sponsor.img }}' style="height: 6em;"/>{% endif %}
 	<div class=spon_price_limit>
 		Price: {{ sponsor.price_limit }}
 	</div>

@@ -804,6 +804,7 @@ class Price(models.Model):
     stripe_price_id = models.CharField(max_length=100, default='')
     stripe_product_id = models.CharField(max_length=100, default='')
     price = models.IntegerField(default=0)  # cents
+    latest_change_date = models.DateTimeField(default=timezone.now)
 
     monthly = models.BooleanField(default=False)
     comments = models.ManyToManyField(Comment_Source, default=None)
@@ -812,6 +813,7 @@ class Price(models.Model):
     sum_invoices = models.IntegerField(default=0)
 
     sponsors = models.ManyToManyField(Sponsor, default=None)
+    sponsor_count = models.IntegerField(default=0)
 
     #location_of_product = models.CharField(max_length=200, default='Remote')
     point_of_sale = models.ManyToManyField(Sale, default=None)
@@ -826,6 +828,24 @@ class Price(models.Model):
 
     def max_sponsor(self):
     	return self.sponsors.all().order_by('-price_limit').first() or Sponsor.all().order_by('-price_limit').first()
+
+
+PRODUCT_SORT_CHOICES_CHAR = (
+	("name", "Name Alphabetical"),
+	("-name", "Name Reverse Alphabetical"),
+	("price", "Most Expensive"),
+	("-price", "Least Expensive"),
+	("latest_change_date", "Most Recently Changed"),
+	("-latest_change_date", "Least Recently Changed"),
+	("sum_comments", "Most Commented"),
+	("-sum_comments", "Least Commented"),
+	("sum_invoices", "Most Purchased"),
+	("-sum_invoices", "Least Purchased"),
+	("sponsor_count", "Most Sponsors"),
+	("-sponsor_count", "Least Sponsors"),
+)
+
+
 
 class Storefront(models.Model):
 	author = models.OneToOneField(Author, default=None, on_delete=models.PROTECT)
@@ -852,10 +872,31 @@ class Storefront(models.Model):
 	textblock_3  = models.TextField(max_length=14400, default="")
 	textblock_4  = models.TextField(max_length=14400, default="")
 	products = models.ManyToManyField(Price, default=None)
+	products_count = models.IntegerField(default=0)
 	sales = models.ManyToManyField(Sale, default=None)
+	sales_count = models.IntegerField(default=0)
 	business_admin = models.ManyToManyField(Author, default=None, related_name="business_admin")
+	business_admins_count = models.IntegerField(default=0)
+	
 
-
+STOREFRONT_SORT_CHOICES_CHAR = (
+	("author__username", "Author Alphabetical"),
+	("-author__username", "Author Reverse Alphabetical"),
+	("logo__the_word_itself", "Logo Alphabetical"),
+	("-logo__the_word_itself", "Logo Reverse Alphabetical"),
+	("logo__home_dictionary__the_dictionary_itself", "Logo Home Dic Alpha"),
+	("-logo__home_dictionary__the_dictionary_itself", "Logo Home Dic Reverse Alpha"),
+	("logo__author__username", "Logo Author Alpha"),
+	("-logo__author__username", "Logo Author Reverse Alpha"),
+	("title", "Title Alphabetical"),
+	("-title", "Title Reverse Alphabetical"),
+	("products_count", "Most Products"),
+	("-products_count", "Least Products"),
+	("sales_count", "Most Sales"),
+	("-sales_count", "Least Sales"),
+	("business_admins_count", "Most Business Partners"),
+	("-business_admins_count", "Least Business Partners"),
+)
 
 class Dictionary(models.Model):
 	author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None, related_name='dicauthor')
@@ -886,6 +927,7 @@ class Dictionary(models.Model):
 	renditions = models.ManyToManyField(Rendition, default=None)
 	rendition_count = models.IntegerField(default=0)
 	revoked_authors = models.ManyToManyField(Author, default=None, related_name='dic_unallowed')
+	revoked_authors_count = models.IntegerField(default=0)
 	
 	prerequisite_dics = models.ManyToManyField(Dictionary_Source, default=None)
 	prerequisite_dics_count = models.IntegerField(default=0)
@@ -1949,13 +1991,41 @@ class Drawing(models.Model):
 	rectangles = models.ManyToManyField(Rectangle, default=None)
 	init = models.TextField(max_length=20000, default="<script>function rectangle() {var canvas = document.getElementById('canvas');var context = canvas.getContext('2d');}</script>")
 
+
+class Affinity(models.Model):
+	host_author = models.OneToOneField(Author, default=None, on_delete=models.PROTECT, related_name="affinity_host_author")
+	mutual = models.OneToOneField(Author, default=None, on_delete=models.PROTECT, related_name="affinity_mutual")
+	mutual_friend = models.OneToOneField(Author, default=None, on_delete=models.PROTECT, related_name="affinity_mutual_friend")
+	relationship_factor = models.FloatField(default=0.0) # whether they'll become an item
+	contact_factor = models.FloatField(default=0.0) # whether they'll maintain contact
+	meet_up_factor = models.FloatField(default=0.0) # whether they'll book to meet
+	business_factor = models.FloatField(default=0.0) # whether they'll do business_admin together
+	sell_to_factor = models.FloatField(default=0.0) # whether they'll sell to you
+	buy_from_factor = models.FloatField(default=0.0) # whether they'll buy from you
+	courier_factor = models.FloatField(default=0.0) # whether they'll deliver parcels for you
+	dictionary_factor = models.FloatField(default=0.0) # whether they'll buy a dic from you
+	space_factor = models.FloatField(default=0.0) # whether they'll buy a space from you
+	governance_factor = models.FloatField(default=0.0) # whether they'll be a governance member for you
+
+
+
+
+class Associate(models.Model):
+	host_author = models.OneToOneField(Author, default=None, on_delete=models.PROTECT, related_name="host_author")
+	mutual = models.OneToOneField(Author, default=None, on_delete=models.PROTECT, related_name="mutual")
+	mutual_friends_affinity = models.ManyToManyField(Affinity, default=None)
+	total_mutual_friends_count = models.IntegerField(default=0)
+
+
 class Anon(models.Model):
 	angel_numbers = models.ManyToManyField(AngelNumber, default=None)
 	minecraft_servers = models.ManyToManyField(MinecraftServer, default=None)
 	drawings = models.ManyToManyField(Drawing, default=None)
 	storefronts = models.ManyToManyField(Storefront, default=None)
+	storefront_sort_char = models.CharField(choices=STOREFRONT_SORT_CHOICES_CHAR, default="views", max_length=180)
 	saless = models.ManyToManyField(Sale, default=None)
 	products = models.ManyToManyField(Price, related_name="anon_product", default=None)
+	product_sort_char = models.CharField(choices=PRODUCT_SORT_CHOICES_CHAR, default="views", max_length=180)
 	purchases = models.ManyToManyField(Price, related_name="anon_purchase", default=None)
 	stripe_private_key = models.CharField(max_length=600, default='', null=True)
 	stripe_webhook_secret = models.CharField(max_length=600, default='', null=True)
@@ -1966,13 +2036,17 @@ class Anon(models.Model):
 	email = models.EmailField(max_length=144, default='', null=True)
 	anon_sort = models.IntegerField(choices=ANON_SORT_CHOICES, default=0)
 	anon_sort_char = models.CharField(choices=ANON_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
+
+	friends = models.ManyToManyField(Author, default=None, related_name="friends")
+	mutuals_associate = models.ManyToManyField(Associate, default=None)
+
 	dictionaries = models.ManyToManyField(Dictionary, default=None, related_name='dictionaries')
 	sum_dictionaries = models.IntegerField(default=0)
 	
 	purchased_dictionaries = models.ManyToManyField(Dictionary, default=None, related_name='purchased_dictionaries')
 	sum_purchased_dictionaries = models.IntegerField(default=0)
 	applied_dictionaries = models.ManyToManyField(Dictionary_Source, default=None, related_name='applied_dictionaries')
-	excluded_dic_authors = models.ManyToManyField(Author, default=None)
+	excluded_dic_authors = models.ManyToManyField(Author, default=None, related_name="excluded_dic_authors")
 	sum_excluded_authors = models.IntegerField(default=0)
 
 	dictionary_sort = models.IntegerField(choices=DICTIONARY_SORT_CHOICES, default=0)

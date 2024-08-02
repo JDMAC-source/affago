@@ -8,6 +8,15 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 
 
+class BusinessAdminForm(forms.ModelForm):
+    class Meta:
+        model = Storefront
+        fields = ("business_admin",)
+    def __init__(self, request, *args, **kwargs):
+        super(BusinessAdminForm, self).__init__(*args, **kwargs)
+        self.fields['business_admin'] = forms.MultipleChoiceField(choices=[(e, e) for e in Anon.objects.get(username=request.user).friends.order_by("username").values_list("username", flat=True)])
+
+
 class ClickthroughForm(forms.Form):
     author = forms.CharField(required=True)
     sponsor_id = forms.CharField(required=True)
@@ -80,7 +89,7 @@ class SaleForm(forms.ModelForm):
         fields = ("deliver_to_address", "deliver_to_instructions", "courier_select", "courier_order", "courier_fees", "courier_1_to_2_drop_location", "courier_2_to_3_drop_location", "courier_3_to_4_drop_location",  "courier_4_to_5_drop_location", "courier_5_to_6_drop_location","courier_6_to_7_drop_location",)
     def __init__(self, *args, **kwargs):
         super(Sale, self).__init__(*args, **kwargs)
-        self.fields['courier_select'] = forms.MultipleChoiceField(choices=[(e, e) for e in Author.objects.all()]) 
+        self.fields['courier_select'] = forms.MultipleChoiceField(choices=[(e, e) for e in Author.objects.order_by("username").values_list("username", flat=True)]) 
 
 
 class MembersSelectPrimationReference(forms.ModelForm):
@@ -250,6 +259,31 @@ class SponsorSortForm(forms.ModelForm):
         self.fields['sponsor_sort_char'].label = False
         self.instance = current_anon
 
+
+
+class ProductSortForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('product_sort_char',)
+    def __init__(self, request, *args, **kwargs):
+        super(ProductSortForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['product_sort_char'].initial = current_anon.product_sort_char
+        self.fields['product_sort_char'].label = False
+        self.instance = current_anon
+
+
+
+class StorefrontSortForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('storefront_sort_char',)
+    def __init__(self, request, *args, **kwargs):
+        super(StorefrontSortForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['storefront_sort_char'].initial = current_anon.storefront_sort_char
+        self.fields['storefront_sort_char'].label = False
+        self.instance = current_anon
 
 
 
