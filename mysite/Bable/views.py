@@ -10476,6 +10476,7 @@ def tob_word(request, word_id):
 	if request.user.is_authenticated:
 		loggedinuser = User.objects.get(username=request.user.username)
 		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
 
 		dic_form = DictionaryForm()
 		space_form = SpaceForm(request)
