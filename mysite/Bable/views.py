@@ -5331,6 +5331,14 @@ def tob_spaces_posts_comment_count(request, space, post, comment, count):
 
 
 @login_required
+def change_sponsor_sort_char(request):
+	if request.method == "POST":
+		sponsor_sort_form = SponsorSortForm(request, data=request.POST)
+		if sponsor_sort_form.is_valid():
+			sponsor_sort_form.save()
+	return base_redirect(request, 0)
+
+@login_required
 def change_anon_sort_char(request):
 	if request.method == "POST":
 		anon_sort_form = AnonSortForm(request, data=request.POST)
@@ -5380,6 +5388,128 @@ def change_post_sort_char(request):
 		if post_sort_form.is_valid():
 			post_sort_form.save()
 	return base_redirect(request, 0)
+
+
+
+def tob_sponsor(request, sponsor):
+
+	registerform = UserCreationForm()
+	
+	page_views, created = Pageviews.objects.get_or_create(page="tob_sponsor")
+	page_views.views += 1
+	page_views.save()	
+	
+	spon = Sponsor.objects.get(id=int(sponsor))
+	loginform = AuthenticationForm()
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
+		pages_view = UserViews.objects.create(page_view="tob_sponsor__"+sponsor, anon=loggedinanon)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+
+		user_anons = Anon.objects.order_by(loggedinanon.anon_sort_char)[0:25]
+
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+
+		sponsor_form = SponsorForm(instance=spon)
+	
+
+
+	
+	
+	if request.user.is_authenticated:
+		the_response = render(request, "tob_view_users.html", {"sponsor": spon, "sponsor_form": sponsor_form, "loggedinanon": loggedinanon, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		the_response = render(request, "tob_view_users.html", {"sponsor": spon, "registerform": registerform,  "loginform": loginform})
+	the_response.set_cookie('current', 'tob_view_users')
+	the_response.set_cookie('count', 0)
+	return the_response
+
+
+
+def tob_sponsors(request, count):
+
+	sponsors = Sponsor.objects.order_by('-latest_change_date')[int(count):int(count)+25]
+	count = int(count)
+	mcount = 0
+	if count > 25:
+		mcount = count - 25
+	count100 = count+25
+	registerform = UserCreationForm()
+	
+	sponsors_count = Sponsor.objects.count()
+	page_views, created = Pageviews.objects.get_or_create(page="tob_sponsors")
+	page_views.views += 1
+	page_views.save()	
+	
+	
+	loginform = AuthenticationForm()
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
+		pages_view = UserViews.objects.create(page_view="tob_sponsors__count_"+str(count), anon=loggedinanon)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+
+		sponsors = Sponsor.objects.order_by(loggedinanon.sponsor_sort_char)[count:count+25]
+
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+
+		sponsor_sort_form = SponsorSortForm(request)
+	
+
+
+	
+	
+	if request.user.is_authenticated:
+		the_response = render(request, "tob_sponsors.html", {"sponsors_count": sponsors_count, "sponsor_sort_form": sponsor_sort_form, "count": count, "mcount": mcount, "count100": count100, "loggedinanon": loggedinanon, "sponsors": sponsors, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		the_response = render(request, "tob_sponsors.html", {"sponsors_count": sponsors_count, "count": count, "mcount": mcount, "count100": count100, "sponsors": sponsors, "registerform": registerform,  "loginform": loginform})
+	the_response.set_cookie('current', 'tob_sponsors')
+	the_response.set_cookie('count', count)
+	return the_response
+
+
+
 
 
 def tob_view_users(request):
@@ -9198,6 +9328,19 @@ def tob_word_relation(request, word_id, relation_id):
 	the_response.set_cookie('word', word)
 	the_response.set_cookie('relation', relation)
 	return the_response
+
+
+@login_required
+def update_sponsor(request):
+	if request.method =="POST":
+		sponsor_form = SponsorForm(request.POST)
+		if sponsor_form.is_valid():
+			if request.user.username == sponsor_form.instance.author.username:
+				sponsor_form.save()
+	return base_redirect(request, 0)
+
+
+
 
 def tob_users_dic_word_sponsor(request, user, dictionary, word, sponsor):
 	if User.objects.get(username=user):

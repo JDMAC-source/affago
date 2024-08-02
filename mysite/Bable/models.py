@@ -370,9 +370,12 @@ class IPA_pronunciation(models.Model):
 class Example(models.Model):
 	the_example_itself = models.TextField(max_length=1000, default='')
 	words = models.ManyToManyField(Word_Source, default=None)
+	word_count = models.IntegerField(default=0)
 	dictionaries = models.ManyToManyField(Dictionary_Source, default=None)
+	dictionary_count = models.IntegerField(default=0)
 	latest_change_date = models.DateTimeField(default=timezone.now)
 	comment_sources = models.ManyToManyField(Comment_Source, related_name="exa_com", default=None)
+	comment_count = models.IntegerField(default=0)
 	author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None, null=True)
 	votes = models.ManyToManyField(Votes_Source, default=None)
 	votes_count = models.IntegerField(default=0)
@@ -402,6 +405,22 @@ EXAMPLE_SORT_CHOICES = (
 	(3, "votes"),
 	(4, "unseen"),
 	(5, "views"),
+	
+
+)
+
+
+EXAMPLE_SORT_CHOICES_CHAR = (
+	("the_example_itself", "Alphabetical"),
+	("-the_example_itself", "Backwards Alpha"),
+	("word_count", "Most Words"),
+	("-word_count", "Least Words"),
+	("dictionary_count", "Most Dics"),
+	("-dictionary_count", "Least Dics"),
+	("comment_count", "Most Comments"),
+	("-comment_count", "Least Comments"),
+	("views", "Most Viewed"),
+	("-views", "Most Viewed"),
 	
 
 )
@@ -444,6 +463,20 @@ SPONSOR_SORT_CHOICES = (
 	(11, "-views"),
 )
 
+SPONSOR_SORT_CHOICES_CHAR = (
+	("the_sponsorship_phrase", "Alphabetical"),
+	("-the_sponsorship_phrase", "Reverse Alphabetical"),
+	("latest_change_date", "Least Recent Change"),
+	("-latest_change_date", "Most Recent Change"),
+	("price_limit", "Price Limit"),
+	("-price_limit", "Affordability Limit"),
+	("allowable_expenditure", "Most Expenditure"),
+	("-allowable_expenditure", "Least Expenditure"),
+	("votes_count", "Most Votes"),
+	("-votes_count", "Least Votes"),
+	("views", "Most Views"),
+	("-views", "Least Views"),
+)
 
 from numpy.random import choice
 
@@ -1951,7 +1984,9 @@ class Anon(models.Model):
 	examples = models.ManyToManyField(Example, blank=True, default=None) # saved comments
 	sum_examples = models.IntegerField(default=0)
 	example_sort = models.IntegerField(choices=EXAMPLE_SORT_CHOICES, default=0)
+	example_sort_char = models.CharField(choices=EXAMPLE_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
 	sponsor_sort = models.IntegerField(choices=SPONSOR_SORT_CHOICES, default=0)
+	sponsor_sort_char = models.CharField(choices=SPONSOR_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
 	tasks = models.ManyToManyField(Task, default=None)
 	sum_tasks = models.IntegerField(default=0)
 	latest_change_date = models.DateTimeField(default=timezone.now)
