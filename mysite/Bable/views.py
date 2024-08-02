@@ -4174,6 +4174,9 @@ def tower_of_bable(request):
 		post_sort_form = PostSortForm(request)
 		
 		posts_values = list(posts_by_viewcount.values('img', 'url2', 'author__username', 'id', 'title', 'body', 'viewcount', 'votes_count', 'votes_uniques', 'latest_change_date'))
+		for i in range(0,len(posts_values)):
+			posts_values[i]['max_img'] = posts_by_viewcount[i].max_img
+			posts_values[i]['max_id'] = posts_by_viewcount[i].max_id
 		postscount = 25
 		posts_by_viewcount = posts_values
 		
@@ -4183,6 +4186,10 @@ def tower_of_bable(request):
 		posts_by_viewcount = Post.objects.order_by('viewcount')[:25]
 		postscount = 25
 		posts_values = list(posts_by_viewcount.values('img', 'url2', 'author__username', 'id', 'title', 'body', 'viewcount', 'votes_count', 'votes_uniques', 'latest_change_date'))
+		for i in range(0,len(posts_values)):
+			posts_values[i]['max_img'] = posts_by_viewcount[i].max_img
+			posts_values[i]['max_id'] = posts_by_viewcount[i].max_id
+		
 		posts_by_viewcount = posts_values
 		the_response = render(request, 'tower_of_bable.html', {"basic_price": basic_price, "postscount": postscount, "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "total": total, "count": lower, "mcount": mcount, "count100": count100, "posts": posts_by_viewcount, 'loginform': loginform, 'registerform': registerform, })
 	

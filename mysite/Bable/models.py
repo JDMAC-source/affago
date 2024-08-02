@@ -1267,10 +1267,32 @@ class Post(models.Model):
 			i+=1
 
 	def max_sponsor(self):
-		max_sponsor = self.sponsors.order_by('-price_limit').first()
+		max_sponsor = self.sponsors.all().order_by('-price_limit').first()
 		if not max_sponsor:
 			return Sponsor.objects.all().order_by('-price_limit').first()
 		return max_sponsor
+
+	def max_url(self):
+		max_sponsor = self.sponsors.all().order_by('-price_limit').first()
+		if not max_sponsor:
+			return Sponsor.objects.all().order_by('-price_limit').first().url2
+		url = max_sponsor.url2
+		return url
+
+	def max_img(self):
+		max_sponsor = self.sponsors.all().order_by('-price_limit').first()
+		if not max_sponsor:
+			return Sponsor.objects.all().order_by('-price_limit').first().img
+		img = max_sponsor.img
+		return img
+
+	def max_id(self):
+		max_sponsor = self.sponsors.all().order_by('-price_limit').first()
+		if not max_sponsor:
+			max_sponsor = Sponsor.objects.all().order_by('-price_limit').first()
+		__id = max_sponsor.id
+		return __id
+
 
 	def max(self):
 		max_sponsor = self.sponsors.order_by('-price_limit').first()

@@ -23,7 +23,7 @@ for rss_url in urls:
         print(item.title)
         print(item.summary)
         
-        r = requests.post('https://www.predictionary.us/B/posts/',data={'title':item.title, "body":item.summary, "url": item.link})
+        r = requests.post('https://www.predictionary.us/B/posts/',data={'title':item.title, "body":item.summary, "url2": item.link})
         print(r.status_code)
         print(r.text)
 
