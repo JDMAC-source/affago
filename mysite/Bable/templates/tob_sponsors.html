@@ -41,7 +41,7 @@ Sponsors - Predictionary.us {{count}}
 	{% for spon in sponsors %}
 		<div class=sponsor>
 			<div class=spon-id>
-				ID: {{ spon.id }}
+				ID: <a href="{% url 'Bable:tob_sponsor' spon.id %}">{{ spon.id }}</a>
 			</div>
 			<div class=spon_latest>
 				Latest: {{ spon.latest_change_date }}

@@ -5437,11 +5437,12 @@ def tob_sponsor(request, sponsor):
 	
 	
 	if request.user.is_authenticated:
-		the_response = render(request, "tob_view_users.html", {"sponsor": spon, "sponsor_form": sponsor_form, "loggedinanon": loggedinanon, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
+		the_response = render(request, "tob_sponsor.html", {"sponsor": spon, "sponsor_form": sponsor_form, "loggedinanon": loggedinanon, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
 			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
 	else:
-		the_response = render(request, "tob_view_users.html", {"sponsor": spon, "registerform": registerform,  "loginform": loginform})
-	the_response.set_cookie('current', 'tob_view_users')
+		the_response = render(request, "tob_sponsor.html", {"sponsor": spon, "registerform": registerform,  "loginform": loginform})
+	the_response.set_cookie('current', 'tob_sponsor')
+	the_response.set_cookie('sponsor', sponsor)
 	the_response.set_cookie('count', 0)
 	return the_response
 
