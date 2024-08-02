@@ -6,117 +6,18 @@
 
 {% block inserts %}
 <meta name="viewport" content="width=device-width">
-<meta property="og:description" content="Pronunciation {{ pronunciation.id }} - Dream Cloud Middle Men">
+<meta property="og:description" content="Product List {{ count }} - Predictionary.us">
 <meta property="og:image" content="{% static 'babylonpolice.jpg' %}">
 {% endblock %}
 
 
 {% block title %}
-Product {{ users_product.name }} - Dream Cloud Middle Men
+Product List {{ count }}- Predictionary.us
 {% endblock %}
 
 {% block authenticatedposts %}
-<div class=usersusername>
-	{% if user_anon %}
-		<h2>
-		<a href="{% url 'Bable:tob_user_view' user_anon.username.username %}">
-			User: {{ user_anon.username.username }}
-		</a>
-		</h2>
-	</div>
-	{% endif %}
-	<div class=single_dictionary>
-		<div class=dictionary_itself>
-			<h4>
-				Product: {{ users_product.name }}; ID: {{ users_product.id }}
-			</h4>
-		</div>
-		<div class=dictionary-bottom>
-			<div class=dictionary_words>
-				Description2HelpSell: {{ users_product.description2helpsell }}
-			</div>
-			<a href="{% url 'Bable:tob_product' users_product.id %}"><h3>{{ users_product.name }}</h3></a>
-			{% if users_product.img %}
-	        <img src="{{ users_product.img }}" style="width: 200px !important; max-height: 200px; margin: auto; width: fit-content;">
-	        {% else %}
-	         <img src="{% static 'babylonpolice.jpg' %}" style="width: 200px !important; max-height: 200px; margin: auto; width: fit-content;">
-	        {% endif %}
-	        <div>
-	            <h5>${{ users_product.get_display_price }} AUD {% if users_product.monthly %}per month{% endif %}</h5>
-	            <form action="{% url 'Bable:create-checkout-session' users_product.id %}" method="POST">
-	                {% csrf_token %}
-	                <button type="submit">Purchase</button>
-	            </form>
-	        </div>
-	        <div class=product_sponsor>
-	        	{% if users_product.sponsors.count %}
-
-					<form action="{% url 'Bable:clickthrough' %}" method=POST>
-								{% csrf_token %}
-								<input type=hidden value="{{ user_anon.username.username }}" readonly>
-								<input type=hidden value="{{ users_product.max_sponsor.id }}" readonly>
-								<button type=submit>
-									<img src="{{ users_product.max_sponsor.img }}" style="height: 4em; width: 4em; float:right;">
-								</button>
-							</form>
-				{% else %}
-					<img src="{% static 'babylonpolice.com.gif' %}" style="height: 8em; width: 8em;">
-				{% endif %}
-				<form method=post action="{% url 'Bable:tob_sponsor_product' users_product.id %}">
-					{% csrf_token %}
-					{{ sponsor_form }}
-					<button type=submit>Entice
-					</button>
-				</form>
-	        </div>
-	        {% if users_product in loggedinanon.products.all %}
-	        <div class=product_description2purchase>
-				Description2Purchase: {{ users_product.description2purchase }}
-			</div>
-			<div class=product_url>
-				URL: {{ users_product.url }}
-			</div>
-			{% endif %}
-		</div>
-	</div>
-	{% for product in user_anon.products.all %}
-	<div class=single_dictionary>
-		<div class=dictionary_itself>
-			<h4>
-				Product: {{ product.name }}; ID: {{ product.id }}
-			</h4>
-		</div>
-		<div class=dictionary-bottom>
-			<div class=dictionary_words>
-				Description: {{ product.description2helpsell }}
-			</div>
-			<a href="{% url 'Bable:tob_product' product.id %}"><h3>{{ product.name }}</h3></a>
-	        {% if users_product.img %}
-	        <img src="{{ users_product.img }}" style="width: 200px !important; max-height: 200px; margin: auto; width: fit-content;">
-	        {% else %}
-	         <img src="{% static 'babylonpolice.jpg' %}" style="width: 200px !important; max-height: 200px; margin: auto; width: fit-content;">
-	        {% endif %}
-	        <div>
-	            <h5>${{ product.get_display_price }} AUD {% if product.monthly %}per month{% endif %}</h5>
-	            <form action="{% url 'Bable:create-checkout-session' product.id %}" method="POST">
-	                {% csrf_token %}
-	                <button type="submit">Purchase</button>
-	            </form>
-	        </div>
-		</div>
-	</div>
-	{% endfor %}
-	
-{% endblock %}
-
-{% block unauthenticated_posts %}
-<div class=usersusername>
-		<h2>
-		<a href="{% url 'Bable:tob_user_view' user_anon.username.username %}">
-			User: {{ user_anon.username.username }}
-		</a>
-		</h2>
-	</div>
+<h2>Products:</h2>
+	{% for users_product in prodcuts %}
 	<div class=single_dictionary>
 		<div class=dictionary_itself>
 			<h4>
@@ -143,28 +44,37 @@ Product {{ users_product.name }} - Dream Cloud Middle Men
 		</div>
 
 	</div>
-	{% for product in user_anon.products.all %}
+	{% endfor %}
+{% endblock %}
+
+{% block unauthenticated_posts %}
+	<h2>Products:</h2>
+	{% for users_product in prodcuts %}
 	<div class=single_dictionary>
 		<div class=dictionary_itself>
 			<h4>
-				Product: {{ product.name }}; ID: {{ product.id }}
+				Product: {{ users_product.name }}; ID: {{ users_product.id }}
 			</h4>
 		</div>
 		<div class=dictionary-bottom>
 			<div class=dictionary_words>
-				Description: {{ product.description2helpsell }}
+				Description: {{ users_product.description2helpsell }}
 			</div>
-			<a href="{% url 'Bable:tob_product' product.id %}"><h3>{{ product.name }}</h3></a>
+			<a href="{% url 'Bable:tob_product' users_product.id %}"><h3>{{ users_product.name }}</h3></a>
 	        {% if users_product.img %}
 	        <img src="{{ users_product.img }}" style="width: 200px !important; max-height: 200px; margin: auto; width: fit-content;">
 	        {% else %}
 	         <img src="{% static 'babylonpolice.jpg' %}" style="width: 200px !important; max-height: 200px; margin: auto; width: fit-content;">
 	        {% endif %}
 	        <div>
-	            <h5>${{ product.get_display_price }} AUD {% if product.monthly %}per month{% endif %}</h5>
-	            
+	            <h5>${{ users_product.get_display_price }} AUD {% if users_product.monthly %}per month{% endif %}</h5>
+	            <form action="{% url 'Bable:create-checkout-session' users_product.id %}" method="POST">
+	                {% csrf_token %}
+	                <button type="submit">Purchase</button>
+	            </form>
 	        </div>
 		</div>
+
 	</div>
 	{% endfor %}
 {% endblock %}

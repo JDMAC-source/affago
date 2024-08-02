@@ -5240,10 +5240,10 @@ def storefronts(request, count):
 
 	
 		file_form = FileForm() 
-		the_response = render(request, "tob_storefronts.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "file_form": file_form, "loggedinanon": loggedinanon, "products": products, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
+		the_response = render(request, "tob_storefronts.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "file_form": file_form, "loggedinanon": loggedinanon, "storefronts": storefronts, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
 			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
 	else:
-		the_response = render(request, "tob_storefronts.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "products": products, "registerform": registerform,  "loginform": loginform})
+		the_response = render(request, "tob_storefronts.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "storefronts": storefronts, "registerform": registerform,  "loginform": loginform})
 	the_response.set_cookie('current', 'storefronts')
 	the_response.set_cookie('count', count)
 	return the_response

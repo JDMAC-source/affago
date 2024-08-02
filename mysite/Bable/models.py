@@ -815,6 +815,8 @@ class Price(models.Model):
     sponsors = models.ManyToManyField(Sponsor, default=None)
     sponsor_count = models.IntegerField(default=0)
 
+    views = models.IntegerField(default=0)
+
     #location_of_product = models.CharField(max_length=200, default='Remote')
     point_of_sale = models.ManyToManyField(Sale, default=None)
 
@@ -843,6 +845,8 @@ PRODUCT_SORT_CHOICES_CHAR = (
 	("-sum_invoices", "Least Purchased"),
 	("sponsor_count", "Most Sponsors"),
 	("-sponsor_count", "Least Sponsors"),
+	("views", "Most Views"),
+	("-views", "Least Views"),
 )
 
 
@@ -877,6 +881,10 @@ class Storefront(models.Model):
 	sales_count = models.IntegerField(default=0)
 	business_admin = models.ManyToManyField(Author, default=None, related_name="business_admin")
 	business_admins_count = models.IntegerField(default=0)
+
+	views = models.IntegerField(default=0)
+
+	latest_change_date = models.DateTimeField(timezone.now)
 	
 
 STOREFRONT_SORT_CHOICES_CHAR = (
@@ -896,6 +904,10 @@ STOREFRONT_SORT_CHOICES_CHAR = (
 	("-sales_count", "Least Sales"),
 	("business_admins_count", "Most Business Partners"),
 	("-business_admins_count", "Least Business Partners"),
+	("latest_change_date", "Most Recent Change"),
+	("-latest_change_date", "Least Recent Change"),
+	("views", "Most Viewed"),
+	("-views", "Least Viewed"),
 )
 
 class Dictionary(models.Model):
