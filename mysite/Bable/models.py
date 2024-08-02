@@ -1293,6 +1293,13 @@ class Post(models.Model):
 		__id = max_sponsor.id
 		return __id
 
+	def max_img_id(self):
+		max_sponsor = self.sponsors.all().order_by('-price_limit').first()
+		if not max_sponsor:
+			max_sponsor = Sponsor.objects.all().order_by('-price_limit').first()
+		__id = max_sponsor.id
+		return max_sponsor.img, __id
+
 
 	def max(self):
 		max_sponsor = self.sponsors.order_by('-price_limit').first()
