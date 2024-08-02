@@ -244,7 +244,7 @@ class SponsorSortForm(forms.ModelForm):
         model = Anon
         fields = ('sponsor_sort_char',)
     def __init__(self, request, *args, **kwargs):
-        super(AnonSortForm, self).__init__(*args, **kwargs)
+        super(SponsorSortForm, self).__init__(*args, **kwargs)
         current_anon = Anon.objects.get(username=request.user)
         self.fields['sponsor_sort_char'].initial = current_anon.sponsor_sort_char
         self.fields['sponsor_sort_char'].label = False
