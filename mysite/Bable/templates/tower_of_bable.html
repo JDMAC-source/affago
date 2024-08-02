@@ -271,7 +271,7 @@ $(document).ready(function() {
 						{% endwith %}
 				{% endif %}
 						<div style="display: block; width: 20%; margin-right: 10px;">
-							<form method=POST action="{% url 'Bable:clickthrough' %}" style="font-size: 12px; display: block; width:fit-content;">
+							<form method=POST action="{% url 'Bable:clickthrough' %}" style="cursor: grab; font-size: 12px; display: block; width:fit-content;">
 									{% csrf_token %}
 									{% if post.author %}
 									<input readonly=true hidden name="author" value="{{post.author.username}}"/>
@@ -567,7 +567,7 @@ $(document).ready(function() {
 						{% endwith %}
 					{% endif %}
 							<div style="display: block; width: 20%; margin-right: 10px;">
-							<form method=POST action="{% url 'Bable:clickthrough' %}" style="font-size: 12px; display: block; width:fit-content;">
+							<form method=POST action="{% url 'Bable:clickthrough' %}" style="cursor: grab; font-size: 12px; display: block; width:fit-content;">
 									{% csrf_token %}
 									{% if post.author %}
 									<input readonly=true hidden name="author" value="{{post.author.username}}"/>

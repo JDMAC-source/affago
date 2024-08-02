@@ -4905,6 +4905,7 @@ def tob_post(request, post):
 			full_space.posts_viewcount += 1
 			full_space.save()
 	users_post.save()
+	users_post.max_sponsor()
 
 	page_views, created = Pageviews.objects.get_or_create(page="tob_post")
 	page_views.views += 1
