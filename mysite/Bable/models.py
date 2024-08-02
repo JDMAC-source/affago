@@ -792,6 +792,9 @@ class Sale(models.Model):
 	courier_5_to_6_drop_update = models.CharField(max_length=1440, default="")#pusher
 	courier_6_to_7_drop_eta = models.CharField(max_length=1440, default="")#pusher
 	courier_6_to_7_drop_update = models.CharField(max_length=1440, default="")#pusher
+
+	def get_price_price(self):
+		return Price.objects.get(id=self.price_id).price
 	
 
 class Price(models.Model):
@@ -885,6 +888,18 @@ class Storefront(models.Model):
 	views = models.IntegerField(default=0)
 
 	latest_change_date = models.DateTimeField(default=timezone.now)
+
+	def total_product_value(self):
+		tally = 0
+		for product in self.products.all():
+			tally += product.price
+		return tally
+
+	def total_sales_made(self):
+		tally = 0
+		for sale in self.sales.all():
+			tally += sale.get_price_price()
+		return tally
 	
 
 STOREFRONT_SORT_CHOICES_CHAR = (
