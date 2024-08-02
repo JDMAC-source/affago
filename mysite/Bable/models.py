@@ -884,7 +884,7 @@ class Storefront(models.Model):
 
 	views = models.IntegerField(default=0)
 
-	latest_change_date = models.DateTimeField(timezone.now)
+	latest_change_date = models.DateTimeField(default=timezone.now)
 	
 
 STOREFRONT_SORT_CHOICES_CHAR = (
