@@ -86,6 +86,7 @@ urlpatterns = [
 	path('change_anon/sort/<sort>/', views.change_anon_sort, name='change_anon_sort'),
 	path('change_anon_sort_char/', views.change_anon_sort_char, name='change_anon_sort_char'),
 	path('change_space_sort_char/', views.change_space_sort_char, name='change_space_sort_char'),
+	path('change_sponsor_sort_char/', views.change_sponsor_sort_char, name='change_sponsor_sort_char'),
 	path('change_dic_sort_char/', views.change_dic_sort_char, name='change_dic_sort_char'),
 	path('change_word_sort_char/', views.change_word_sort_char, name='change_word_sort_char'),
 	path('change_attribute_sort_char/', views.change_attribute_sort_char, name='change_attribute_sort_char'),
