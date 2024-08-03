@@ -10072,14 +10072,16 @@ def tob_dics_count(request, count):
 
 def clickthrough(request):
 	##3 charge
-	form = ClichtroughForm(request.POST)
-	sponsor_id = 1
+	form = ClickthroughForm(request.POST)
+	sponsor = Sponsor.objects.all().first()
 	author = 'test'
 	if form.is_valid():
-		sponsor_id = form.sponsor_id
+		print(form)
+		sponsor_id = form.instance.id
 		author = form.author
 	else:
-		sponsor_id = 1
+
+		sponsor_id = sponsor.id
 		author = 'test'
 	clicked_sponsor = Sponsor.objects.get(id=int(sponsor_id))
 	parked_author = Author.objects.get(username=author)
@@ -10087,10 +10089,18 @@ def clickthrough(request):
 
 	parked_anon = parked_author.to_anon()
 	if author == request.user.username:
-		return redirect(clicked_sponsor.url)
+		return redirect(clicked_sponsor.url2)
 
 	if request.META.get('REMOTE_ADDR') not in clicked_sponsor.requested_agents.values_list('user_agent', flat=True):
-		clicked_sponsor.requested_agents.add(Requested_Agent.objects.create(user_agent=request.META.get('REMOTE_ADDR')))
+		if request.user.is_authenticated:
+			requested_username = request.user.username
+			previous_view_text = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
+		else:
+			requested_username = ''
+			previous_view_text = ''
+		
+
+		clicked_sponsor.requested_agents.add(Requested_Agent.objects.create(user_agent=request.META.get('REMOTE_ADDR'), if_loggedin=request.user.is_authenticated(), if_username=requested_username, page="clickthrough__sponsor_id__"+str(sponsor_id)+"__previous_view__"+previous_view_text))
 		if clicked_sponsor.price_limit > 0:
 			if clicked_sponsor.allowable_expenditure > 0:
 				clicked_sponsor.allowable_expenditure -= clicked_sponsor.price_limit
@@ -10104,9 +10114,22 @@ def clickthrough(request):
 			else:
 				clicked_sponsor.delete()
 	
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
 
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
+		pages_view = UserViews.objects.create(page_view="clickthrough__sonsor_id__"+str(sponsor_id)+"__ip__"+request.META.get('REMOTE_ADDR'), anon=loggedinanon)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
 
-	return redirect(clicked_sponsor.url)
+	return redirect(clicked_sponsor.url2)
 
 
 def viewsponsor(request, sponsor_id):
