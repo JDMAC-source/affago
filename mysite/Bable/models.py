@@ -64,6 +64,10 @@ class ChangeDate(models.Model):
 
 class Requested_Agent(models.Model):
 	user_agent = models.CharField(max_length=200, default='')
+	datetime = models.DateTimeField(default=timezone.now)
+	page = models.CharField(max_length=200, default='')
+	if_username = models.CharField(max_length=200, default='')
+	if_loggedin = models.BooleanField(default=False)
 
 
 class Invoice(models.Model):

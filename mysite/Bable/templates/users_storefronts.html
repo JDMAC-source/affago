@@ -78,6 +78,22 @@
 		</div>
 	</div>
 	{% endfor %}
+	<div class=spasectionsort>
+		<form name=storefront_sort action="{% url 'Bable:users_storefronts' user_anon.username.username 0 %}" method=post>
+			{% csrf_token %}
+			{{ storefront_dic_form }}
+		</form>
+		<script>
+			var form = document.querySelector('form[name="storefront_sort"]');
+			form.addEventListener('change', function() {
+			    form.submit();
+			});
+		</script>
+	</div>
+	<form name=space_sort action="{% url 'Bable:create_storefront' storefront_dic %}" method=post>
+		{% csrf_token %}
+		{{ storefront_form }}
+	</form>
 </div>
 {% endblock %}
 

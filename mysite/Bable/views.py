@@ -5193,7 +5193,7 @@ def storefronts(request, count):
 	storefronts = Storefront.objects.order_by('-latest_change_date')[count:count+100]
 	storefronts_count = Storefront.objects.all().count()
 	
-	page_views, created = Pageviews.objects.get_or_create(page="tob_products")
+	page_views, created = Pageviews.objects.get_or_create(page="storefronts")
 	page_views.views += 1
 	page_views.save()
 
@@ -5242,7 +5242,7 @@ def storefronts(request, count):
 
 	
 		file_form = FileForm() 
-		the_response = render(request, "tob_storefronts.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "file_form": file_form, "loggedinanon": loggedinanon, "storefronts": storefronts, "storefronts_count": storefronts_count, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
+		the_response = render(request, "tob_storefronts.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "file_form": file_form, "loggedinanon": loggedinanon, "storefronts": storefronts, "storefronts_count": storefronts_count, "storefront_sort_form": storefront_sort_form, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
 			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
 	else:
 		the_response = render(request, "tob_storefronts.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "storefronts": storefronts, "storefronts_count": storefronts_count, "registerform": registerform,  "loginform": loginform})
@@ -5252,6 +5252,94 @@ def storefronts(request, count):
 
 
 
+def users_storefronts(request, user, count):
+	user_anon = Anon.objects.get(username__username=user)
+	count = int(count)
+	storefronts = user_anon.storefronts.order_by('-latest_change_date')[count:count+100]
+	storefronts_count = user_anon.storefronts.count()
+	
+	page_views, created = Pageviews.objects.get_or_create(page="users_storefronts")
+	page_views.views += 1
+	page_views.save()
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
+		pages_view = UserViews.objects.create(page_view="user_storefronts__"+user+"__"+str(count), anon=loggedinanon)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+	
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+
+		storefront_sort_form = StorefrontSortForm(request)
+		storefront_dic_form = StorefrontDicForm(user_anon)
+		if request.method == "POST":
+			storefront_dic_form = StorefrontDicForm(request.POST)
+			if storefront_dic_form.is_valid():
+				storefront_form = StorefrontForm(dictionary=user_anon.dictionaries.filter(the_dictionary_itself=storefront_dic_form.cleaned_data["the_dictionary_itself"]).first())
+				storefront_dic = storefront_dic_form.cleaned_data["the_dictionary_itself"]
+			else:
+				dic = user_anon.dictionaries.order_by(loggedinanon.dictionary_sort_char).first()
+				storefront_form = StorefrontForm(dictionary=dic)
+				storefront_dic = dic.the_dictionary_itself
+		else:
+			dic = user_anon.dictionaries.order_by(loggedinanon.dictionary_sort_char).first()
+			storefront_form = StorefrontForm(dictionary=dic)
+			storefront_dic = dic.the_dictionary_itself
+
+		storefronts = user_anon.storefronts.order_by(loggedinanon.storefront_sort_char)[count:count+100]
+	
+
+	
+		file_form = FileForm() 
+		the_response = render(request, "users_storefronts.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "file_form": file_form, "loggedinanon": loggedinanon, "user_anon": user_anon, "storefront_dic_form": storefront_dic_form, "storefront_dic": storefront_dic, "storefront_sort_form": storefront_sort_form, "storefront_form": storefront_form, "storefronts": storefronts, "storefronts_count": storefronts_count, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		the_response = render(request, "users_storefronts.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "storefronts": storefronts, "storefronts_count": storefronts_count, "registerform": registerform,  "loginform": loginform})
+	the_response.set_cookie('current', 'users_storefronts')
+	the_response.set_cookie('count', count)
+	return the_response
+
+@login_required
+def create_storefront(request, dictionary):
+	if request.method=="POST":
+		loggedinanon = Anon.objects.get(username=request.user)
+		storefront_form = StorefrontForm(request.POST)
+		if storefront_form.is_valid():
+			storefront = storefront_form.save()
+			loggedinanon.storefronts.add(storefront)
+			storefront
+
+	return base_redirect(request, 0)
 
 
 
@@ -5464,6 +5552,17 @@ def change_sponsor_sort_char(request):
 		if sponsor_sort_form.is_valid():
 			sponsor_sort_form.save()
 	return base_redirect(request, 0)
+
+
+@login_required
+def change_storefront_sort_char(request):
+	if request.method == "POST":
+		storefront_sort_form = StorefrontSortForm(request, data=request.POST)
+		if storefront_sort_form.is_valid():
+			storefront_sort_form.save()
+	return base_redirect(request, 0)
+
+
 
 @login_required
 def change_anon_sort_char(request):

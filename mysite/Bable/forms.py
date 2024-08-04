@@ -83,6 +83,16 @@ class StorefrontForm(forms.ModelForm):
         self.fields['logo'] = forms.ChoiceField(choices=[(e, e) for e in dictionary.words.all().values_list("the_word_itself", flat=True)]) 
 
 
+class StorefrontDicForm(forms.ModelForm):
+    class Meta:
+        model = Dictionary
+        fields = ("the_dictionary_itself", )
+    def __init__(self, user_anon, *args, **kwargs):
+        super(StorefrontDicForm, self).__init__(*args, **kwargs)
+        self.fields['the_dictionary_itself'] = forms.ChoiceField(choices=[(e, e) for e in user_anon.dictionaries.all().values_list("the_dictionary_itself", flat=True)]) 
+
+
+
 class SaleForm(forms.ModelForm):
     class Meta:
         model = Sale
