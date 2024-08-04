@@ -5252,7 +5252,10 @@ def storefronts(request, count):
 
 
 def clickthrough_tally(request):
-	return HttpResponse(UserViews.objects.filter(page_view__startswith="clickthrough").count())
+	tally=0
+	for sponsor in Sponsor.objects.all():
+		tally += sponsor.requested_agents.count()
+	return HttpResponse(UserViews.objects.filter(str(page_view__startswith="clickthrough").count())+", "+str(tally))
 
 
 
