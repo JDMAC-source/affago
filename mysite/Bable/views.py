@@ -5255,7 +5255,7 @@ def clickthrough_tally(request):
 	tally=0
 	for sponsor in Sponsor.objects.all():
 		tally += sponsor.requested_agents.count()
-	return HttpResponse(UserViews.objects.filter(str(page_view__startswith="clickthrough").count())+", "+str(tally))
+	return HttpResponse(str(UserViews.objects.filter(page_view__startswith="clickthrough").count())+", "+str(tally))
 
 
 
