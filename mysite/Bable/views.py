@@ -5252,7 +5252,7 @@ def storefronts(request, count):
 
 
 def clickthrough_tally(request):
-	return HttpResponse(UserViews.objects.filter(page_view__contains="clickthrough").count())
+	return HttpResponse(UserViews.objects.filter(page_view__startswith="clickthrough").count())
 
 
 
