@@ -16,8 +16,8 @@ Product List {{ count }}- Predictionary.us
 {% endblock %}
 
 {% block authenticatedposts %}
-<h2>Products:</h2>
-	{% for users_product in prodcuts %}
+<h2>Products ({{ products_count }}):</h2>
+	{% for users_product in products %}
 	<div class=single_dictionary>
 		<div class=dictionary_itself>
 			<h4>
@@ -48,8 +48,8 @@ Product List {{ count }}- Predictionary.us
 {% endblock %}
 
 {% block unauthenticated_posts %}
-	<h2>Products:</h2>
-	{% for users_product in prodcuts %}
+<h2>Products ({{ products_count }}):</h2>
+	{% for users_product in products %}
 	<div class=single_dictionary>
 		<div class=dictionary_itself>
 			<h4>
