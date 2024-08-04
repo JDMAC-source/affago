@@ -5251,6 +5251,10 @@ def storefronts(request, count):
 	return the_response
 
 
+def clickthrough_tally(request):
+	return HttpResponse(UserViews.objects.filter(page_view__contains="clickthrough").count())
+
+
 
 def users_storefronts(request, user, count):
 	user_anon = Anon.objects.get(username__username=user)
