@@ -39,6 +39,7 @@
 			});
 		</script>
 	</div>
+	<div>
 	{% for storefront in storefronts %}
 	<div class=storefront>
 		<div>
@@ -78,13 +79,14 @@
 		</div>
 	</div>
 	{% endfor %}
+	</div>
 	<div class=spasectionsort>
-		<form name=storefront_sort action="{% url 'Bable:users_storefronts' user_anon.username.username 0 %}" method=post>
+		<form name=storefron_dic action="{% url 'Bable:users_storefronts' user_anon.username.username 0 %}" method=post>
 			{% csrf_token %}
 			{{ storefront_dic_form }}
 		</form>
 		<script>
-			var form = document.querySelector('form[name="storefront_sort"]');
+			var form = document.querySelector('form[name="storefront_dic"]');
 			form.addEventListener('change', function() {
 			    form.submit();
 			});
