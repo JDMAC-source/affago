@@ -4904,9 +4904,9 @@ def tob_post(request, post):
 			full_space = space.to_full()
 			full_space.posts_viewcount += 1
 			full_space.save()
+	max_sponsor = users_post.max_sponsor()
 	users_post.save()
-	users_post.max_sponsor()
-
+	
 	page_views, created = Pageviews.objects.get_or_create(page="tob_post")
 	page_views.views += 1
 	page_views.save()
@@ -10179,64 +10179,58 @@ def tob_dics_count(request, count):
 
 def clickthrough(request):
 	##3 charge
-	form = ClickthroughForm(request.POST)
-	sponsor = Sponsor.objects.all().first()
-	author = 'test'
-	if form.is_valid():
-		print(form)
-		sponsor_id = form.instance.id
-		author = form.author
-	else:
+	if request.method == "POST":
+		sponsor_id = request.POST.get('sponsor_id')
+		author = request.POST.get('author')
+		clicked_sponsor = Sponsor.objects.get(id=int(sponsor_id))
+		parked_author = Author.objects.get(username=author)
 
-		sponsor_id = sponsor.id
-		author = 'test'
-	clicked_sponsor = Sponsor.objects.get(id=int(sponsor_id))
-	parked_author = Author.objects.get(username=author)
+		page_views, created = Pageviews.objects.get_or_create(page="clickthrough")
+		page_views.views += 1
+		page_views.save()
 
 
-	parked_anon = parked_author.to_anon()
-	if author == request.user.username:
-		return redirect(clicked_sponsor.url2)
-
-	if request.META.get('REMOTE_ADDR') not in clicked_sponsor.requested_agents.values_list('user_agent', flat=True):
-		if request.user.is_authenticated:
-			requested_username = request.user.username
-			previous_view_text = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		else:
-			requested_username = ''
-			previous_view_text = ''
+		parked_anon = parked_author.to_anon()
 		
-
-		clicked_sponsor.requested_agents.add(Requested_Agent.objects.create(user_agent=request.META.get('REMOTE_ADDR'), if_loggedin=request.user.is_authenticated(), if_username=requested_username, page="clickthrough__sponsor_id__"+str(sponsor_id)+"__previous_view__"+previous_view_text))
-		if clicked_sponsor.price_limit > 0:
-			if clicked_sponsor.allowable_expenditure > 0:
-				clicked_sponsor.allowable_expenditure -= clicked_sponsor.price_limit
-				clicked_anon = clicked_sponsor.author.to_anon()
-				clicked_anon.false_wallet -= clicked_sponsor.price_limit
-				if parked_anon in available_request_agents:
-					parked_anon.false_wallet += clicked_sponsor.price_limit
-					parked_anon.save()
-				clicked_anon.save()
-				clicked_sponsor.save()
+		if request.META.get('REMOTE_ADDR') not in clicked_sponsor.requested_agents.values_list('user_agent', flat=True):
+			if request.user.is_authenticated:
+				requested_username = request.user.username
+				previous_view_text = UserViews.objects.filter(anon=Anon.objects.get(username=request.user)).order_by('view_date').first().page_view
 			else:
-				clicked_sponsor.delete()
-	
-	if request.user.is_authenticated:
-		loggedinuser = User.objects.get(username=request.user.username)
-		loggedinanon = Anon.objects.get(username=loggedinuser)
-		loggedinauthor = Author.objects.get(username=request.user.username)
+				requested_username = ''
+				previous_view_text = ''
+			
 
-		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="clickthrough__sonsor_id__"+str(sponsor_id)+"__ip__"+request.META.get('REMOTE_ADDR'), anon=loggedinanon)
-		page_views.user_views.add(pages_view)
-		if previous_view:
-			pages_view.previous_view_id = previous_view.id
-			pages_view.previous_page = previous_view.page_view
-			pages_view.previous_view_date = previous_view.view_date
-			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+			clicked_sponsor.requested_agents.add(Requested_Agent.objects.create(user_agent=request.META.get('REMOTE_ADDR'), if_loggedin=request.user.is_authenticated, if_username=requested_username, page="clickthrough__sponsor_id__"+str(sponsor_id)+"__previous_view__"+previous_view_text))
+			if clicked_sponsor.price_limit > 0:
+				if clicked_sponsor.allowable_expenditure > 0:
+					clicked_sponsor.allowable_expenditure -= clicked_sponsor.price_limit
+					clicked_anon = clicked_sponsor.author.to_anon()
+					clicked_anon.false_wallet -= clicked_sponsor.price_limit
+					available_requested_agents = [a.if_username for a in clicked_sponsor.requested_agents]
+					if parked_anon.username.username in available_requested_agents:
+						parked_anon.false_wallet += clicked_sponsor.price_limit
+						parked_anon.save()
+					clicked_anon.save()
+					clicked_sponsor.save()
+				else:
+					clicked_sponsor.delete()
 		
+		if request.user.is_authenticated:
+			loggedinuser = User.objects.get(username=request.user.username)
+			loggedinanon = Anon.objects.get(username=loggedinuser)
+			loggedinauthor = Author.objects.get(username=request.user.username)
 
-	return redirect(clicked_sponsor.url2)
+			previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
+			pages_view = UserViews.objects.create(page_view="clickthrough__sonsor_id__"+str(sponsor_id)+"__ip__"+request.META.get('REMOTE_ADDR'), anon=loggedinanon)
+			page_views.user_views.add(pages_view)
+			if previous_view:
+				pages_view.previous_view_id = previous_view.id
+				pages_view.previous_page = previous_view.page_view
+				pages_view.previous_view_date = previous_view.view_date
+				pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		return redirect(clicked_sponsor.url2)
+	return base_redirect(request, 0)
 
 
 def viewsponsor(request, sponsor_id):
