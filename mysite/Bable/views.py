@@ -10182,6 +10182,9 @@ def clickthrough(request):
 	if request.method == "POST":
 		sponsor_id = request.POST.get('sponsor_id')
 		author = request.POST.get('author')
+		if not sponsor_id:
+			sponsor = Sponsor.objects.first()
+			sponsor_id = sponsor.id
 		clicked_sponsor = Sponsor.objects.get(id=int(sponsor_id))
 		parked_author = Author.objects.get(username=author)
 

@@ -1316,7 +1316,7 @@ class Post(models.Model):
 	sponsors = models.ManyToManyField(Sponsor, default=None)
 	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
 	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
-	max_sponsor_id = models.CharField(max_length=200, default='1')
+	max_sponsor_id = models.CharField(max_length=200, default='')
 	sum_sponsors = models.IntegerField(default=0)
 	viewcount = models.IntegerField(default=0)
 	change_count = models.IntegerField(default=0)
