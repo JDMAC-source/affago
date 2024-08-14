@@ -10210,7 +10210,7 @@ def clickthrough(request):
 					clicked_sponsor.allowable_expenditure -= clicked_sponsor.price_limit
 					clicked_anon = clicked_sponsor.author.to_anon()
 					clicked_anon.false_wallet -= clicked_sponsor.price_limit
-					available_requested_agents = [a.if_username for a in clicked_sponsor.requested_agents]
+					available_requested_agents = [a.if_username for a in clicked_sponsor.requested_agents.all()]
 					if parked_anon.username.username in available_requested_agents:
 						parked_anon.false_wallet += clicked_sponsor.price_limit
 						parked_anon.save()
