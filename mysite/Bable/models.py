@@ -869,15 +869,15 @@ class Storefront(models.Model):
 	image_3 = models.URLField(max_length=2000, default="")
 	image_4 = models.URLField(max_length=2000, default="")
 	image_5 = models.URLField(max_length=2000, default="")
-	template_section_size_1_1 = models.IntegerField(default=0)
-	template_section_size_1_2 = models.IntegerField(default=0)
-	template_section_size_1_3 = models.IntegerField(default=0)
-	template_section_size_2_1 = models.IntegerField(default=0)
-	template_section_size_2_2 = models.IntegerField(default=0)
-	template_section_size_2_3 = models.IntegerField(default=0)
-	template_section_size_3_1 = models.IntegerField(default=0)
-	template_section_size_3_2 = models.IntegerField(default=0)
-	template_section_size_3_3 = models.IntegerField(default=0)
+	template_section_size_title_left = models.IntegerField(default=0)
+	template_section_size_title_right = models.IntegerField(default=0)
+	template_section_size_title_height = models.IntegerField(default=0)
+	template_section_size_preview_left = models.IntegerField(default=0)
+	template_section_size_preview_right = models.IntegerField(default=0)
+	template_section_size_preview_height = models.IntegerField(default=0)
+	template_section_size_disclaimer_left = models.IntegerField(default=0)
+	template_section_size_disclaimer_right = models.IntegerField(default=0)
+	template_section_size_disclaimer_height = models.IntegerField(default=0)
 	textblock_1  = models.TextField(max_length=14400, default="")
 	textblock_2  = models.TextField(max_length=14400, default="")
 	textblock_3  = models.TextField(max_length=14400, default="")
@@ -902,6 +902,7 @@ class Storefront(models.Model):
 	def total_sales_made(self):
 		tally = 0
 		for sale in self.sales.all():
+
 			tally += sale.get_price_price()
 		return tally
 	

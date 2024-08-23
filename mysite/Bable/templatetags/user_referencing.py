@@ -16,6 +16,16 @@ def usernames(value):
 def stripwww(value):
 	return value.replace('www.', '')
 
+@register.filter(is_safe=True)
+def sponsors_count(value):
+	tally=0
+	for v in value:
+		tally+=v.sponsors.count()
+	if tally:
+		return True
+	else:
+		return False
+
 
 @register.filter(is_safe=True)
 def spaces(value):
@@ -188,7 +198,7 @@ def fontypes(value, words):
 			wordsponsordiv = ''
 			if wordsponsor:
 				if wordsponsor.url2:
-					wordsponsordiv += '<div><form action="{}" method=POST><input class=csrf type=text><input type=hidden value="{}" readonly><input type=hidden value="{}" readonly><button type=submit><img src="{}" style="height: 4em; width: 4em; float:right;"></button></form><p style="z-index: 1; color: white; top: 3em; background: rgba(0,0,0,0.5); width: -webkit-fill-available;">'.format(reverse('Bable:clickthrough'),word.author.username, wordsponsor.id, wordsponsor.img) + wordsponsor.the_sponsorship_phrase + '</p><img style="height: 4em; width: 4em; position: absolute;" src="' + wordsponsor.img + '" >' + '</a></div>'
+					wordsponsordiv += '<div><form action="{}" method=POST><input class=csrf type=text><input type=hidden name=author id=author value="{}" readonly><input type=hidden name=sponsor_id id=sponsor_id value="{}" readonly><button type=submit><img src="{}" style="height: 4em; width: 4em; float:right;"></button></form><p style="z-index: 1; color: white; top: 3em; background: rgba(0,0,0,0.5); width: -webkit-fill-available;">'.format(reverse('Bable:clickthrough'),word.author.username, wordsponsor.id, wordsponsor.img) + wordsponsor.the_sponsorship_phrase + '</p><img style="height: 4em; width: 4em; position: absolute;" src="' + wordsponsor.img + '" >' + '</a></div>'
 				else:
 					wordsponsordiv += '<div><a href="https://www.predictionary.us" ><p style="color: white; top: 3em; background: rgba(0,0,0,0.5); width: -webkit-fill-available;">' + wordsponsor.the_sponsorship_phrase + '</p><img style="height: 4em; width: 4em; position: absolute;" src="' + wordsponsor.img + '" ></a></div>'
 			attribute_div1 = '<div class=dropdown-menu-1><style>.dropdown-menu-1 { position: absolute; background-color: green; width: fit-content; opacity: 0; display: none; } .inner-' + str(word.id) + '-' + str(wordlen) + ':hover, .inner-' + str(word.id) + '-' + str(wordlen) + '.active, .dropdown-menu-1:hover, .dropdown-menu-1.active { opacity: 1; display: block; transform: translateY(0px); pointer-events: auto;}</style>'
@@ -204,7 +214,7 @@ def fontypes(value, words):
 			replace_to = '&nbsp;<div class="inner-{}-{} inner" style="cursor: pointer; width: fit-content; display: inline-block;"><a class="plain{} plain overlay" data-text="{}" style="color: yellow; font-style: url(\'{}\'); font-size: {}em; position: relative; display: inline-block;" href="{}">{}</a><style>{} p {{display: inline-block;}}</style><script>$("a.plain{}").one("click", function() {{if( $(this).attr("href") > 0) {{$(this).attr("data", $(this).attr("href")); $(this).attr("href", "");$(this).addClass("active");$(".dropdown-menu-1").addClass("active");}} else {{$(this).attr("href", $(this).attr("data"));$(this).removeClass("active");$(".dropdown-menu-1").removeClass("active");}};$(".dropdown-menu-1").addClass("active");return false;}});</script></div>{} '.format(str(word.id), str(wordlen), word.id, word.the_word_itself, word.fontstyle, word.fontsize, reverse('Bable:tob_word', kwargs={'word_id':word.id}), word.the_word_itself, word.fontype, word.id, attribute_div1)
 
 			value = value.replace(' {} '.format(word.the_word_itself), replace_to)
-			print(value)
+			
 	return value
 
 
@@ -217,7 +227,7 @@ def fontype(value, word):
 		wordsponsordiv = ''
 		if wordsponsor:
 			if wordsponsor.url2:
-				wordsponsordiv += '<div><form action="{}" method=POST><input class=csrf type=text><input type=hidden value="{}" readonly><input type=hidden value="{}" readonly><button type=submit><img src="{}" style="height: 4em; width: 4em; float:right;"></button></form><p style="z-index: 1; color: white; top: 3em; background: rgba(0,0,0,0.5); width: -webkit-fill-available;">'.format(reverse('Bable:clickthrough'), word.author.username, wordsponsor.id) + wordsponsor.the_sponsorship_phrase + '</p><img style="height: 4em; width: 4em; position: absolute;" src="' + wordsponsor.img + '" >' + '</div>'
+				wordsponsordiv += '<div><form action="{}" method=POST><input class=csrf type=text><input type=hidden name=author id=author value="{}" readonly><input type=hidden name=sponsor_id id=sponsor_id value="{}" readonly><button type=submit><img src="{}" style="height: 4em; width: 4em; float:right;"></button></form><p style="z-index: 1; color: white; top: 3em; background: rgba(0,0,0,0.5); width: -webkit-fill-available;">'.format(reverse('Bable:clickthrough'), word.author.username, wordsponsor.id, wordsponsor.url2) + wordsponsor.the_sponsorship_phrase + '</p><img style="height: 4em; width: 4em; position: absolute;" src="' + wordsponsor.img + '" >' + '</div>'
 			else:
 				wordsponsordiv += '<div><a href="https://www.predictionary.us" ><p style="color: white; top: 3em; background: rgba(0,0,0,0.5); width: -webkit-fill-available;">' + wordsponsor.the_sponsorship_phrase + '</p><img style="height: 4em; width: 4em; position: absolute;" src="' + wordsponsor.img + '" ></a></div>'
 		attribute_div1 = '<div class=dropdown-menu-1><style>.dropdown-menu-1 { position: absolute; background-color: green; width: fit-content; opacity: 0; display: none; } .inner-' + str(word.id) + '-' + str(wordlen) + ':hover, .inner-' + str(word.id) + '-' + str(wordlen) + '.active, .dropdown-menu-1:hover, .dropdown-menu-1.active { opacity: 1; display: block; transform: translateY(0px); pointer-events: auto;}</style>'
@@ -232,8 +242,8 @@ def fontype(value, word):
 		
 		replace_to = '&nbsp;<div class="inner-{}-{} inner" style="cursor: pointer; width: fit-content; display: inline-block;"><a class="plain{} plain overlay" data-text="{}" style="color: yellow; font-style: url(\'{}\'); font-size: {}em; position: relative; display: inline-block;" href="{}">{}</a><style>{} p {{display: inline-block;}}</style><script>$("a.plain{}").one("click", function() {{if( $(this).attr("href") > 0) {{$(this).attr("data", $(this).attr("href")); $(this).attr("href", "");$(this).addClass("active");$(".dropdown-menu-1").addClass("active");}} else {{$(this).attr("href", $(this).attr("data"));$(this).removeClass("active");$(".dropdown-menu-1").removeClass("active");}};$(".dropdown-menu-1").addClass("active");return false;}});</script></div>{} '.format(str(word.id), str(wordlen), word.id, word.the_word_itself, word.fontstyle, word.fontsize, reverse('Bable:tob_word', kwargs={'word_id':word.id}), word.the_word_itself, word.fontype, word.id, attribute_div1)
 
-		value = value.replace(' {} '.format(word.the_word_itself), replace_to)
-		print(value)
+		value = value.replace('{}'.format(word.the_word_itself), replace_to)
+		
 	return value
 
 

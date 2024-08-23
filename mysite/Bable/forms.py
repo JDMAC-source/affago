@@ -77,7 +77,7 @@ class PurchasingForm(forms.ModelForm):
 class StorefrontForm(forms.ModelForm):
     class Meta:
         model = Storefront
-        fields = ("logo", "title", "preview_text", "disclaimer", "image_1", "image_2", "image_3", "image_4", "image_5", "template_section_size_1_1","template_section_size_1_2","template_section_size_1_3", "template_section_size_2_1", "template_section_size_2_2", "template_section_size_2_3", "template_section_size_3_1", "template_section_size_3_2", "template_section_size_3_3", "textblock_1","textblock_2","textblock_3","textblock_4",)
+        fields = ("logo", "title", "preview_text", "disclaimer", "image_1", "image_2", "image_3", "image_4", "image_5", "template_section_size_title_left","template_section_size_title_right","template_section_size_title_height", "template_section_size_disclaimer_left", "template_section_size_disclaimer_right", "template_section_size_disclaimer_height", "template_section_size_preview_left", "template_section_size_preview_right", "template_section_size_preview_height", "textblock_1","textblock_2","textblock_3","textblock_4",)
     def __init__(self, dictionary, *args, **kwargs):
         super(StorefrontForm, self).__init__(*args, **kwargs)
         self.fields['logo'] = forms.ChoiceField(choices=[(e, e) for e in dictionary.words.all().values_list("the_word_itself", flat=True)]) 
@@ -98,7 +98,7 @@ class SaleForm(forms.ModelForm):
         model = Sale
         fields = ("deliver_to_address", "deliver_to_instructions", "courier_select", "courier_order", "courier_fees", "courier_1_to_2_drop_location", "courier_2_to_3_drop_location", "courier_3_to_4_drop_location",  "courier_4_to_5_drop_location", "courier_5_to_6_drop_location","courier_6_to_7_drop_location",)
     def __init__(self, *args, **kwargs):
-        super(Sale, self).__init__(*args, **kwargs)
+        super(SaleForm, self).__init__(*args, **kwargs)
         self.fields['courier_select'] = forms.MultipleChoiceField(choices=[(e, e) for e in Author.objects.order_by("username").values_list("username", flat=True)]) 
 
 

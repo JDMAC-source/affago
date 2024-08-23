@@ -263,13 +263,13 @@
 							{% endif %}
 						</div>
 						<div class=postcomsbodyad>
-							{% if node.dictionaries.all.sponsors.count %}
+							{% if node.dictionaries.all|sponsors_count %}
 							<form action="{% url 'Bable:clickthrough' %}" method=POST>
 							{% csrf_token %}
-							<input type=hidden value="{{ node.author.username }}" readonly>
-							<input type=hidden value="{{ node.dictionaries.max_sponsor.id }}" readonly>
+							<input type=hidden name=author id=author value="{{ node.author.username }}" readonly>
+							<input type=hidden name=sponsor_id id=sponsor_id value="{{ node.dictionaries.max_sponsor.id }}" readonly>
 							<button type=submit>
-								<img src="{{ node.dictionaries.max_sponsor.img }}" style="height: 4em; width: 4em; float:right;">
+								<img src="{{ node.dictionaries.max_sponsor.img }}" style="cursor: pointer; height: 4em; width: 4em; float:right;">
 							</button>
 						</form>
 							{% else %}

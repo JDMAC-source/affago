@@ -433,7 +433,7 @@ User: {{ user_anon.username.username }} - Babylon Police
 			{% for storefront in user_anon.storefronts.all|slice:"5" %}
 			<div class=storefront>
 				<div class=storefront_title>
-					<a href="{% url 'Bable:storefront' user_anon.username.username storefront.title %}">{{ storefront.title }}</a>
+					<a href="{% url 'Bable:storefront' user_anon.username.username storefront.logo.home_dictionary.to_full.id storefront.title %}">{{ storefront.title }}</a>
 				</div>
 			</div>
 			{% endfor %}

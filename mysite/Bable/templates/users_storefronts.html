@@ -7,7 +7,7 @@
 {% load i18n %}
 
 {% block title %}
-{{ users_post.title }} - {{ request.META.HTTP_HOST|stripwww }}
+Users Storefronts - {{ request.META.HTTP_HOST|stripwww }}
 {% endblock %}
 
 
@@ -59,7 +59,7 @@
 		</div>
 		<div>
 			Business Admins: 
-			{% for admin in storefront.business_admin %}
+			{% for admin in storefront.business_admin.all %}
 			<a href="{% url 'Bable:tob_user_view' admin.username %}">/u/{{ admin.username }}</a>&nbsp;
 			{% endfor %}
 		</div>
@@ -95,6 +95,7 @@
 	<form name=space_sort action="{% url 'Bable:create_storefront' storefront_dic %}" method=post>
 		{% csrf_token %}
 		{{ storefront_form }}
+		<button type=submit>Submit</button>
 	</form>
 </div>
 {% endblock %}

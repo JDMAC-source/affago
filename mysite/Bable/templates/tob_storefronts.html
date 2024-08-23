@@ -7,13 +7,13 @@
 {% load i18n %}
 
 {% block title %}
-{{ users_post.title }} - {{ request.META.HTTP_HOST|stripwww }}
+Storefronts - {{ request.META.HTTP_HOST|stripwww }}
 {% endblock %}
 
 
 {% block inserts %}
 <meta name="viewport" content="width=device-width">
-<meta property="og:description" content="{{ users_post.title }} - Babylon Police">
+<meta property="og:description" content="Storefronts - Babylon Police">
 <meta property="og:image" content="{% static 'babylonpolice.jpg' %}">
 {% endblock %}
 
@@ -39,13 +39,13 @@
 			});
 		</script>
 	</div>
-	{% for storefront in storefronts %}
+	{% for storefront in storefronts.all %}
 	<div class=storefront>
 		<div>
 			Logo: <a href="{% url 'Bable:tob_word' storefront.logo.id %}">{{ storefront.logo.the_word_itself }}</a>
 		</div>
 		<div>
-			Title: <a href="{% url 'Bable:tob_storefront' storefront.id %}">{{ storefront.title }}</a>
+			Title: <a href="{% url 'Bable:storefront' storefront.author.username storefront.logo.home_dictionary.to_full.id storefront.id %}">{{ storefront.title }}</a>
 		</div>
 		<div>
 			Preview Text: {{ storefront.preview_text }}
@@ -58,7 +58,7 @@
 		</div>
 		<div>
 			Business Admins: 
-			{% for admin in storefront.business_admin %}
+			{% for admin in storefront.business_admin.all %}
 			<a href="{% url 'Bable:tob_user_view' admin.username %}">/u/{{ admin.username }}</a>&nbsp;
 			{% endfor %}
 		</div>
