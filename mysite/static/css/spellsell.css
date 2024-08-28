@@ -529,7 +529,7 @@ select {
 	box-sizing: border-box;
 	position: absolute;
 	margin-top: -2.5em;
-	right: 3em;
+	right: 0em;
 	cursor: pointer;
 	color: #ff47d6;
 	width: 2em;
@@ -541,7 +541,7 @@ select {
 	box-sizing: border-box;
 	position: absolute;
 	margin-top: -2.2em;
-	right: 5em;
+	right: 2em;
 	cursor: pointer;
 	color: #ff47d6;
 	width: 2em;
