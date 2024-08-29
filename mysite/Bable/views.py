@@ -5356,6 +5356,44 @@ def create_storefront(request, dictionary):
 	return base_redirect(request, 0)
 
 
+@login_required
+def edit_storefront(request, storefront_id):
+	if request.method=="POST":
+		loggedinanon = Anon.objects.get(username=request.user)
+		storefront = loggedinanon.storefronts.filter(id=int(storefront_id)).first()
+		storefront.preview_text = request.POST.get('preview_text')
+		storefront.disclaimer = request.POST.get('disclaimer')
+		storefront.image_1 = request.POST.get('image_1')
+		storefront.image_2 = request.POST.get('image_2')
+		storefront.image_3 = request.POST.get('image_3')
+		storefront.image_4 = request.POST.get('image_4')
+		storefront.image_5 = request.POST.get('image_5')
+		storefront.template_section_size_title_left = request.POST.get('template_section_size_title_left')
+		storefront.template_section_size_title_right = request.POST.get('template_section_size_title_right')
+		storefront.template_section_size_title_height = request.POST.get('template_section_size_title_height')
+		storefront.template_section_size_preview_left = request.POST.get('template_section_size_preview_left')
+		storefront.template_section_size_preview_right = request.POST.get('template_section_size_preview_right')
+		storefront.template_section_size_preview_height = request.POST.get('template_section_size_preview_height')
+		storefront.template_section_size_disclaimer_left = request.POST.get('template_section_size_disclaimer_left')
+		storefront.template_section_size_disclaimer_right = request.POST.get('template_section_size_disclaimer_right')
+		storefront.template_section_size_disclaimer_height = request.POST.get('template_section_size_disclaimer_height')
+		storefront.textblock_1 = request.POST.get('textblock_1')
+		storefront.textblock_2 = request.POST.get('textblock_2')
+		storefront.textblock_3 = request.POST.get('textblock_3')
+		storefront.textblock_4 = request.POST.get('textblock_4')
+		storefront.save()
+
+	return base_redirect(request, 0)
+
+@login_required
+def delete_storefront(request, storefront):
+	if request.method=="POST":
+		loggedinanon = Anon.objects.get(username=request.user)
+		storefront = loggedinanon.storefronts.filter(title=storefront).first()
+		storefront.delete()
+
+	return base_redirect(request, 0)
+
 
 def tob_spaces_post(request, space, post, count):
 	tob_space = Space.objects.get(id=space)[:100]
@@ -7948,7 +7986,7 @@ def storefront(request, author, dictionary_id, storefront_title):
 	page_views.views += 1
 	page_views.save()	
 	
-	the_response = render(request, "tob_storefront.html", {"user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
+	the_response = render(request, "tob_storefront.html", {"storefront_form": storefront_form, "user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
 	the_response.set_cookie('current', 'storefront')
 	the_response.set_cookie('viewing_user', request.user)
 	the_response.set_cookie('dictionary', user_dic)

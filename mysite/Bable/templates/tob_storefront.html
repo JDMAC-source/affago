@@ -78,27 +78,33 @@
 
 
 
-{% block authenticatedposts %}
+{% block authenticated_posts %}
 
 <div style="margin-top: 50px;">
 	<img id="storefront_image_1" src="{{ user_storefront.image_1 }}" style="width: 100vw;">
-	<section id="storefront_title" style="text-align: center; margin-left: {{ user_storefront.template_section_size_title_left }}; margin-right: {{ user_storefront.template_section_size_title_right }}; height: {{ user_storefront.template_section_size_title_height }};">{{ user_storefront.title }}</section>
+	<section id="storefront_title" style="text-align: center; margin-left: {{ user_storefront.template_section_size_title_left }}px; margin-right: {{ user_storefront.template_section_size_title_right }}px; height: {{ user_storefront.template_section_size_title_height }}px;">{{ user_storefront.title }}</section>
 	<img id="storefront_image_2" src="{{ user_storefront.image_2 }}" style="width: 100vw;">
-	<section id="storefront_preview" style="text-align: center; margin-left: {{ user_storefront.template_section_size_preview_left }}; margin-right: {{ user_storefront.template_section_size_preview_right }}; height: {{ user_storefront.template_section_size_preview_height }};">{{ user_storefront.preview_text }}</section>
+	<section id="storefront_preview" style="text-align: center; margin-left: {{ user_storefront.template_section_size_preview_left }}px; margin-right: {{ user_storefront.template_section_size_preview_right }}px; height: {{ user_storefront.template_section_size_preview_height }}px;">{{ user_storefront.preview_text }}</section>
 	<img id="storefront_image_3" src="{{ user_storefront.image_3 }}" style="width: 100vw;">
-	<section id="storefront_disclaimer" style="text-align: center; margin-left: {{ user_storefront.template_section_size_disclaimer_left }}; margin-right: {{ user_storefront.template_section_size_disclaimer_right }}; height: {{ user_storefront.template_section_size_disclaimer_height }};">{{ user_storefront.disclaimer }}</section>
+	<section id="storefront_disclaimer" style="text-align: center; margin-left: {{ user_storefront.template_section_size_disclaimer_left }}px; margin-right: {{ user_storefront.template_section_size_disclaimer_right }}px; height: {{ user_storefront.template_section_size_disclaimer_height }}px;">{{ user_storefront.disclaimer }}</section>
 	<img id="storefront_image_4" src="{{ user_storefront.image_4 }}" style="width: 100vw;">
+
+	<form method=POST action="{% url 'Bable:edit_storefront' user_storefront.id %}">
+		{% csrf_token %}
+		{{ storefront_form }}
+		<button type=submit>Edit Storefront</button>
+	</form>
 </div>
 {% endblock %}
 
 {% block unauthenticated_posts %}
 <div >
 	<img id="storefront_image_1" src="{{ user_storefront.image_1 }}" style="width: 100vw;">
-	<section id="storefront_title" style="text-align: center; margin-left: {{ user_storefront.template_section_size_title_left }}; margin-right: {{ user_storefront.template_section_size_title_right }}; height: {{ user_storefront.template_section_size_title_height }};">{{ user_storefront.title }}</section>
+	<section id="storefront_title" style="text-align: center; margin-left: {{ user_storefront.template_section_size_title_left }}px; margin-right: {{ user_storefront.template_section_size_title_right }}px; height: {{ user_storefront.template_section_size_title_height }}px;">{{ user_storefront.title }}</section>
 	<img id="storefront_image_2" src="{{ user_storefront.image_2 }}" style="width: 100vw;">
-	<section id="storefront_preview" style="text-align: center; margin-left: {{ user_storefront.template_section_size_preview_left }}; margin-right: {{ user_storefront.template_section_size_preview_right }}; height: {{ user_storefront.template_section_size_preview_height }};">{{ user_storefront.preview_text }}</section>
+	<section id="storefront_preview" style="text-align: center; margin-left: {{ user_storefront.template_section_size_preview_left }}px; margin-right: {{ user_storefront.template_section_size_preview_right }}px; height: {{ user_storefront.template_section_size_preview_height }}px;">{{ user_storefront.preview_text }}</section>
 	<img id="storefront_image_3" src="{{ user_storefront.image_3 }}" style="width: 100vw;">
-	<section id="storefront_disclaimer" style="text-align: center; margin-left: {{ user_storefront.template_section_size_disclaimer_left }}; margin-right: {{ user_storefront.template_section_size_disclaimer_right }}; height: {{ user_storefront.template_section_size_disclaimer_height }};">{{ user_storefront.disclaimer }}</section>
+	<section id="storefront_disclaimer" style="text-align: center; margin-left: {{ user_storefront.template_section_size_disclaimer_left }}px; margin-right: {{ user_storefront.template_section_size_disclaimer_right }}px; height: {{ user_storefront.template_section_size_disclaimer_height }}px;">{{ user_storefront.disclaimer }}</section>
 	<img id="storefront_image_4" src="{{ user_storefront.image_4 }}" style="width: 100vw;">
 	
 </div>

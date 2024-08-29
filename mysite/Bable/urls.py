@@ -241,6 +241,7 @@ urlpatterns = [
 	path('vote_for_executive/<space_id>/<username>/', views.vote_for_executive, name='vote_for_executive'),
 	path('vote_for_judiciary/<space_id>/<username>/', views.vote_for_judiciary, name='vote_for_judiciary'),
 	path('storefronts/<count>/', views.storefronts, name='storefronts'),
+	path('edit_storefront/<storefront_id>/', views.edit_storefront, name='edit_storefront'),
 	path('storefront/<author>/<dictionary_id>/<storefront_title>/', views.storefront, name='storefront'),
 	path('storefront/<author>/<dictionary_id>/<storefront_title>/landing_page/', views.storefront_landing_page, name='storefront_landing_page'),
 	path('storefront/<author>/<dictionary_id>/<storefront_title>/product_list/', views.storefront_product_list, name='storefront_product_list'),
