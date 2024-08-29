@@ -1082,7 +1082,7 @@ select {
 		box-sizing: border-box;
 		position: absolute;
 		margin-top: -2.3em;
-		right: 3em;
+		right: 0em;
 		cursor: pointer;
 		color: #ff47d6;
 		width: 2em;
@@ -1315,7 +1315,7 @@ select {
 		box-sizing: border-box;
 		position: absolute;
 		margin-top: -2.5em;
-		right: 3em;
+		right: 0em;
 		cursor: pointer;
 		color: #ff47d6;
 		width: 2em;
