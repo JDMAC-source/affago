@@ -187,7 +187,9 @@ a, a:link, a:visited, a:focus, a:hover, a:active {
 	display: none;
 	background-color: #ff47d6;
 	margin-left:1em;
-	width: 400px;
+	width: 500px;
+	margin-top:100px;
+	zoom: 70%;
 }
 
 #apply_votes {
