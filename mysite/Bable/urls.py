@@ -63,6 +63,7 @@ urlpatterns = [
 	path('index/', views.tower_of_bable, name='tower_of_bable'),
 	path('buy_credits/coinbase/', views.home_view, name='home_view'),
 	path('landingpage/', views.landingpage, name='landingpage'),
+	path('landingpage/roadmaps/', views.landingpage_roadmaps, name='landingpage_roadmaps'),
 	path('change_password/', views.change_password, name='change_password'),
 	path('search/count/<count>/', views.search, name='search'),
 	path('annotate_url/<search_url_id>/', views.annotate_url, name='annotate_url'),

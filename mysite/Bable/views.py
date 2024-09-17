@@ -4254,6 +4254,71 @@ def landingpage(request):
 	return the_response
 
 
+def landingpage_roadmaps(request):
+	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+
+	
+	count = 0
+	count100 = 100
+	mcount = 0
+
+	buyadvertisingform = BuyAdvertisingForm()
+
+
+	page_views, created = Pageviews.objects.get_or_create(page="landingpage_roadmap")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+	total = 0
+	for page in Pageviews.objects.all():
+		total += page.views
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_roadmap", anon=loggedinanon)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		
+		the_response = render(request, 'landingpage_roadmaps.html', { "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+
+	the_response = render(request, 'landingpage_roadmaps.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
+	
+	the_response.set_cookie('current', 'landingpage')
+	return the_response
+
+
+
+
 
 def change_password(request):
 	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
