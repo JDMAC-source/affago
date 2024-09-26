@@ -2409,7 +2409,7 @@ def create_post(request):
 			else:
 				new_post = Post.objects.create(author=loggedinauthor, title=post_form.cleaned_data['title'], body=post_form.cleaned_data['body'])
 			for word in post_form.cleaned_data['spaces']:
-				wordle = Word.objects.get(the_word_itself=word, dictionary__purchased_dictionaries=[loggedinanon], spaces__the_space_itself__the_word_itself=word)
+				wordle = Word.objects.get(the_word_itself=word, dictionary__purchased_dictionaries=loggedinanon.id, spaces__the_space_itself__the_word_itself=word)
 				space = SpaceSource.objects.filter(the_space_itself=wordle.to_source(), allowed_to_view_authors=loggedinauthor).first()
 				if space:
 					new_post.spaces.add(space)
