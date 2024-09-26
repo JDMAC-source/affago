@@ -12,13 +12,15 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 import psycopg2
 import environ
-
 env = environ.Env()
-environ.Env.read_env()
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(PROJECT_ROOT)
+OPEN_AI_API_KEY = env("OPEN_AI_API_KEY")
 
 STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
@@ -27,7 +29,7 @@ STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
-OPEN_AI_API_KEY = env("OPEN_AI_API_KEY")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -52,6 +54,7 @@ INSTALLED_APPS = [
     'mptt',
     'Bable',
     'paypal.standard.ipn', # django-paypal
+    'markdownify',
     'rest_framework',
     'rest_framework.authtoken',
     'coreapi',
@@ -107,8 +110,8 @@ DATABASES = {
         # CREATE USER default WITH SUPERUSER PASSWORD 'default';        # \q
         # issues in psycopg2: makemigrations Bable
         'NAME': 'db2',                                                   
-        'USER': 'jackmclovin',                                                   
-        'PASSWORD': 'thattickles',                                      
+        'USER': 'adenhandasyde',                                                   
+        'PASSWORD': '',                                      
         'HOST': '127.0.0.1',                                                     
         'PORT': '5432',  
     }
@@ -202,8 +205,8 @@ EMAIL_PORT = 587
 PAYPAL_RECEIVER_EMAIL = 'donkeycon@protonmail.com'
 PAYPAL_TEST = False
 
-import dj_database_url
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+#import dj_database_url
+#DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 '''
 DATABASE_URL = 'https://towerofbable-37.appspot.com/'
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
