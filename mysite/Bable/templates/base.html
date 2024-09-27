@@ -261,13 +261,13 @@
 					</div>
 					{% endif %}
 				</div>
-				<div id="searchindex">
+				<div id="searchindex" >
 					<form id="searchform" action="{% url 'Bable:search' 0 %}" method="get">
 						<input id="search" name="q" type="text" placeholder="Search:">
 						<input id="search_submit" type="submit" value="Search">
 					</form>
 				</div>
-				<div id="dicform">
+				<div id="dicform" style="margin-top: 50px;">
 					<form action="{% url 'Bable:create_dic' %}" method="post">
 						<b>Grow A Dic</b><br>
 						{% csrf_token %}
@@ -275,7 +275,7 @@
 						<button type="submit">Submit</button>
 					</form>
 				</div>
-				<div id="wordform">
+				<div id="wordform" style="margin-top: 50px;">
 					<form action="{% url 'Bable:create_word' %}" method="post">
 						<b>Define A Word</b><br>
 						{% csrf_token %}
@@ -283,7 +283,7 @@
 						<button type="submit">Submit</button>
 					</form>
 				</div>
-				<div id="spaceform">
+				<div id="spaceform" style="margin-top: 50px;">
 					<form action="{% url 'Bable:create_space' %}" method="post" style="overflow-y: auto; margin-bottom: 500px;">
 						<b>Make Space</b><br>
 						{% csrf_token %}
@@ -291,7 +291,7 @@
 						<button type="submit">Submit</button>
 					</form>
 				</div>
-				<div id="taskform">
+				<div id="taskform" style="margin-top: 50px;">
 					<form action="{% url 'Bable:create_task' %}" method="post">
 						<b>Set Task</b><br>
 						{% csrf_token %}
@@ -299,7 +299,7 @@
 						<button type="submit">Submit</button>
 					</form>
 				</div>
-				<div id="submitindex">
+				<div id="submitindex" style="margin-top: 50px;">
 					{% if users_post and user_author.username == request.user.username %}
 					<form action="{% url 'Bable:edit_post' users_post.id %}" method="post">
 						<b>Mark Post</b><br>
@@ -317,7 +317,7 @@
 					</form>
 					{% endif %}
 				</div>
-				<div id="apply_votestyle">
+				<div id="apply_votestyle" style="margin-top: 50px;">
 					<form action="{% url 'Bable:apply_votestyle' %}" method="post">
 						<b>Apply Votestyle</b><br>
 						{% csrf_token %}
@@ -347,7 +347,7 @@
 					      });
 				    </script>
 				</div>
-				<div id="apply_votes">
+				<div id="apply_votes" style="margin-top: 50px;">
 					<form action="{% url 'Bable:apply_votes' %}" method="post">
 						<b>Create Votes</b><br>
 						{% csrf_token %}
@@ -356,7 +356,7 @@
 						<button type="submit">Submit</button>
 					</form>
 				</div>
-				<div id="exclude_votes">
+				<div id="exclude_votes" style="margin-top: 50px;">
 					<form action="{% url 'Bable:exclude_votes' %}" method="post">
 						<b>Exclude Votes</b><br>
 						{% csrf_token %}
@@ -364,7 +364,7 @@
 						<button type="submit">Submit</button>
 					</form>
 				</div>
-				<div id="apply_dic">
+				<div id="apply_dic" style="margin-top: 50px;">
 					<form action="{% url 'Bable:apply_dic' %}" method="post">
 						<b>Apply Dic</b><br>
 						{% csrf_token %}
@@ -372,7 +372,7 @@
 						<button type="submit">Submit</button>
 					</form>
 				</div>
-				<div id="exclude_dic">
+				<div id="exclude_dic" style="margin-top: 50px;">
 					<form action="{% url 'Bable:exclude_dic' %}" method="post">
 						<b>Exclude Dic</b><br>
 						{% csrf_token %}
@@ -380,7 +380,7 @@
 						<button type="submit">Submit</button>
 					</form>
 				</div>
-				<div id="fileform" style="display: none; background: white;">
+				<div id="fileform" style="display: none; background: white; margin-top: 50px;">
 					<form action="{% url 'Bable:upload_file' %}" method="post" enctype='multipart/form-data'>
 						<b>Upload A File</b><br>
 						{% csrf_token %}
@@ -388,7 +388,7 @@
 						<button type="submit">Submit</button>
 					</form>
 				</div>
-				<div id="emailform" style="display: none; background: white;">
+				<div id="emailform" style="display: none; background: white; margin-top: 50px;">
 					<form action="{% url 'Bable:submit_email' %}" method="post">
 						<b>Submit Email</b><br>
 						{% csrf_token %}
