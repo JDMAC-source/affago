@@ -160,6 +160,10 @@ a, a:link, a:visited, a:focus, a:hover, a:active {
 	margin: auto;
 }
 
+.header-lower > a{
+
+}
+
 .account {
 	display: inline-block;
 	font-family: 'futura-pt';
@@ -1277,7 +1281,7 @@ select {
 		width: 100%;
 	}
 
-	.complementary, .mutawords, .dictionaries, .universal_pronunciation, .user_view, .word_attributes, .space_view, .create_dic, .word-bar, .space-bar, .post-bar, .task-bar {
+	.complementary, .mutawords, .dictionaries, .sponsors_header, .products_header, .storefronts_header, .universal_pronunciation, .user_view, .word_attributes, .space_view, .create_dic, .word-bar, .space-bar, .post-bar, .task-bar {
 		font-family: futura-pt;
 		font-size: 13px;
 	    text-transform: uppercase;

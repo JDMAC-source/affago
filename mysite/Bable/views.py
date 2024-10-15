@@ -8002,7 +8002,7 @@ def tob_users_dic(request, user, dictionary, count):
 
 		word_sort_form = WordSortForm(request)
 
-		users_dic.words.order_by(loggedinanon.word_sort_char)[count:count+100]
+		dics_words = users_dic.words.order_by(loggedinanon.word_sort_char)[count:count+100]
 		
 
 	#if request.user.is_authenticated:
