@@ -8000,9 +8000,10 @@ def tob_users_dic(request, user, dictionary, count):
 		apply_dic_form = ApplyDictionaryForm(request)
 		exclude_dic_form = ExcludeDictionaryAuthorForm()
 
-		dics_words = sort_words(users_dic.words, loggedinanon.word_sort, count, count+100)
-	else:
-		dics_words = sort_words(users_dic.words, 'viewcount', count, count+100)
+		word_sort_form = WordSortForm(request)
+
+		users_dic.words.order_by(loggedinanon.word_sort_char)[count:count+100]
+		
 
 	#if request.user.is_authenticated:
 		# something about what if the user is logged in, show the dic's words?
@@ -8020,7 +8021,7 @@ def tob_users_dic(request, user, dictionary, count):
 			analysis_form = AnalysisForm(users_dic)
 			storefront_form = StorefrontForm(users_dic)
 
-			the_response = render(request, "tob_users_dic.html", {"loggedinanon": loggedinanon, "storefront_form": storefront_form, "user_anon": user_anon, "users_dic": users_dic, "dics_words": dics_words, "dic_owners_form": dic_owners_form, "dic_prereq_form": dic_prereq_form, "wordgroup_form": wordgroup_form, "sentence_form": sentence_form, "translation_form": translation_form, "analysis_form": analysis_form, "dic_form": dic_form, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
+			the_response = render(request, "tob_users_dic.html", {"loggedinanon": loggedinanon, "storefront_form": storefront_form, "user_anon": user_anon, "users_dic": users_dic, "dics_words": dics_words, "word_sort_form": word_sort_form, "dic_owners_form": dic_owners_form, "dic_prereq_form": dic_prereq_form, "wordgroup_form": wordgroup_form, "sentence_form": sentence_form, "translation_form": translation_form, "analysis_form": analysis_form, "dic_form": dic_form, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
 			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
 		else:
 			the_response = render(request, "tob_users_dic.html", {"loggedinanon": loggedinanon, "user_anon": user_anon, "users_dic": users_dic, "dics_words": dics_words, "dic_form": dic_form, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform})
