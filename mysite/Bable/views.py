@@ -4401,7 +4401,7 @@ def tower_of_bable_count(request, count):
 	registerform = UserCreationForm()
 
 	
-	basic_price, x = Price.objects.get_or_create(name="Donate - Predictionary.us", anon_user_id=1)
+	basic_price = Price.objects.filter(name="Donate - Predictionary.us", anon_user_id=1).first()
 	if not basic_price.stripe_price_id:
 		basic_price.stripe_price_id = "price_1Nf8jMIDEcA7LIBjpnt385yZ"
 
