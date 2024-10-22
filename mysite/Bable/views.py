@@ -5408,7 +5408,7 @@ from django import forms
 def create_storefront(request, dictionary):
 	if request.method=="POST":
 		loggedinanon = Anon.objects.get(username=request.user)
-		dictionary__ = loggedinanon.dictionaries.filter(the_dictionary_itself=dictionary).first()
+		dictionary__ = loggedinanon.dictionaries.filter(id=int(dictionary)).first()
 		
 		word = dictionary__.words.filter(the_word_itself=request.POST.get("logo")).first()
 		storefront = Storefront.objects.create(author=Author.objects.get(username=request.user.username), logo=word, title=request.POST.get("title"), preview_text=request.POST.get("preview_text"), disclaimer=request.POST.get("disclaimer"), image_1=request.POST.get("image_1"), image_2=request.POST.get("image_2"), image_3=request.POST.get("image_3"), image_4=request.POST.get("image_4"), image_5=request.POST.get("image_5"), template_section_size_1_1=request.POST.get("template_section_size_1_1"), template_section_size_1_2=request.POST.get("template_section_size_1_2"), template_section_size_1_3=request.POST.get("template_section_size_1_3"), template_section_size_2_1=request.POST.get("template_section_size_2_1"), template_section_size_2_2=request.POST.get("template_section_size_2_2"), template_section_size_2_3=request.POST.get("template_section_size_2_3"), template_section_size_3_1=request.POST.get("template_section_size_3_1"), template_section_size_3_2=request.POST.get("template_section_size_3_2"), template_section_size_3_3=request.POST.get("template_section_size_3_3"), textblock_1=request.POST.get("textblock_1"), textblock_2=request.POST.get("textblock_2"), textblock_3=request.POST.get("textblock_3"), textblock_4=request.POST.get("textblock_4"))
