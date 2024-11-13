@@ -19,7 +19,7 @@ Babylon Police - Want to Purchase a Dic - {{ users_dic.the_dictionary_itself }}:
 {% block authenticatedposts %}
 	<div class=usersusername>
 		<h2>
-		<a href="{% url 'Bable:tob_user_view' user_anon.username.username 0 %}">
+		<a href="{% url 'Bable:tob_user_view_count' user_anon.username.username 0 %}">
 			User: {{ user_anon.username.username }}
 		</a>
 		</h2>
@@ -284,7 +284,7 @@ Babylon Police - Want to Purchase a Dic - {{ users_dic.the_dictionary_itself }}:
 {% block unauthenticated_posts %}
 <div class=usersusername>
 		<h2>
-		<a href="{% url 'Bable:tob_user_view' user_anon.username.username 0 %}">
+		<a href="{% url 'Bable:tob_user_view_count' user_anon.username.username 0 %}">
 			User: {{ user_anon.username.username }}
 		</a>
 		</h2>
