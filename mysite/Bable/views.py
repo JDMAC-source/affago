@@ -7448,27 +7448,13 @@ def buy_dic(request, dicid):
 		host = request.get_host()
 		if Dictionary.objects.get(id=dicid):
 			buying_dic = Dictionary.objects.get(id=dicid)
-			price = buying_dic.entry_fee + buying_dic.continuation_fee
-			if price == 0:
-				list_of_prerequisite_ids = buying_dic.prerequisite_dics__id
-				list_of_usernames_ids = buying_dic.prerequisite_dics__username__username
-				if loggedinanon.purchase_dictionaries.filter(prerequisite_dics__id=buying_dic.prerequisite_dics__id).count() == 0:
-					loggedinanon.purchased_dictionaries.add(buying_dic)
-					buying_dic.purchase_orders.add(Purchase_Order.objects.create(author=loggedinauthor))
-					buying_dic.traded_date = timezone.now
-					buying_dic.save()
-					return redirect('Bable:tob_users_dic', user=buying_dic.author.username, dictionary=buying_dic.the_dictionary_itself, count=0)
-				else:
-					return render(request, 'failed_to_purchase_dic.html', {'list_of_p_ids': list_of_prerequisite_ids, 'list_of_usernames_u_ids': list_of_usernames_u_ids})
-			else:
-				if loggedinanon.false_wallet > price:
-					loggedinanon.false_wallet = loggedinanon.false_wallet - price
-					dic_owner = Anon.objects.get(username__username=buying_dic.author.username)
-					dic_owner.false_wallet = dic_owner.false_wallet + price - 1
+			if buyind_dic.the_dictionary_itself not in loggedinanon.purchased_dictionaries.all().order_by('the_dictionary_itself').values_list('the_dictionary_itself', flat=True):
+				price = buying_dic.entry_fee + buying_dic.continuation_fee
+				if price == 0:
 					list_of_prerequisite_ids = buying_dic.prerequisite_dics__id
 					list_of_usernames_ids = buying_dic.prerequisite_dics__username__username
 					if loggedinanon.purchase_dictionaries.filter(prerequisite_dics__id=buying_dic.prerequisite_dics__id).count() == 0:
-						loggedinanon.purchase_dictionaries.add(buying_dic)
+						loggedinanon.purchased_dictionaries.add(buying_dic)
 						buying_dic.purchase_orders.add(Purchase_Order.objects.create(author=loggedinauthor))
 						buying_dic.traded_date = timezone.now
 						buying_dic.save()
@@ -7476,7 +7462,24 @@ def buy_dic(request, dicid):
 					else:
 						return render(request, 'failed_to_purchase_dic.html', {'list_of_p_ids': list_of_prerequisite_ids, 'list_of_usernames_u_ids': list_of_usernames_u_ids})
 				else:
-					return redirect('Bable:buy_bread', amount=price)
+					if loggedinanon.false_wallet > price:
+						loggedinanon.false_wallet = loggedinanon.false_wallet - price
+						dic_owner = Anon.objects.get(username__username=buying_dic.author.username)
+						dic_owner.false_wallet = dic_owner.false_wallet + price - 1
+						list_of_prerequisite_ids = buying_dic.prerequisite_dics__id
+						list_of_usernames_ids = buying_dic.prerequisite_dics__username__username
+						if loggedinanon.purchase_dictionaries.filter(prerequisite_dics__id=buying_dic.prerequisite_dics__id).count() == 0:
+							loggedinanon.purchase_dictionaries.add(buying_dic)
+							buying_dic.purchase_orders.add(Purchase_Order.objects.create(author=loggedinauthor))
+							buying_dic.traded_date = timezone.now
+							buying_dic.save()
+							return redirect('Bable:tob_users_dic', user=buying_dic.author.username, dictionary=buying_dic.the_dictionary_itself, count=0)
+						else:
+							return render(request, 'failed_to_purchase_dic.html', {'list_of_p_ids': list_of_prerequisite_ids, 'list_of_usernames_u_ids': list_of_usernames_u_ids})
+					else:
+						return redirect('Bable:buy_bread', amount=price)
+		else:
+			return HttpResponse("You already own a dictionary with this name.")
 	return base_redirect(request, 0)
 
 
