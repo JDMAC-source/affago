@@ -972,7 +972,7 @@ class PostForm(forms.ModelForm):
         super(PostForm, self).__init__(*args, **kwargs)
         if Author.objects.get(username=request.user.username):
             self.fields['spaces'] = forms.MultipleChoiceField(choices=[(e, e) for e in Space.objects.all().filter(approved_voters=Author.objects.get(username=request.user.username)).order_by('the_space_itself__the_word_itself').values_list('the_space_itself__the_word_itself', flat=True)])
-            self.fields['dictionaries'] = forms.MultipleChoiceField(choices=[(e, e) for e in Dictionary.objects.all().filter(purchased_dictionaries=Anon.objects.get(username__username=request.user.username)).order_by('the_dictionary_itself').values_list('the_dictionary_itself', flat=True)])
+            self.fields['dictionaries'] = forms.MultipleChoiceField(choices=[(e, e) for e in Anon.objects.get(username__username=request.user.username).dictionaries.all().order_by('the_dictionary_itself').values_list('the_dictionary_itself', flat=True)])
         else:
             self.fields['spaces'] = None
             self.fields['dictionaries'] = None
