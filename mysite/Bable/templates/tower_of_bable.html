@@ -34,19 +34,7 @@ BabylonPolice.com - incentivised-ascento-secrecy
 {% block authenticatedposts %}
 
 <div class=displaybanner>
-	<div class=donate>
-		<div class=dictionary-bottom>
-			<a href="{% url 'Bable:tob_product' basic_price.id %}"><h3>{{ basic_price.name }}</h3></a>
-	        <img src="{% static 'babylonpolice.com.gif' %}" style="width: 200px; height: 200px; margin: auto; width: fit-content; border-radius: 20px;">
-	        <div style="display: flex; align-items: center;">
-	            <p style="background-color: white; width: fit-content; margin-right: 20px;">${{ basic_price.get_display_price }} AUD</p>
-	            <form action="{% url 'Bable:create-checkout-session' basic_price.id %}" method="POST">
-	                {% csrf_token %}
-	                <button type="submit" style="color: gold; background-color: green; border-radius: 8px;">Donate</button>
-	            </form>
-	        </div>
-		</div>
-	</div>
+	
 	<p>Total post views: {{ total }}</p>
 </div>
 <div class=possectionsort>
@@ -345,19 +333,6 @@ $(document).ready(function() {
 
 {% block unauthenticated_posts %}
 <div class=displaybanner>
-	<div class=donate>
-		<div class=dictionary-bottom>
-			<a href="{% url 'Bable:tob_product' basic_price.id %}"><h3>{{ basic_price.name }}</h3></a>
-	        <img src="{% static 'babylonpolice.com.gif' %}" style="width: 200px; height: 200px; margin: auto; width: fit-content;">
-	        <div style="display: flex; align-items: center;">
-	            <p style="width: fit-content; margin-right: 20px; background-color: white;">${{ basic_price.get_display_price }} AUD</p>
-	            <form action="{% url 'Bable:create-checkout-session' basic_price.id %}" method="POST">
-	                {% csrf_token %}
-	                <button type="submit" style="color: gold; background-color: green; border-radius: 8px;">Donate</button>
-	            </form>
-	        </div>
-		</div>
-	</div>
 	<p>Total post views: {{ total }}</p>
 </div>
 <div class=displaybanner>
