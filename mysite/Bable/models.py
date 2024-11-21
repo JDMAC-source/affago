@@ -2144,7 +2144,8 @@ class Anon(models.Model):
 	all_files = models.ManyToManyField(File, default=None, related_name="all_files")
 	public_files = models.ManyToManyField(File, default=None, related_name="public_files")
 
-	notifications = models.ManyToManyField(Notification, default=None)
+	notifications = models.ManyToManyField(Notification, default=None, related_name="old_notifications")
+	new_notifications = models.ManyToManyField(Notification, default=None, related_name="new_notifications")
 
 	availabilities = models.ManyToManyField(Availability, default=None, related_name="availabilities")
 	shared_with_availabilities = models.ManyToManyField(Availability, default=None, related_name="shared_with_availabilities")
@@ -2160,17 +2161,21 @@ class Anon(models.Model):
 		return unicode(self.username) or u''
 
 import datetime
+
+class IpAddress(models.Model):
+	ip_address = models.TextField(default='', max_length=200)
+
 class UserViews(models.Model):
 	anon = models.ForeignKey(Anon, default=None, on_delete=models.PROTECT)
 	view_date = models.DateTimeField(default=timezone.now)
+	ip_address = models.TextField(default='', max_length=200)
+	httpxforwardfor = models.TextField(default='', max_length=20000)
 	page_view = models.CharField(max_length=200, default='')
 	previous_view_id = models.CharField(max_length=144, default='')
 	previous_page = models.CharField(max_length=200, default='')
 	previous_view_date = models.DateTimeField(default=timezone.now)
 	previous_view_time_between_pages = models.DurationField(default=datetime.timedelta(days=0, seconds=1))
 
-class IpAddress(models.Model):
-	ip_address = models.TextField(default='', max_length=200)
 	
 
 class Pageviews(models.Model):

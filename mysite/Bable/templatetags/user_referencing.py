@@ -13,6 +13,10 @@ def usernames(value):
 
 
 @register.filter(is_safe=True)
+def skip_how_many_keep_how_many(value, how_manies):
+	return value[how_manies.split('-')[0]:how_manies.split('-')[1]]
+
+@register.filter(is_safe=True)
 def stripwww(value):
 	return value.replace('www.', '')
 
