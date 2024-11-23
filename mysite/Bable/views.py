@@ -165,7 +165,7 @@ def tower_time(request):
 	#print(density)
 	#print(ip)
 	duration = request.POST['duration']
-	page_density = Page_Density.objects.create(ip=ip, time_spent=timeSpent, scroll_height=scrollHeight, client_height=clientHeight, duration=duration, scroll_type=loggedinanon_scroll_type)
+	page_density = Page_Density.objects.create(ip_address=ip, time_spent=timeSpent, scroll_height=scrollHeight, client_height=clientHeight, duration=duration, scroll_type=loggedinanon_scroll_type)
 	for post_id in post_ids:
 		page_density.post_ids.add(Post_id.objects.create(the_posts_id=post_id))
 	for dense in density:
@@ -355,7 +355,7 @@ def barcode_ai(request, numbers):
 		else:
 			loggedinanon.false_wallet -= 10
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="barcode_ai", anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="barcode_ai", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -3938,7 +3938,7 @@ def search(request, count):
 		word_form = WordForm(request)
 
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="search__"+query_string+"__"+str(count), anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="search__"+query_string+"__"+str(count), anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -4165,7 +4165,7 @@ def tower_of_bable(request):
 		loggedinanon = Anon.objects.get(username=loggedinuser)
 		loggedinauthor = Author.objects.get(username=request.user.username)
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tower_of_bable", anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tower_of_bable", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -4248,7 +4248,7 @@ def landingpage(request):
 		loggedinanon = Anon.objects.get(username=loggedinuser)
 		loggedinauthor = Author.objects.get(username=request.user.username)
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="landingpage", anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="landingpage", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -4311,7 +4311,7 @@ def landingpage_roadmaps(request):
 		loggedinanon = Anon.objects.get(username=loggedinuser)
 		loggedinauthor = Author.objects.get(username=request.user.username)
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="landingpage_roadmap", anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="landingpage_roadmap", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -4391,7 +4391,7 @@ def change_password(request):
 		loggedinanon = Anon.objects.get(username=loggedinuser)
 		loggedinauthor = Author.objects.get(username=request.user.username)
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="change_password", anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="change_password", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -4474,7 +4474,7 @@ def tower_of_bable_count(request, count):
 		loggedinanon = Anon.objects.get(username=loggedinuser)
 		loggedinauthor = Author.objects.get(username=request.user.username)
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tower_of_bable_count__"+str(count), anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tower_of_bable_count__"+str(count), anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -4534,7 +4534,7 @@ def tob_view_spaces(request):
 		loggedinanon = Anon.objects.get(username=loggedinuser)
 		loggedinauthor = Author.objects.get(username=request.user.username)
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tob_view_spaces", anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tob_view_spaces", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -4596,7 +4596,7 @@ def tob_view_spaces_count(request, count):
 		loggedinanon = Anon.objects.get(username=loggedinuser)
 		loggedinauthor = Author.objects.get(username=request.user.username)
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tob_view_spaces_count__"+str(count), anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tob_view_spaces_count__"+str(count), anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -4654,7 +4654,7 @@ def tob_space_view(request, space):
 		loggedinanon = Anon.objects.get(username=loggedinuser)
 		loggedinauthor = Author.objects.get(username=request.user.username)
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tob_space_view__"+space, anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tob_space_view__"+space, anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -4757,7 +4757,7 @@ def tob_space_view_count(request, space, count):
 		loggedinanon = Anon.objects.get(username=loggedinuser)
 		loggedinauthor = Author.objects.get(username=request.user.username)
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tob_space_view_count__"+str(space)+"__"+str(count), anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tob_space_view_count__"+str(space)+"__"+str(count), anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -5066,7 +5066,7 @@ def tob_post(request, post):
 		loggedinauthor = Author.objects.get(username=request.user.username)
 
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tob_post__"+post, anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tob_post__"+post, anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -5165,7 +5165,7 @@ def tob_sponsor_product(request, product_id):
 				#return base_redirect(request, 0)
 		
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tob_sponsor_product__"+product_id, anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tob_sponsor_product__"+product_id, anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -5292,7 +5292,7 @@ def tob_products(request, count):
 		loggedinauthor = Author.objects.get(username=request.user.username)
 
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tob_products__"+str(count), anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tob_products__"+str(count), anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -5343,7 +5343,7 @@ def notification_redirect(request, new_notification_id):
 		ip = request.META.get('REMOTE_ADDR')
 
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="notification_redirect__"+str(new_notification_id), anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="notification_redirect__"+str(new_notification_id), anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -5375,7 +5375,7 @@ def notifications_page(request):
 		ip = request.META.get('REMOTE_ADDR')
 
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="notifications_page__"+str(count), anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="notifications_page__"+str(count), anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -5807,7 +5807,7 @@ def num_step_submission(request, user_specific_variable_view_id, user_specific_v
 						num_step.order = user_specific_variable_view.base_search_margin_top.count()
 						num_step.save()
 						user_specific_variable_view_step_type.base_search_margin_top.add(num_step)
-						user_specific_variable_view_step_type.save()
+						user_specific_variable_view_step_type.save()# HERE
 					elif user_specific_variable_view_step_type == "tob_post_latest_font_size":
 						num_step.order = user_specific_variable_view.tob_post_latest_font_size.count()
 						num_step.save()
@@ -5861,7 +5861,7 @@ def storefronts(request, count):
 		loggedinauthor = Author.objects.get(username=request.user.username)
 
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="storefronts__"+str(count), anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="storefronts__"+str(count), anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -5934,7 +5934,7 @@ def users_storefronts(request, user, count):
 		loggedinauthor = Author.objects.get(username=request.user.username)
 
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="user_storefronts__"+user+"__"+str(count), anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="user_storefronts__"+user+"__"+str(count), anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -6071,7 +6071,7 @@ def tob_spaces_post(request, space, post, count):
 		loggedinauthor = Author.objects.get(username=request.user.username)
 
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tob_spaces_post__"+space+"__"+post, anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tob_spaces_post__"+space+"__"+post, anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -6350,7 +6350,7 @@ def tob_sponsor(request, sponsor):
 		loggedinauthor = Author.objects.get(username=request.user.username)
 
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tob_sponsor__"+sponsor, anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tob_sponsor__"+sponsor, anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -6423,7 +6423,7 @@ def tob_sponsors(request, count):
 		loggedinauthor = Author.objects.get(username=request.user.username)
 
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tob_sponsors__count_"+str(count), anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tob_sponsors__count_"+str(count), anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -6495,7 +6495,7 @@ def tob_view_users(request):
 		loggedinauthor = Author.objects.get(username=request.user.username)
 
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tob_view_users", anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tob_view_users", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -6569,7 +6569,7 @@ def tob_view_users_count(request, count):
 		user_anons = Anon.objects.order_by(loggedinanon.anon_sort_char)[count:count100]
 
 		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-		pages_view = UserViews.objects.create(page_view="tob_view_users_count__"+str(count), anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+		pages_view = UserViews.objects.create(page_view="tob_view_users_count__"+str(count), anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 		page_views.user_views.add(pages_view)
 		if previous_view:
 			pages_view.previous_view_id = previous_view.id
@@ -11094,7 +11094,7 @@ def clickthrough(request):
 			loggedinauthor = Author.objects.get(username=request.user.username)
 
 			previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('view_date').first()
-			pages_view = UserViews.objects.create(page_view="clickthrough__sonsor_id__"+str(sponsor_id)+"__ip__"+request.META.get('REMOTE_ADDR'), anon=loggedinanon, ip=ip, httpxforwardfor=x_forwarded_for)
+			pages_view = UserViews.objects.create(page_view="clickthrough__sonsor_id__"+str(sponsor_id)+"__ip__"+request.META.get('REMOTE_ADDR'), anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
 			page_views.user_views.add(pages_view)
 			if previous_view:
 				pages_view.previous_view_id = previous_view.id
