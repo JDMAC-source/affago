@@ -91,16 +91,18 @@ class StorefrontDicForm(forms.ModelForm):
         super(StorefrontDicForm, self).__init__(*args, **kwargs)
         self.fields['the_dictionary_itself'] = forms.ChoiceField(choices=[(e, e) for e in user_anon.dictionaries.all().values_list("the_dictionary_itself", flat=True)]) 
 
-
-
-class SaleForm(forms.ModelForm):
+class TimeAndRangePricesForm(forms.ModelForm):
     class Meta:
-        model = Sale
-        fields = ("deliver_to_address", "deliver_to_instructions", "courier_select", "courier_order", "courier_fees", "courier_1_to_2_drop_location", "courier_2_to_3_drop_location", "courier_3_to_4_drop_location",  "courier_4_to_5_drop_location", "courier_5_to_6_drop_location","courier_6_to_7_drop_location",)
-    def __init__(self, *args, **kwargs):
-        super(SaleForm, self).__init__(*args, **kwargs)
-        self.fields['courier_select'] = forms.MultipleChoiceField(choices=[(e, e) for e in Author.objects.order_by("username").values_list("username", flat=True)]) 
+        model = TimeAndRangePrices
+        fields = ("from_time_starting", "to_times_ending", "south_corner", "north_corner", "east_corner", "west_corner", "willing_for_price_per_kilometre", "willing_for_price_per_kilogram", "max_kilometre", "max_kilogram", "max_room_length", "max_room_height", "max_room_width")
 
+class CourierForm(forms.ModelForm):
+    class Meta:
+        model = Courier
+        fields = ("to_country", "to_state", "to_city", "to_address", "to_name", "update",  "leave_from_time", "estimated_arrival_time", "deliver_to_instructions")
+    def __init__(self, request, *args, **kwargs):
+        super(CourierForm, self).__init__(*args, **kwargs)
+        
 
 class MembersSelectPrimationReference(forms.ModelForm):
     class Meta:
@@ -637,10 +639,21 @@ class WordForm(forms.ModelForm):
 
 
 
+class FontstyleForm(forms.ModelForm):
+    class Meta:
+        model = Fontstyle
+        fields = ('css_encoding', 'duration')
+    
+    def __init__(self, *args, **kwargs):
+        super(FontstyleForm, self).__init__(*args, **kwargs)
+           
+
+
+
 class FontForm(forms.ModelForm):
     class Meta:
         model = Word
-        fields = ('fontsize', 'fontstyle', 'fontype')
+        fields = ('fontsize', 'fontype')
         
     def clean(self):
         cleaned_data = super(FontForm, self).clean()
@@ -972,6 +985,10 @@ class PostForm(forms.ModelForm):
         super(PostForm, self).__init__(*args, **kwargs)
         if Author.objects.get(username=request.user.username):
             self.fields['spaces'] = forms.MultipleChoiceField(choices=[(e, e) for e in Space.objects.all().filter(approved_voters=Author.objects.get(username=request.user.username)).order_by('the_space_itself__the_word_itself').values_list('the_space_itself__the_word_itself', flat=True)])
+            loggedinanon = Anon.objects.get(username__username=request.user.username)
+            for dic in loggedinanon.dictionaries.all():
+                if dic not in loggedinanon.purchased_dictionaries.all():
+                    loggedinanon.purchased_dictionaries.add(dic)
             self.fields['dictionaries'] = forms.MultipleChoiceField(choices=[(e, e) for e in Anon.objects.get(username__username=request.user.username).purchased_dictionaries.all().order_by('the_dictionary_itself').values_list('the_dictionary_itself', flat=True)])
         else:
             self.fields['spaces'] = None
@@ -998,7 +1015,28 @@ class SpaceForm(forms.ModelForm):
             word.get_approved
         self.fields['the_space_itself'] = forms.MultipleChoiceField(choices=[(e, e) for e in Word.objects.all().filter(ap_voters=loggedinauthor).order_by('the_word_itself').values_list('the_word_itself', flat=True)])
         
-        
+
+
+class NumStepForm(forms.ModelForm):
+    class Meta:
+        model = NumStep
+        fields = ('from_variable', 'to_variable', 'duration', )
+
+    def __init__(self, *args, **kwargs):
+        super(NumStepForm, self).__init__(*args, **kwargs)
+
+
+
+
+class ColourStepForm(forms.ModelForm):
+    class Meta:
+        model = ColourStep
+        fields = ('from_red', 'from_green', 'from_blue', 'to_red', 'to_green', 'to_blue', 'duration', )
+
+    def __init__(self, *args, **kwargs):
+        super(ColourStepForm, self).__init__(*args, **kwargs)
+
+      
 
 class SpaceDataForm(forms.ModelForm):
     class Meta:

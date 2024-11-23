@@ -219,9 +219,11 @@ class Sponsor(models.Model):
 	img = models.URLField(max_length=2000)
 	url2 = models.URLField(max_length=2000)
 	clicks = models.IntegerField(default=0)
+	active = models.BooleanField(default=True)
 	payperview = models.BooleanField(default=False)
 	price_limit = models.IntegerField(default=0)
 	allowable_expenditure = models.IntegerField(default=0)
+	amount_spent = models.IntegerField(default=0)
 	trickles = models.IntegerField(default=0)
 	author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None)
 	votes = models.ManyToManyField(Votes_Source, default=None)
@@ -482,6 +484,13 @@ SPONSOR_SORT_CHOICES_CHAR = (
 	("-views", "Least Views"),
 )
 
+
+class Fontstyle(models.Model):
+	css_encoding = models.URLField(max_length=20000, blank=True, default='')
+	order = models.IntegerField(default=0)
+	duration = models.IntegerField(default=100)
+	
+
 from numpy.random import choice
 
 class Word(models.Model):
@@ -506,6 +515,7 @@ class Word(models.Model):
 	relation_count = models.IntegerField(default=0)
 	sponsors = models.ManyToManyField(Sponsor, default=None)
 	sponsor_count = models.IntegerField(default=0)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
 	price_limit = models.IntegerField(default=0) # NEED TO MAKE IT LEGIT
 	viewcount = models.IntegerField(default=0)
 	spaces = models.ManyToManyField(SpaceSource, default=None)
@@ -514,7 +524,8 @@ class Word(models.Model):
 	vote_count = models.IntegerField(default=0)
 	ap_voters = models.ManyToManyField(Author, default=None, related_name="ap_voters")
 	ap_voter_count = models.IntegerField(default=0)
-	fontstyle = models.URLField(max_length=2000, blank=True, default='')
+	fontstyling = models.ManyToManyField(Fontstyle, default=None)
+	fontstyle_repeat = models.BooleanField(default=True)
 	fontsize = models.CharField(max_length=3, blank=True, default='')
 	fontype = models.TextField(max_length=14400, default='')
 
@@ -768,34 +779,134 @@ PRODUCT_CHOICES = (
 	("class_material", "Class Material"),
 	("other", "Other Deal"),
 )
+
+class TimeAndRangePrices(models.Model):
+	from_time_starting = models.DateTimeField(timezone.now)
+	to_times_ending = models.DateTimeField(timezone.now)
+	south_corner = models.DecimalField(max_digits=9, decimal_places=6)
+	north_corner = models.DecimalField(max_digits=9, decimal_places=6)
+	east_corner = models.DecimalField(max_digits=9, decimal_places=6)
+	west_corner = models.DecimalField(max_digits=9, decimal_places=6)
+
+	south_to_north_distance = models.IntegerField(default=0)
+	south_to_north_midpoint = models.DecimalField(max_digits=9, decimal_places=6)
+	south_to_east_distance = models.IntegerField(default=0)
+	south_to_west_distance = models.IntegerField(default=0)
+	north_to_east_distance = models.IntegerField(default=0)
+	north_to_west_distance = models.IntegerField(default=0)
+	east_to_west_distance = models.IntegerField(default=0)
+	east_to_west_midpoint = models.DecimalField(max_digits=9, decimal_places=6)
+	willing_for_price_per_kilometre = models.IntegerField(default=0)
+	willing_for_price_per_kilogram = models.IntegerField(default=0)
+	max_kilometre = models.IntegerField(default=0)
+	max_kilogram = models.IntegerField(default=0)
+	
+	max_room_length = models.IntegerField(default=0)
+	max_room_height = models.IntegerField(default=0)
+	max_room_width = models.IntegerField(default=0)
+	creation_date = models.DateTimeField(timezone.now)
+
+
+TIME_AND_RANGE_PRICES_SORT_CHOICES_CHAR = (
+	("-from_time_starting", "Latest Time Starting"),
+	("from_time_starting", "Earliest Time Starting"),
+	("-to_times_ending", "Latest Time Ending"),
+	("to_times_ending", "Earliest Time Ending"),
+	("south_corner", "Southernmost South Boundary"),
+	("-south_corner", "Northernmost South Boundary"),
+	("north_corner", "Southernmost North Boundary"),
+	("-north_corner", "Northernmost North Boundary"),
+	("east_corner", "Easternmost East Boundary"),
+	("-east_corner", "Westernmost East Boundary"),
+	("west_corner", "Easternmost West Boundary"),
+	("-west_corner", "Westernmost West Boundary"),
+	("willing_for_price_per_kilometre", "Lowest Cost Per Km"),
+	("-willing_for_price_per_kilometre", "Highest Cost Per Km"),
+	("willing_for_price_per_kilogram", "Lowest Cost Per Kg"),
+	("-willing_for_price_per_kilogram", "Highest Cost Per Kg"),
+	("max_kilometre", "Lowest Allowed Km"),
+	("-max_kilometre", "Highest Allowed Km"),
+	("max_kilogram", "Lowest Allowed Kg"),
+	("-max_kilogram", "Highest Allowed Kg"),
+	("max_room_width", "Lowest Allowed Width"),
+	("-max_room_width", "Highest Allowed Width"),
+	("max_room_height", "Lowest Allowed Height"),
+	("-max_room_height", "Highest Allowed Height"),
+	("max_room_length", "Lowest Allowed Length"),
+	("-max_room_length", "Highest Allowed Length"),
+	("creation_date", "Earliest Creation"),
+	("-creation_date", "Latest Creation"),
+	
+	
+)
+
+
+class Courier(models.Model):
+	from_location = models.CharField(max_length=1440, default="")
+	from_name = models.CharField(max_length=1440, default="")
+	product_name = models.CharField(max_length=1440, default="")
+	product_description = models.CharField(max_length=1440, default="")
+	product_img = models.URLField(max_length=20000, default="")
+	to_country = models.CharField(max_length=1440, default="")
+	to_state = models.CharField(max_length=1440, default="")
+	to_city = models.CharField(max_length=1440, default="")
+	to_address = models.CharField(max_length=1440, default="")
+	to_name = models.CharField(max_length=1440, default="")
+	update = models.CharField(max_length=1440, default="")
+	creation_date = models.DateTimeField(timezone.now)
+	leave_from_time = models.DateTimeField(timezone.now)
+	estimated_arrival_time = models.DateTimeField(timezone.now)
+	driver = models.CharField(max_length=140, default='') # USERNAME
+	order = models.IntegerField(default=0)
+	fees = models.IntegerField(default=0)
+	deliver_to_instructions = models.CharField(max_length=1440, default="Leave By Postbox")
+	
+
+class Deliverer(models.Model):
+	username = models.CharField(max_length=140, default='')
+	
+	previous_open_offers = models.ManyToManyField(TimeAndRangePrices, default=None, related_name="previous_open_offers")
+	open_offers = models.ManyToManyField(TimeAndRangePrices, default=None, related_name="open_offers")
+	completed_offers = models.ManyToManyField(Courier, default=None, related_name="completed_offers")
+	completed_offers_count = models.IntegerField(default=0)
+	planned_offers = models.ManyToManyField(Courier, default=None, related_name="planned_offers")
+	planned_offers_count = models.IntegerField(default=0)
+	money_earnt = models.IntegerField(default=0)
+	kilograms_transported = models.IntegerField(default=0)
+	kilograms_transporting = models.IntegerField(default=0)
+	kilometres_travelled = models.IntegerField(default=0)
+	kilometres_travelling = models.IntegerField(default=0)
+	people_delivered_from_count = models.IntegerField(default=0)
+	people_delivered_to_count = models.IntegerField(default=0)
+
+
+
+DELIVERER_SORT_CHOICES_CHAR = (
+	("username", "Alphabetic Name"),
+	("-username", "Reverse Alphabetic Name"),
+	("-completed_offers_count", "Most Deliveries Completed"),
+	("completed_offers_count", "Least Deliveries Completed"),
+	("-planned_offers_count", "Most Deliveries Planned"),
+	("planned_offers_count", "Least Deliveries Planned"),
+	("-money_earnt", "Most Money Earnt"),
+	("money_earnt", "Least Money Earnt"),
+	("-kilograms_transported", "Most Kilograms Transported"),
+	("kilograms_transported", "Least Kilograms Transported"),
+	("-kilograms_transporting", "Most Kilograms Transporting"),
+	("kilograms_transporting", "Least Kilograms Transporting"),
+	("-kilometres_travelled", "Most Kilometres Travelled"),
+	("kilometres_travelled", "Least Kilometres Travelled"),
+	("-kilometres_travelled", "Most Kilometres Travelling"),
+	("kilometres_travelled", "Least Kilometres Travelling"),
+)
  
+
 
 class Sale(models.Model):
 	user = models.OneToOneField(Author, default=None, on_delete=models.PROTECT)
 	price_id = models.CharField(max_length=200, default="")
-	deliver_to_address = models.CharField(max_length=200, default="Digital Product")
-	deliver_to_instructions = models.CharField(max_length=1440, default="Leave By Postbox")
-	courier_select = models.ManyToManyField(Author, default=None, related_name="courier_select")
-	courier_order = models.CharField(max_length=1440, default="")
-	courier_fees = models.CharField(max_length=1440, default="1")
-	courier_1_to_2_drop_location = models.CharField(max_length=1440, default="")#manufacturer
-	courier_2_to_3_drop_location = models.CharField(max_length=1440, default="")#supplier
-	courier_3_to_4_drop_location = models.CharField(max_length=1440, default="")#distributer
-	courier_4_to_5_drop_location = models.CharField(max_length=1440, default="")#dealer
-	courier_5_to_6_drop_location = models.CharField(max_length=1440, default="")#runner
-	courier_6_to_7_drop_location = models.CharField(max_length=1440, default="")#pusher
-	courier_1_to_2_drop_eta = models.CharField(max_length=1440, default="")#pusher
-	courier_1_to_2_drop_update = models.CharField(max_length=1440, default="")#pusher
-	courier_2_to_3_drop_eta = models.CharField(max_length=1440, default="")#pusher
-	courier_2_to_3_drop_update = models.CharField(max_length=1440, default="")#pusher
-	courier_3_to_4_drop_eta = models.CharField(max_length=1440, default="")#pusher
-	courier_3_to_4_drop_update = models.CharField(max_length=1440, default="")#pusher
-	courier_4_to_5_drop_eta = models.CharField(max_length=1440, default="")#pusher
-	courier_4_to_5_drop_update = models.CharField(max_length=1440, default="")#pusher
-	courier_5_to_6_drop_eta = models.CharField(max_length=1440, default="")#pusher
-	courier_5_to_6_drop_update = models.CharField(max_length=1440, default="")#pusher
-	courier_6_to_7_drop_eta = models.CharField(max_length=1440, default="")#pusher
-	courier_6_to_7_drop_update = models.CharField(max_length=1440, default="")#pusher
+	courier_routing = models.ManyToManyField(Courier, default=None)
+	
 
 	def get_price_price(self):
 		return Price.objects.get(id=self.price_id).price
@@ -930,6 +1041,148 @@ STOREFRONT_SORT_CHOICES_CHAR = (
 	("-views", "Least Viewed"),
 )
 
+LOCATION_CHOICES_CHAR = (
+	("on_site","On-site"),
+	("remote","Remote"),
+	("hybrid","Hybrid"),
+)
+
+
+class JobApplication(models.Model):
+	author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None)
+	public = models.BooleanField(default=False)
+
+
+	job_id = models.CharField(max_length=2000, default="")
+
+	invite_only = models.BooleanField(default=False)
+	invite_active = models.BooleanField(default=False)
+	invite_code = models.CharField(max_length=200, default='')
+
+	sponsors = models.ManyToManyField(Sponsor, default=None)
+	sponsor_count = models.IntegerField(default=0)
+
+	views = models.IntegerField(default=0)
+	latest_change_date = models.DateTimeField(default=timezone.now)
+	creation_date = models.DateTimeField(default=timezone.now)
+
+	location_type = models.CharField(choices=LOCATION_CHOICES_CHAR, default="on_site", max_length=180)
+	location = models.CharField(max_length=200, default='')
+
+	company_name = models.CharField(max_length=200, default='')
+	reference_link = models.URLField(max_length=20000, default='')
+
+	character_description = models.TextField(max_length=1400, default="Character Description: ")
+	character_values = models.TextField(max_length=1400, default="Character Values: ")
+	personal_vision = models.TextField(max_length=1400, default="Personal Vision: ")
+	personal_mission = models.TextField(max_length=1400, default="Personal Mission: ")
+	impact_desires = models.TextField(max_length=1400, default="Impact Desires: ")
+	related_job_description = models.TextField(max_length=1400, default="Related Job Description: ")
+	related_position_summary = models.TextField(max_length=1400, default="Related Position Summary: ")
+	related_qualifications = models.TextField(max_length=1400, default="Related Qualifications: ")
+	related_knowledge = models.TextField(max_length=1400, default="Related Knowledge: ")
+	related_skills = models.TextField(max_length=1400, default="Related Skills: ")
+	related_experience = models.TextField(max_length=1400, default="Related Experience: ")
+	desired_compensation = models.TextField(max_length=1400, default="Desired Compensation: ")
+	additional_information = models.TextField(max_length=1400, default="Additional Information: ")
+
+	
+
+
+class Job(models.Model):
+	author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None)
+	public = models.BooleanField(default=False)
+
+	invite_only = models.BooleanField(default=False)
+	invite_active = models.BooleanField(default=False)
+	invite_code = models.CharField(max_length=200, default='')
+
+	expires_by = models.DateTimeField(default=timezone.now)
+
+	sponsors = models.ManyToManyField(Sponsor, default=None)
+	sponsor_count = models.IntegerField(default=0)
+
+	views = models.IntegerField(default=0)
+	latest_change_date = models.DateTimeField(default=timezone.now)
+	creation_date = models.DateTimeField(default=timezone.now)
+
+	location_type = models.CharField(choices=LOCATION_CHOICES_CHAR, default="on_site", max_length=180)
+	location = models.CharField(max_length=200, default='')
+
+	company_name = models.CharField(max_length=200, default='')
+	reference_link = models.URLField(max_length=20000, default='')
+
+	company_description = models.TextField(max_length=1400, default="Company Description: ")
+	company_values = models.TextField(max_length=1400, default="Company Values: ")
+	company_vision = models.TextField(max_length=1400, default="Company Vision: ")
+	company_mission = models.TextField(max_length=1400, default="Company Mission: ")
+	impact_report = models.TextField(max_length=1400, default="Impact Report: ")
+	job_description = models.TextField(max_length=1400, default="Job Description: ")
+	position_summary = models.TextField(max_length=1400, default="Position Summary: ")
+	qualifications = models.TextField(max_length=1400, default="Qualifications: ")
+	knowledge_required = models.TextField(max_length=1400, default="Knowledge Required: ")
+	skills_required = models.TextField(max_length=1400, default="Skills Required: ")
+	experience_required = models.TextField(max_length=1400, default="Experience Required: ")
+	compensation = models.TextField(max_length=1400, default="Compensation: ")
+	additional_information = models.TextField(max_length=1400, default="Additional Information: ")
+
+	job_applications = models.ManyToManyField(JobApplication, default=None, related_name="job_applications")
+	interviewing_applications = models.ManyToManyField(JobApplication, default=None, related_name="interviewing_applications")
+	successful_applications = models.ManyToManyField(JobApplication, default=None, related_name="successful_applications")
+
+
+
+
+
+
+
+class JobSearch(models.Model):
+	author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None)
+	creation_date = models.DateTimeField(default=timezone.now)
+	keyword = models.CharField(max_length=200, default='')
+	location = models.CharField(max_length=200, default='')
+	ip = models.CharField(max_length=200, default='')
+
+	on_site = models.BooleanField(default=False)
+	remote = models.BooleanField(default=False)
+	hybrid = models.BooleanField(default=False)
+
+	free_intern = models.BooleanField(default=False)
+	entry_level = models.BooleanField(default=False)
+	junior = models.BooleanField(default=False)
+	mid_level = models.BooleanField(default=False)
+	senior = models.BooleanField(default=False)
+	manager = models.BooleanField(default=False)
+	executive = models.BooleanField(default=False)
+
+	full_time = models.BooleanField(default=False)
+	full_time_contract = models.BooleanField(default=False)
+	part_time = models.BooleanField(default=False)
+	contract_to_hire = models.BooleanField(default=False)
+
+	company_name = models.CharField(max_length=200, default='')
+
+	company_description = models.CharField(max_length=140, default="")
+	company_values = models.CharField(max_length=140, default="")
+	company_vision = models.CharField(max_length=140, default="")
+	company_mission = models.CharField(max_length=140, default="")
+	impact_report = models.CharField(max_length=140, default="")
+	job_description = models.CharField(max_length=140, default="")
+	position_summary = models.CharField(max_length=140, default="")
+	qualifications = models.CharField(max_length=140, default="")
+	knowledge_required = models.CharField(max_length=140, default="")
+	skills_required = models.CharField(max_length=140, default="")
+	experience_required = models.CharField(max_length=140, default="")
+	compensation = models.CharField(max_length=140, default="")
+	additional_information = models.CharField(max_length=140, default="")
+
+	returns = models.ManyToManyField(Job, default=None)
+
+	
+	
+
+
+
 class Dictionary(models.Model):
 	author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None, related_name='dicauthor')
 	public = models.BooleanField(default=False)
@@ -966,6 +1219,18 @@ class Dictionary(models.Model):
 	
 	entry_fee = models.IntegerField(default=0)
 	continuation_fee = models.IntegerField(default=0)
+
+	sponsors = models.ManyToManyField(Sponsor, default=None)
+	sponsor_count = models.IntegerField(default=0)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+
+	spaces = models.ManyToManyField(SpaceSource, default=None, related_name="dictionary_spaces")
+	spaces_count = models.IntegerField(default=0)
+	sum_earnt_from_spaces = models.IntegerField(default=0)
+
+
+	invoices = models.ManyToManyField(Invoice, default=None)
+	sum_invoices = models.IntegerField(default=0)
 
 
 	dictionary_source = models.CharField(max_length=400, default='')
@@ -2048,6 +2313,290 @@ class Associate(models.Model):
 	mutual_friends_affinity = models.ManyToManyField(Affinity, default=None)
 	total_mutual_friends_count = models.IntegerField(default=0)
 
+class NumStep(models.Model):
+	from_variable = models.IntegerField(default=100)
+	to_variable = models.IntegerField(default=100)
+	duration = models.IntegerField(default=100)
+	order = models.IntegerField(default=0)
+
+class ColourStep(models.Model):
+	from_red = models.IntegerField(default=0)
+	from_blue = models.IntegerField(default=0)
+	from_green = models.IntegerField(default=0)
+	to_red = models.IntegerField(default=0)
+	to_blue = models.IntegerField(default=0)
+	to_green = models.IntegerField(default=0)
+	duration = models.IntegerField(default=0)
+	order = models.IntegerField(default=0)
+
+
+class ViewSuccess(models.Model):
+	author = models.OneToOneField(Author, default=None, on_delete=models.PROTECT)
+	duration_viewed = models.IntegerField(default=0)
+	page_viewed = models.CharField(max_length=200, default='')
+	page_to = models.CharField(max_length=200, default='')
+	page_to_position_on_page_viewed = models.CharField(max_length=200, default='')
+	view_date = models.DateTimeField(default=timezone.now)
+
+
+class UserSpecificJavaScriptVariableViewLearning(models.Model):
+	creation_date = models.DateTimeField(default=timezone.now)
+	view_successes = models.ManyToManyField(ViewSuccess, default=None)
+	author = models.OneToOneField(Author, default=None, on_delete=models.PROTECT)
+	description = models.TextField(max_length=1400, default='')
+	sponsors = models.ManyToManyField(Sponsor, default=None)
+	sponsor_count = models.IntegerField(default=0)
+	sum_sponsor_earnings = models.IntegerField(default=0)
+	sponsor_allowable_expenditure = models.IntegerField(default=0)
+
+
+	tob_zoom = models.ManyToManyField(NumStep, default=None)
+	tob_zoom_repeat = models.BooleanField(default=True)
+	tob_title_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_title_colour")
+	tob_title_colour_repeat = models.BooleanField(default=True)
+	tob_sponsor_text_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_sponsor_text_colour")
+	tob_sponsor_text_colour_repeat = models.BooleanField(default=True)
+	tob_title_display = models.BooleanField(default=True)
+	tob_body_display = models.BooleanField(default=True)
+	tob_voters_display = models.BooleanField(default=True)
+	tob_views_display = models.BooleanField(default=True)
+	tob_sort_display = models.BooleanField(default=True)
+	tob_latest_display = models.BooleanField(default=True)
+	tob_user_name_display = models.BooleanField(default=True)
+	tob_total_display = models.BooleanField(default=True)
+	base_a_display = models.BooleanField(default=True)
+	base_plus_display = models.BooleanField(default=True)
+	base_key_display = models.BooleanField(default=True)
+	base_search_display = models.BooleanField(default=True)
+	base_user_display = models.BooleanField(default=True)
+	base_icon_display = models.BooleanField(default=True)
+	base_title_display = models.BooleanField(default=True)
+	base_directory_display = models.BooleanField(default=True)
+	base_banner_display = models.BooleanField(default=True)
+	
+	tob_body_text_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_body_text_colour")
+	tob_body_text_colour_repeat = models.BooleanField(default=True)
+	tob_voters_text_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_voters_text_colour")
+	tob_voters_text_colour_repeat = models.BooleanField(default=True)
+	tob_voters_num_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_voters_num_colour")
+	tob_voters_num_colour_repeat = models.BooleanField(default=True)
+	tob_views_text_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_views_text_colour")
+	tob_views_text_colour_repeat = models.BooleanField(default=True)
+	tob_views_num_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_views_num_colour")
+	tob_views_num_colour_repeat = models.BooleanField(default=True)
+	tob_latest_text_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_latest_text_colour")
+	tob_latest_text_colour_repeat = models.BooleanField(default=True)
+	tob_latest_num_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_latest_num_colour")
+	tob_latest_num_colour_repeat = models.BooleanField(default=True)
+	tob_user_text_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_user_text_colour")
+	tob_user_text_colour_repeat = models.BooleanField(default=True)
+	tob_user_name_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_user_name_colour")
+	tob_user_name_colour_repeat = models.BooleanField(default=True)
+	tob_post_background_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_post_background_colour")
+	tob_post_background_colour_repeat = models.BooleanField(default=True)
+	tob_post_body_background_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_post_body_background_colour")
+	tob_post_body_background_colour_repeat = models.BooleanField(default=True)
+	tob_index_background_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_index_background_colour")
+	tob_index_background_colour_repeat = models.BooleanField(default=True)
+	tob_total_text_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_total_text_colour")
+	tob_total_text_colour_repeat = models.BooleanField(default=True)
+	tob_total_num_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_total_num_colour")
+	tob_total_num_colour_repeat = models.BooleanField(default=True)
+	tob_sort_text_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_sort_text_colour")
+	tob_sort_text_colour_repeat = models.BooleanField(default=True)
+	tob_sort_background_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_sort_background_colour")
+	tob_sort_background_colour_repeat = models.BooleanField(default=True)
+	tob_sort_border_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_sort_border_colour")
+	tob_sort_border_colour_repeat = models.BooleanField(default=True)
+	
+	tob_sort_border_size = models.ManyToManyField(NumStep, default=None, related_name="tob_sort_border_size")
+	tob_sort_border_size_repeat = models.BooleanField(default=True)
+	tob_sort_border_radius = models.ManyToManyField(NumStep, default=None, related_name="tob_sort_border_radius")
+	tob_sort_border_radius_repeat = models.BooleanField(default=True)
+	tob_sort_width = models.ManyToManyField(NumStep, default=None, related_name="tob_sort_width")
+	tob_sort_width_repeat = models.BooleanField(default=True)
+	tob_sort_height = models.ManyToManyField(NumStep, default=None, related_name="tob_sort_height")
+	tob_sort_height_repeat = models.BooleanField(default=True)
+	
+	tob_post_width = models.ManyToManyField(NumStep, default=None, related_name="tob_post_width")
+	tob_post_width_repeat = models.BooleanField(default=True)
+	tob_post_height = models.ManyToManyField(NumStep, default=None, related_name="tob_post_height")
+	tob_post_height_repeat = models.BooleanField(default=True)
+	tob_post_margin_left = models.ManyToManyField(NumStep, default=None, related_name="tob_post_margin_left")
+	tob_post_margin_left_repeat = models.BooleanField(default=True)
+	tob_post_margin_right = models.ManyToManyField(NumStep, default=None, related_name="tob_post_margin_right")
+	tob_post_margin_right_repeat = models.BooleanField(default=True)
+	tob_post_margin_top = models.ManyToManyField(NumStep, default=None, related_name="tob_post_margin_top")
+	tob_post_margin_top_repeat = models.BooleanField(default=True)
+	tob_post_margin_bottom = models.ManyToManyField(NumStep, default=None, related_name="tob_post_margin_bottom")
+	tob_post_margin_bottom_repeat = models.BooleanField(default=True)
+	tob_post_border_size = models.ManyToManyField(NumStep, default=None, related_name="tob_post_border_size")
+	tob_post_border_size_repeat = models.BooleanField(default=True)
+	tob_post_border_radius = models.ManyToManyField(NumStep, default=None, related_name="tob_post_border_radius")
+	tob_post_border_radius_repeat = models.BooleanField(default=True)
+	
+	tob_post_border_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_post_border_colour")
+	tob_post_border_colour_repeat = models.BooleanField(default=True)
+	
+	tob_post_title_font_size = models.ManyToManyField(NumStep, default=None, related_name="tob_post_title_font_size")
+	tob_post_title_font_size_repeat = models.BooleanField(default=True)
+	tob_post_body_font_size = models.ManyToManyField(NumStep, default=None, related_name="tob_post_body_font_size")
+	tob_post_body_font_size_repeat = models.BooleanField(default=True)
+	tob_post_body_width = models.ManyToManyField(NumStep, default=None, related_name="tob_post_body_width")
+	tob_post_body_width_repeat = models.BooleanField(default=True)
+	tob_post_body_height = models.ManyToManyField(NumStep, default=None, related_name="tob_post_body_height")
+	tob_post_body_height_repeat = models.BooleanField(default=True)
+	tob_post_body_margin_left = models.ManyToManyField(NumStep, default=None, related_name="tob_post_body_margin_left")
+	tob_post_body_margin_left_repeat = models.BooleanField(default=True)
+	tob_post_body_margin_right = models.ManyToManyField(NumStep, default=None, related_name="tob_post_body_margin_right")
+	tob_post_body_margin_right_repeat = models.BooleanField(default=True)
+	tob_post_body_margin_top = models.ManyToManyField(NumStep, default=None, related_name="tob_post_body_margin_top")
+	tob_post_body_margin_top_repeat = models.BooleanField(default=True)
+	tob_post_body_margin_bottom = models.ManyToManyField(NumStep, default=None, related_name="tob_post_body_margin_bottom")
+	tob_post_body_margin_bottom_repeat = models.BooleanField(default=True)
+	tob_post_body_border_size = models.ManyToManyField(NumStep, default=None, related_name="tob_post_body_border_size")
+	tob_post_body_border_size_repeat = models.BooleanField(default=True)
+	tob_post_body_border_radius = models.ManyToManyField(NumStep, default=None, related_name="base_post_body_border_radius")
+	tob_post_body_border_radius_repeat = models.BooleanField(default=True)
+	
+	tob_post_body_border_colour = models.ManyToManyField(ColourStep, default=None, related_name="tob_post_body_border_colour")
+	tob_post_body_border_colour_repeat = models.BooleanField(default=True)
+	
+	tob_post_sponsor_font_size = models.ManyToManyField(NumStep, default=None, related_name="tob_post_sponsor_font_size")
+	tob_post_sponsor_font_size_repeat = models.BooleanField(default=True)
+	tob_post_voters_font_size = models.ManyToManyField(NumStep, default=None, related_name="tob_post_voters_font_size")
+	tob_post_voters_font_size_repeat = models.BooleanField(default=True)
+	tob_post_views_font_size = models.ManyToManyField(NumStep, default=None, related_name="base_post_views_font")
+	tob_post_views_font_size_repeat = models.BooleanField(default=True)
+	tob_post_latest_font_size = models.ManyToManyField(NumStep, default=None, related_name="base_post_latest_font_size")
+	tob_post_latest_font_size_repeat = models.BooleanField(default=True)
+	tob_post_user_font_size = models.ManyToManyField(NumStep, default=None, related_name="base_post_user_font_size")
+	tob_post_user_font_size_repeat = models.BooleanField(default=True)
+	
+	base_title_font_colour = models.ManyToManyField(ColourStep, default=None, related_name="base_title_font_colour")
+	base_title_font_colour_repeat = models.BooleanField(default=True)
+	base_banner_background_colour = models.ManyToManyField(ColourStep, default=None, related_name="base_banner_background_colour")
+	base_banner_background_colour_repeat = models.BooleanField(default=True)
+	base_key_border_colour = models.ManyToManyField(ColourStep, default=None, related_name="base_key_border_colour")
+	base_key_border_colour_repeat = models.BooleanField(default=True)
+	base_search_border_colour = models.ManyToManyField(ColourStep, default=None, related_name="base_search_border_colour")
+	base_search_border_colour_repeat = models.BooleanField(default=True)
+	base_user_text_colour = models.ManyToManyField(ColourStep, default=None, related_name="base_user_text_colour")
+	base_user_text_colour_repeat = models.BooleanField(default=True)
+	base_a_text_colour = models.ManyToManyField(ColourStep, default=None, related_name="base_a_text_colour")
+	base_a_text_colour_repeat = models.BooleanField(default=True)
+	base_plus_text_colour = models.ManyToManyField(ColourStep, default=None, related_name="base_plus_text_colour")
+	base_plus_text_colour_repeat = models.BooleanField(default=True)
+	
+	base_title_text_size = models.ManyToManyField(NumStep, default=None, related_name="base_title_text_size")
+	base_title_text_size_repeat = models.BooleanField(default=True)
+	base_title_margin_top = models.ManyToManyField(NumStep, default=None, related_name="base_title_margin_top")
+	base_title_margin_top_repeat = models.BooleanField(default=True)
+	base_title_margin_bottom = models.ManyToManyField(NumStep, default=None, related_name="base_title_margin_bottom")
+	base_title_margin_bottom_repeat = models.BooleanField(default=True)
+	base_title_margin_left = models.ManyToManyField(NumStep, default=None, related_name="base_title_margin_left")
+	base_title_margin_left_repeat = models.BooleanField(default=True)
+	base_title_margin_right = models.ManyToManyField(NumStep, default=None, related_name="base_title_marign_right")
+	base_title_margin_right_repeat = models.BooleanField(default=True)
+	base_title_width = models.ManyToManyField(NumStep, default=None, related_name="base_title_width")
+	base_title_width_repeat = models.BooleanField(default=True)
+	base_title_height = models.ManyToManyField(NumStep, default=None, related_name="base_title_height")
+	base_title_height_repeat = models.BooleanField(default=True)
+	base_title_zoom = models.ManyToManyField(NumStep, default=None, related_name="base_title_zoom")
+	base_title_zoom_repeat = models.BooleanField(default=True)
+	
+	base_key_border_size = models.ManyToManyField(NumStep, default=None, related_name="base_key_border_size")
+	base_key_border_size_repeat = models.BooleanField(default=True)
+	base_key_border_radius = models.ManyToManyField(NumStep, default=None, related_name="base_key_border_radius")
+	base_key_border_radius_repeat = models.BooleanField(default=True)
+	base_key_margin_top = models.ManyToManyField(NumStep, default=None, related_name="base_key_margin_top")
+	base_key_margin_top_repeat = models.BooleanField(default=True)
+	base_key_margin_bottom = models.ManyToManyField(NumStep, default=None, related_name="base_key_margin_bottom")
+	base_key_margin_bottomrepeat = models.BooleanField(default=True)
+	base_key_margin_left = models.ManyToManyField(NumStep, default=None, related_name="base_key_margin_left")
+	base_key_margin_left_repeat = models.BooleanField(default=True)
+	base_key_margin_right = models.ManyToManyField(NumStep, default=None, related_name="base_key_marign_right")
+	base_key_margin_right_repeat = models.BooleanField(default=True)
+	base_key_width = models.ManyToManyField(NumStep, default=None, related_name="base_key_width")
+	base_key_width_repeat = models.BooleanField(default=True)
+	base_key_height = models.ManyToManyField(NumStep, default=None, related_name="base_key_height")
+	base_key_height_repeat = models.BooleanField(default=True)
+	base_key_zoom = models.ManyToManyField(NumStep, default=None, related_name="base_key_zoom")
+	base_key_zoom_repeat = models.BooleanField(default=True)
+	
+	base_search_text_size = models.ManyToManyField(NumStep, default=None, related_name="base_search_size")
+	base_search_text_size_repeat = models.BooleanField(default=True)
+	base_search_margin_top = models.ManyToManyField(NumStep, default=None, related_name="base_search_margin_top")
+	base_search_margin_top_repeat = models.BooleanField(default=True)
+	base_search_margin_bottom = models.ManyToManyField(NumStep, default=None, related_name="base_search_margin_bottom")
+	base_search_margin_bottom_repeat = models.BooleanField(default=True)
+	base_search_margin_left = models.ManyToManyField(NumStep, default=None, related_name="base_search_margin_left")
+	base_search_margin_left_repeat = models.BooleanField(default=True)
+	base_search_margin_right = models.ManyToManyField(NumStep, default=None, related_name="base_search_margin_right")
+	base_search_margin_right_repeat = models.BooleanField(default=True)
+	base_search_width = models.ManyToManyField(NumStep, default=None, related_name="base_search_width")
+	base_search_width_repeat = models.BooleanField(default=True)
+	base_search_height = models.ManyToManyField(NumStep, default=None, related_name="base_search_height")
+	base_search_height_repeat = models.BooleanField(default=True)
+	base_search_zoom = models.ManyToManyField(NumStep, default=None, related_name="base_search_zoom")
+	base_search_zoom_repeat = models.BooleanField(default=True)
+	
+	base_user_text_size = models.ManyToManyField(NumStep, default=None, related_name="base_user_text_size")
+	base_user_text_size_repeat = models.BooleanField(default=True)
+	base_user_margin_top = models.ManyToManyField(NumStep, default=None, related_name="base_user_margin_top")
+	base_user_margin_top_repeat = models.BooleanField(default=True)
+	base_user_margin_bottom = models.ManyToManyField(NumStep, default=None, related_name="base_user_margin_bottom")
+	base_user_margin_bottom_repeat = models.BooleanField(default=True)
+	base_user_margin_left = models.ManyToManyField(NumStep, default=None, related_name="base_user_margin_left")
+	base_user_margin_left_repeat = models.BooleanField(default=True)
+	base_user_margin_right = models.ManyToManyField(NumStep, default=None, related_name="base_user_margin_right")
+	base_user_margin_right_repeat = models.BooleanField(default=True)
+	base_user_width = models.ManyToManyField(NumStep, default=None, related_name="base_user_width")
+	base_user_width_repeat = models.BooleanField(default=True)
+	base_user_height = models.ManyToManyField(NumStep, default=None, related_name="base_user_height")
+	base_user_height_repeat = models.BooleanField(default=True)
+	base_user_zoom = models.ManyToManyField(NumStep, default=None, related_name="base_user_zoom")
+	base_user_zoom_repeat = models.BooleanField(default=True)
+	
+	base_a_text_size = models.ManyToManyField(NumStep, default=None, related_name="base_a_text_size")
+	base_a_text_size_repeat = models.BooleanField(default=True)
+	base_a_margin_top = models.ManyToManyField(NumStep, default=None, related_name="base_a_margin_top")
+	base_a_margin_top_repeat = models.BooleanField(default=True)
+	base_a_margin_bottom = models.ManyToManyField(NumStep, default=None, related_name="base_a_margin_bottom")
+	base_a_margin_bottom_repeat = models.BooleanField(default=True)
+	base_a_margin_left = models.ManyToManyField(NumStep, default=None, related_name="base_a_margin_left")
+	base_a_margin_left_repeat = models.BooleanField(default=True)
+	base_a_margin_right = models.ManyToManyField(NumStep, default=None, related_name="base_a_margin_right")
+	base_a_margin_right_repeat = models.BooleanField(default=True)
+	base_a_width = models.ManyToManyField(NumStep, default=None, related_name="base_a_width")
+	base_a_width_repeat = models.BooleanField(default=True)
+	base_a_height = models.ManyToManyField(NumStep, default=None, related_name="base_a_height")
+	base_a_height_repeat = models.BooleanField(default=True)
+	base_a_zoom = models.ManyToManyField(NumStep, default=None, related_name="base_a_zoom")
+	base_a_zoom_repeat = models.BooleanField(default=True)
+	
+	base_plus_text_size = models.ManyToManyField(NumStep, default=None, related_name="base_plus_text_size")
+	base_plus_text_size_repeat = models.BooleanField(default=True)
+	base_plus_margin_top = models.ManyToManyField(NumStep, default=None, related_name="base_plus_margin_top")
+	base_plus_margin_top_repeat = models.BooleanField(default=True)
+	base_plus_margin_bottom = models.ManyToManyField(NumStep, default=None, related_name="base_plus_margin_bottom")
+	base_plus_margin_bottom_repeat = models.BooleanField(default=True)
+	base_plus_margin_left = models.ManyToManyField(NumStep, default=None, related_name="base_plus_margin_left")
+	base_plus_margin_left_repeat = models.BooleanField(default=True)
+	base_plus_margin_right = models.ManyToManyField(NumStep, default=None, related_name="base_plus_margin_right")
+	base_plus_margin_right_repeat = models.BooleanField(default=True)
+	base_plus_width = models.ManyToManyField(NumStep, default=None, related_name="base_plus_width")
+	base_plus_width_repeat = models.BooleanField(default=True)
+	base_plus_height = models.ManyToManyField(NumStep, default=None, related_name="base_plus_height")
+	base_plus_height_repeat = models.BooleanField(default=True)
+	base_plus_zoom = models.ManyToManyField(NumStep, default=None, related_name="base_plus_zoom")
+	base_plus_zoom_repeat = models.BooleanField(default=True)
+	
+
+
+
+
+
 
 class Anon(models.Model):
 	angel_numbers = models.ManyToManyField(AngelNumber, default=None)
@@ -2074,9 +2623,22 @@ class Anon(models.Model):
 
 	dictionaries = models.ManyToManyField(Dictionary, default=None, related_name='dictionaries')
 	sum_dictionaries = models.IntegerField(default=0)
-	
+	sum_earnt_from_dictionaries = models.IntegerField(default=0)
+
+	supported_by_sponsors = models.ManyToManyField(Sponsor, default=None, related_name='supported_by_sponsors')
+	sum_supported_by_sponsors = models.IntegerField(default=0)
+	sum_earnt_from_supports = models.IntegerField(default=0)
+
+
+	supporting_sponsorships = models.ManyToManyField(Sponsor, default=None, related_name='supporting_sponsorships')
+	sum_supporting_sponsorships = models.IntegerField(default=0)
+	sum_spent_on_sponsorships = models.IntegerField(default=0)
+
+
 	purchased_dictionaries = models.ManyToManyField(Dictionary, default=None, related_name='purchased_dictionaries')
 	sum_purchased_dictionaries = models.IntegerField(default=0)
+	currently_monthly_dictionary_spendings = models.IntegerField(default=0)
+	sum_spent_on_dictionaries = models.IntegerField(default=0)
 	applied_dictionaries = models.ManyToManyField(Dictionary_Source, default=None, related_name='applied_dictionaries')
 	excluded_dic_authors = models.ManyToManyField(Author, default=None, related_name="excluded_dic_authors")
 	sum_excluded_authors = models.IntegerField(default=0)
@@ -2112,16 +2674,21 @@ class Anon(models.Model):
 
 	posts = models.ManyToManyField(Post, blank=True, default=None)
 	sum_posts = models.IntegerField(default=0)
+	sum_earnt_from_posts = models.IntegerField(default=0)
 	post_sort = models.IntegerField(choices=POST_SORT_CHOICES, default=0)
 	post_sort_char = models.CharField(choices=POST_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
 	
 	spaces = models.ManyToManyField(Space, blank=True, default=None, related_name='spaces')
 	sum_spaces = models.IntegerField(default=0)
+	currently_monthly_spaces_earnings = models.IntegerField(default=0)
+	sum_earnt_from_spaces = models.IntegerField(default=0)
 
 	saved_spaces = models.ManyToManyField(Space, blank=True, default=None, related_name='saved_spaces')
 	
 	purchased_spaces = models.ManyToManyField(Space, blank=True, default=None, related_name='purchased_spaces')
+	currently_monthly_spaces_spendings = models.IntegerField(default=0)
 	sum_purchased_spaces = models.IntegerField(default=0)
+	sum_spent_on_spaces = models.IntegerField(default=0)
 	space_sort = models.IntegerField(choices=SPACE_SORT_CHOICES, default=0)
 	space_sort_char = models.CharField(choices=SPACE_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
 
@@ -2133,6 +2700,7 @@ class Anon(models.Model):
 
 	past_votes = models.ManyToManyField(Votings, default=None, related_name='past_votes')
 	sum_past_votes = models.IntegerField(default=0)
+	sum_past_votes_earnings = models.IntegerField(default=0)
 	search_urls = models.ManyToManyField(SearchURL, default=None)
 	
 	monero_wallet = models.CharField(max_length=200, default='')
@@ -2153,6 +2721,16 @@ class Anon(models.Model):
 	student_of = models.ManyToManyField(Author, default=None, related_name="student_of")
 	employees = models.ManyToManyField(Author, default=None, related_name="employees")
 	employed_by = models.ManyToManyField(Author, default=None, related_name="employed_by")
+
+	job_searches = models.ManyToManyField(JobSearch, default=None)
+	job_listings = models.ManyToManyField(Job, default=None, related_name="job_listings")
+	job_interviews = models.ManyToManyField(Job, default=None, related_name="job_interviews")
+	jobs_accepted = models.ManyToManyField(Job, default=None, related_name="jobs_accepted")
+	job_applications = models.ManyToManyField(JobApplication, default=None)
+
+	owned_variable_views = models.ManyToManyField(UserSpecificJavaScriptVariableViewLearning, default=None, related_name="owned_variable_views")
+	viewed_variable_views = models.ManyToManyField(UserSpecificJavaScriptVariableViewLearning, default=None, related_name="viewed_variable_views")
+
 
 	loans = models.ManyToManyField(Loan, default=None)
 

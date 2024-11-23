@@ -5358,9 +5358,7 @@ def notification_redirect(request, new_notification_id):
 		if notification.link:
 			return redirect(notification.link)
 		return redirect("Bable:"+"notifications_page")
-
-
-	return redirect(notification)
+	return base_redirect(request, 0)
 
 @login_required
 def notifications_page(request):
@@ -5407,7 +5405,433 @@ def notifications_page(request):
 	return base_redirect(request, 0)
 
 
-	return redirect(notification)
+
+@login_required
+def colour_step_submission(request, user_specific_variable_id, user_specific_variable_view_step_type):
+	if request.user.is_authenticated:
+		if request.method == "POST":
+			colour_step_form = ColourStepForm(request.POST)
+			if colour_step_form.is_valid():
+				loggedinanon = Anon.objects.get(username=request.user.username)
+				user_specific_variable_view = UserSpecificJavaScriptVariableViewLearning.objects.get(id=int(user_specific_variable_id))
+				if user_specific_variable_view in loggedinanon.owned_variable_views.all():
+					colour_step = colour_step_form.save()
+					if user_specific_variable_view_step_type == "tob_body_text":
+						colour_step.order = user_specific_variable_view.tob_body_text_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_body_text_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_voters_text":
+						colour_step.order = user_specific_variable_view.tob_voters_text_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_voters_text_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_title":
+						colour_step.order = user_specific_variable_view.tob_title_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_title_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_sponsor_text":
+						colour_step.order = user_specific_variable_view.tob_sponsor_text_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_sponsor_text_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_voters_num":
+						colour_step.order = user_specific_variable_view.tob_voters_num_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_voters_num_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_views_text":
+						colour_step.order = user_specific_variable_view.tob_views_text_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_views_text_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_views_num":
+						colour_step.order = user_specific_variable_view.tob_views_num_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_views_num_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_latest_text":
+						colour_step.order = user_specific_variable_view.tob_latest_text_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_latest_text_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_latest_num":
+						colour_step.order = user_specific_variable_view.tob_latest_num_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_latest_num_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_user_text":
+						colour_step.order = user_specific_variable_view.tob_user_text_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_user_text_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_user_name":
+						colour_step.order = user_specific_variable_view.tob_user_name_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_user_name_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_background":
+						colour_step.order = user_specific_variable_view.tob_post_background_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_post_background_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_body_background":
+						colour_step.order = user_specific_variable_view.tob_post_body_background_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_post_body_background_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_index_background":
+						colour_step.order = user_specific_variable_view.tob_index_background_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_index_background_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_total_text":
+						colour_step.order = user_specific_variable_view.tob_total_text_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_total_text_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_total_num":
+						colour_step.order = user_specific_variable_view.tob_total_num_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_total_num_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_sort_text":
+						colour_step.order = user_specific_variable_view.tob_sort_text_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_sort_text_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_sort_background":
+						colour_step.order = user_specific_variable_view.tob_sort_background_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_sort_background_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_sort_border":
+						colour_step.order = user_specific_variable_view.tob_sort_border_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_sort_border_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_border":
+						colour_step.order = user_specific_variable_view.tob_post_border_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_post_border_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_body_border":
+						colour_step.order = user_specific_variable_view.tob_post_body_border_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.tob_post_body_border_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_title_font":
+						colour_step.order = user_specific_variable_view.base_title_font_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.base_title_font_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "baser_banner_background":
+						colour_step.order = user_specific_variable_view.baser_banner_background_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.baser_banner_background_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_key_border":
+						colour_step.order = user_specific_variable_view.base_key_border_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.base_key_border_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_search_border":
+						colour_step.order = user_specific_variable_view.base_search_border_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.base_search_border_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_user_text":
+						colour_step.order = user_specific_variable_view.base_user_text_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.base_user_text_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_a_text":
+						colour_step.order = user_specific_variable_view.base_a_text_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.base_a_text_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_plus_text":
+						colour_step.order = user_specific_variable_view.base_plus_text_colour.count()
+						colour_step.save()
+						user_specific_variable_view_step_type.base_plus_text_colour.add(colour_step)
+						user_specific_variable_view_step_type.save()
+	return base_redirect(request, 0)
+
+@login_required
+def num_step_submission(request, user_specific_variable_view_id, user_specific_variable_view_step_type):
+	if request.user.is_authenticated:
+		if request.method == "POST":
+			num_step_form = NumStepForm(request.POST)
+			if num_step_form.is_valid():
+				loggedinanon = Anon.objects.get(username=request.user.username)
+				user_specific_variable_view = UserSpecificJavaScriptVariableViewLearning.objects.get(id=int(user_specific_variable_id))
+				if user_specific_variable_view in loggedinanon.owned_variable_views.all():
+					num_step = num_step_form.save()
+					if user_specific_variable_view_step_type == "tob_sort_border_size":
+						num_step.order = user_specific_variable_view.tob_sort_border_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_sort_border_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_sort_border_radius":
+						num_step.order = user_specific_variable_view.tob_sort_border_radius.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_sort_border_radius.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_sort_width":
+						num_step.order = user_specific_variable_view.tob_sort_width.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_sort_width.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_sort_height":
+						num_step.order = user_specific_variable_view.tob_sort_height.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_sort_height.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_sort_width":
+						num_step.order = user_specific_variable_view.tob_sort_width.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_sort_width.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_sort_height":
+						num_step.order = user_specific_variable_view.tob_sort_height.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_sort_height.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_width":
+						num_step.order = user_specific_variable_view.tob_post_width.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_width.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_height":
+						num_step.order = user_specific_variable_view.tob_post_height.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_height.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_margin_left":
+						num_step.order = user_specific_variable_view.tob_post_margin_left.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_margin_left.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_margin_right":
+						num_step.order = user_specific_variable_view.tob_post_margin_right.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_margin_right.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_margin_top":
+						num_step.order = user_specific_variable_view.tob_post_margin_top.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_margin_top.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_margin_bottom":
+						num_step.order = user_specific_variable_view.tob_post_margin_bottom.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_margin_bottom.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_border_size":
+						num_step.order = user_specific_variable_view.tob_post_border_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_border_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_border_radius":
+						num_step.order = user_specific_variable_view.tob_post_border_radius.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_border_radius.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_title_font":
+						num_step.order = user_specific_variable_view.tob_post_title_font_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_title_font_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_body_font_size":
+						num_step.order = user_specific_variable_view.tob_post_body_font_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_body_font_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_body_width":
+						num_step.order = user_specific_variable_view.tob_post_body_width.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_body_width.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_body_height":
+						num_step.order = user_specific_variable_view.tob_post_body_height.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_body_height.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_body_margin_left":
+						num_step.order = user_specific_variable_view.tob_post_body_margin_left.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_body_margin_left.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_body_margin_right":
+						num_step.order = user_specific_variable_view.tob_post_body_margin_right.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_body_margin_right.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_body_margin_top":
+						num_step.order = user_specific_variable_view.tob_post_body_margin_top.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_body_margin_top.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_body_margin_bottom":
+						num_step.order = user_specific_variable_view.tob_post_body_margin_bottom.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_body_margin_bottom.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_body_border_size":
+						num_step.order = user_specific_variable_view.tob_post_body_border_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_body_border_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_body_border_radius":
+						num_step.order = user_specific_variable_view.tob_post_body_border_radius.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_body_border_radius.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_sponsor_font_size":
+						num_step.order = user_specific_variable_view.tob_post_sponsor_font_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_sponsor_font_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_voters_font_size":
+						num_step.order = user_specific_variable_view.tob_post_voters_font_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_voters_font_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_views_font_size":
+						num_step.order = user_specific_variable_view.tob_post_views_font_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_views_font_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_latest_font_size":
+						num_step.order = user_specific_variable_view.tob_post_latest_font_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_latest_font_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_user_font_size":
+						num_step.order = user_specific_variable_view.tob_post_user_font_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_user_font_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_title_text_size":
+						num_step.order = user_specific_variable_view.base_title_text_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_title_text_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_title_margin_top":
+						num_step.order = user_specific_variable_view.base_title_margin_top.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_title_margin_top.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_title_margin_bottom":
+						num_step.order = user_specific_variable_view.base_title_margin_bottom.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_title_margin_bottom.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_title_margin_left":
+						num_step.order = user_specific_variable_view.base_title_margin_left.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_title_margin_left.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_title_margin_right":
+						num_step.order = user_specific_variable_view.base_title_margin_right.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_title_margin_right.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_title_width":
+						num_step.order = user_specific_variable_view.base_title_width.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_title_width.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_title_height":
+						num_step.order = user_specific_variable_view.base_title_height.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_title_height.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_title_zoom":
+						num_step.order = user_specific_variable_view.base_title_zoom.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_title_zoom.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_key_border_size":
+						num_step.order = user_specific_variable_view.base_key_border_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_key_border_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_key_border_radius":
+						num_step.order = user_specific_variable_view.base_key_border_radius.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_key_border_radius.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_key_margin_top":
+						num_step.order = user_specific_variable_view.base_key_margin_top.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_key_margin_top.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_key_margin_bottom":
+						num_step.order = user_specific_variable_view.base_key_margin_bottom.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_key_margin_bottom.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_key_margin_left":
+						num_step.order = user_specific_variable_view.base_key_margin_left.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_key_margin_left.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_key_margin_right":
+						num_step.order = user_specific_variable_view.base_key_margin_right.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_key_margin_right.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_key_width":
+						num_step.order = user_specific_variable_view.base_key_width.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_key_width.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_key_height":
+						num_step.order = user_specific_variable_view.base_key_height.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_key_height.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_key_zoom":
+						num_step.order = user_specific_variable_view.base_key_zoom.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_key_zoom.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_search_text_size":
+						num_step.order = user_specific_variable_view.base_search_text_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_search_text_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "base_search_margin_top":
+						num_step.order = user_specific_variable_view.base_search_margin_top.count()
+						num_step.save()
+						user_specific_variable_view_step_type.base_search_margin_top.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_latest_font_size":
+						num_step.order = user_specific_variable_view.tob_post_latest_font_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_latest_font_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_latest_font_size":
+						num_step.order = user_specific_variable_view.tob_post_latest_font_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_latest_font_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+					elif user_specific_variable_view_step_type == "tob_post_latest_font_size":
+						num_step.order = user_specific_variable_view.tob_post_latest_font_size.count()
+						num_step.save()
+						user_specific_variable_view_step_type.tob_post_latest_font_size.add(num_step)
+						user_specific_variable_view_step_type.save()
+
+
+
+
+
+
+
+					
+	return base_redirect(request, 0)
 
 
 
