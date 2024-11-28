@@ -1371,7 +1371,8 @@ def create_space(request):
 
 	word_source_for_ss = Word_Source.objects.filter(the_word_itself=defaultfilters.slugify(unidecode(space_data['the_space_itself'])), author=loggedinauthor).first()
 	dic_source_for_ss = Dictionary_Source.objects.get(the_dictionary_itself=word_source_for_ss.home_dictionary, author=loggedinauthor)
-
+	if word_source_for_ss.the_word_itself in loggedinanon.purchased_spaces.all().values_list('the_space_itself__the_word_itself', flat=True):
+		return HttpResponse("You already own a space with that name.")
 	new_source_space = SpaceSource.objects.create(the_space_itself=word_source_for_ss, dictionary=dic_source_for_ss, author=loggedinauthor)
 	new_source_space.allowed_to_view_authors.add(loggedinauthor)
 	new_source_space.save()
@@ -2436,6 +2437,9 @@ def create_post(request):
 			new_post.save()
 			loggedinanon.posts.add(new_post)
 			loggedinanon.save()
+			approved_voters = []
+			first = True
+			post_pub = True
 			for space in post_form.cleaned_data['spaces']:
 				spa = Space.objects.get(the_space_itself__the_word_itself=space, approved_voters=loggedinauthor)
 				spa.posts.add(new_post)
@@ -2443,8 +2447,18 @@ def create_post(request):
 				spa.save()
 				for spon in spa.sponsors.all():
 					new_post.sponsors.add(spon)
-				if not new_post.public:
-					new_post.public = spa.public
+					if first:
+						for approved in spa.approved_voters.all():
+							approved_voters.append(approved.username)
+						first = False
+					else:
+						for approved in approved_voters:
+							if approved in spa.approved_voters.all().values_list('username', flat=True):
+								new_post.allowed_to_view_authors.add(Author.objects.get(username=approved))
+
+						
+
+				new_post.public = post_pub
 				spa.save()
 			new_post.save()
 			loggedinanon.sum_posts += 1
@@ -4640,6 +4654,7 @@ def tob_space_view(request, space):
 	
 	count = 0
 	registerform = UserCreationForm()
+	space = int(space)
 	
 
 	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -5912,6 +5927,8 @@ def clickthrough_tally(request):
 	tally=0
 	for sponsor in Sponsor.objects.all():
 		tally += sponsor.requested_agents.count()
+
+
 	return HttpResponse(str(UserViews.objects.filter(page_view__startswith="clickthrough").count())+", "+str(tally))
 
 
@@ -7578,14 +7595,25 @@ def tob_users_post(request, user, post, count=0, comment_count=0):
 		user_anon = user_author.to_anon()
 
 		users_post = Post.objects.get(id=int(post))
+		max_sponsor = users_post.max_sponsor()
+		for com in users_post.comments.all()[int(comment_count):int(comment_count)+100]:
+			com.max_sponsor()
 		if users_post not in user_anon.posts.all():
-			user_anon.posts.add(users_post)
-			user_anon.save()
+			return HttpResponse("Not the users post.")
 		if users_post.spaces.count():
+			valid_space_entry = True
 			for space in users_post.spaces.all():
 				full_space = space.to_full()
-				full_space.posts_viewcount += 1
-				full_space.save()
+				if request.user.username in full_space.approved_voters.values_list('username', flat=True) or full_space.public:
+					pass
+				else:
+					valid_space_entry = False
+					return redirect("Bable:tob_space", full_space.id)
+			if valid_space_entry:
+				for space in users_post.spaces.all():
+					full_space = space.to_full()
+					full_space.posts_viewcount += 1
+					full_space.save()
 		users_post.viewcount += 1
 		page_views, created = Pageviews.objects.get_or_create(page="tob_users_post")
 		page_views.views += 1
@@ -7599,6 +7627,8 @@ def tob_users_post(request, user, post, count=0, comment_count=0):
 		page_views.save()
 		users_post.viewcount += 1
 		users_post.save()
+
+
 	
 	registerform = UserCreationForm()
 	
@@ -7670,11 +7700,15 @@ def tob_users_post(request, user, post, count=0, comment_count=0):
 		the_response = render(request, "tob_users_post.html", {"product_form": product_form, "ip": ip, "x_forwarded_for": x_forwarded_for, "file_form": file_form, "total": total, "mcount": mcount, "count": count, "count100": count100, "posts" : posts_by_viewcount, "loggedinanon": loggedinanon, "users_post": users_post, "user_author": user_author, "comment_form": comment_form,"space_form": space_form, "post_form": post_form, "dic_form": dic_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
 			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
 	else:
+		if users_post.public:
 
-		posts_by_viewcount = Post.objects.order_by('viewcount')[count:count+25]
-	
+			posts_by_viewcount = Post.objects.order_by('viewcount')[count:count+25]
+			posts_by_viewcount = list(posts_by_viewcount.values('img', 'url2', 'author__username', 'id', 'title', 'body', 'votes', 'viewcount', 'latest_change_date'))
 		
-		the_response = render(request, "tob_users_post.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "total": total, "mcount": mcount, "count": count, "count100": count100, "posts" : posts_by_viewcount, "users_post": users_post, "user_anon": user_anon, "user_author": user_author,  "registerform": registerform,  "loginform": loginform})
+			
+			the_response = render(request, "tob_users_post.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "total": total, "mcount": mcount, "count": count, "count100": count100, "posts" : posts_by_viewcount, "users_post": users_post, "user_anon": user_anon, "user_author": user_author,  "registerform": registerform,  "loginform": loginform})
+		else:
+			return HttpResponse("Not a public post.")
 	the_response.set_cookie('current', 'tob_users_post')
 	the_response.set_cookie('viewing_user', user)
 	the_response.set_cookie('post', post)
@@ -11063,6 +11097,9 @@ def clickthrough(request):
 	if request.method == "POST":
 		sponsor_id = request.POST.get('sponsor_id')
 		author = request.POST.get('author')
+		sponsored_on = request.POST.get('sponsored_on')
+		sponsored_id = request.POST.get('sponsored_id')
+
 		if not sponsor_id:
 			sponsor = Sponsor.objects.first()
 			sponsor_id = sponsor.id
@@ -11070,7 +11107,7 @@ def clickthrough(request):
 		if author:
 			parked_author = Author.objects.get(username=author)
 		else:
-			parked_author = Author.objects.get(username="Test")
+			parked_author = Author.objects.get(username="test")
 
 		page_views, created = Pageviews.objects.get_or_create(page="clickthrough")
 		page_views.views += 1
@@ -11094,12 +11131,43 @@ def clickthrough(request):
 					clicked_sponsor.allowable_expenditure -= clicked_sponsor.price_limit
 					clicked_anon = clicked_sponsor.author.to_anon()
 					clicked_anon.false_wallet -= clicked_sponsor.price_limit
-					available_requested_agents = [a.if_username for a in clicked_sponsor.requested_agents.all()]
-					if parked_anon.username.username in available_requested_agents:
-						parked_anon.false_wallet += clicked_sponsor.price_limit
-						parked_anon.save()
+					clicked_sponsor.clicks += 1
+					parked_anon.false_wallet += clicked_sponsor.price_limit
+					parked_anon.sum_earnt_from_sponsors += clicked_sponsor.price_limit
+					parked_anon.save()
 					clicked_anon.save()
+
 					clicked_sponsor.save()
+					if sponsored_on == "word":
+						sponsored = Word.objects.get(id=int(sponsored_id))
+					if sponsored_on == "dictionary":
+						sponsored = Dictionary.objects.get(id=int(sponsored_id))
+					if sponsored_on == "space":
+						sponsored = Space.objects.get(id=int(sponsored_id))
+					if sponsored_on == "definition":
+						sponsored = Definition.objects.get(id=int(sponsored_id))
+					if sponsored_on == "price":
+						sponsored = Price.objects.get(id=int(sponsored_id))
+					if sponsored_on == "searchurl":
+						sponsored = SearchURL.objects.get(id=int(sponsored_id))
+					if sponsored_on == "viewvariable":
+						sponsored = UserSpecificJavaScriptVariableViewLearning.objects.get(id=int(sponsored_id))
+					if sponsored_on == "jobapp":
+						sponsored = JobApplication.objects.get(id=int(sponsored_id))
+					if sponsored_on == "job":
+						sponsored = Job.objects.get(id=int(sponsored_id))
+					if sponsored_on == "anon":
+						sponsored = Anon.objects.get(id=int(sponsored_id))
+					if sponsored_on == "angelnumber":
+						sponsored = AngelNumber.objects.get(id=int(sponsored_id))
+					if sponsored_on == "comment":
+						sponsored = Comment.objects.get(id=int(sponsored_id))
+					if sponsored_on == "barcode":
+						sponsored = Barcode.objects.get(id=int(sponsored_id))
+					if sponsored_on == "post":
+						sponsored = Post.objects.get(id=int(sponsored_id))
+					sponsored.sum_earnt_from_sponsors += clicked_sponsor.price_limit
+					sponsored.save()
 				else:
 					clicked_sponsor.delete()
 					
@@ -12253,6 +12321,8 @@ def submit_buy_space_form(request, space_id):
 		loggedinauthor = Author.objects.get(username=request.user.username)
 
 		saving_space = Space.objects.get(id=space_id)
+		if saving_space.the_space_itself.the_word_itself in loggedinanon.purchased_spaces.all().values_list('the_space_itself__the_word_itself', flat=True):
+			return HttpResponse("You already own a space with that name.")
 		if request.method == "POST":
 			if saving_space.for_sale:
 				if saving_space.entry_fee + saving_space.continuation_fee < loggedinanon.false_wallet:

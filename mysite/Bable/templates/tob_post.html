@@ -352,9 +352,11 @@
 							<form action="{% url 'Bable:clickthrough' %}" method=POST>
 							{% csrf_token %}
 							<input type=hidden name=author id=author value="{{ node.author.username }}" readonly>
-							<input type=hidden name=sponsor_id id=sponsor_id value="{{ node.dictionaries.max_sponsor.id }}" readonly>
+							<input type=hidden name=sponsor_id id=sponsor_id value="{{ node.max_sponsor.id }}" readonly>
+							<input readonly=true hidden id=sponsored_on name=sponsored_on value="comment"/>
+							<input readonly=true hidden id=sponsored_id name=sponsored_id value="{{node.id}}"/>
 							<button type=submit>
-								<img src="{{ node.dictionaries.max_sponsor.img }}" style="cursor: pointer; height: 4em; width: 4em; float:right;">
+								<img src="{{ node.max_sponsor.img }}" style="cursor: pointer; height: 4em; width: 4em; float:right;">
 							</button>
 						</form>
 							{% else %}
@@ -679,6 +681,8 @@
 							{% csrf_token %}
 							<input type=hidden value="{{ node.author.username }}" readonly>
 							<input type=hidden value="{{ node.max_sponsor.id }}" readonly>
+							<input readonly=true hidden id=sponsored_on name=sponsored_on value="comment"/>
+							<input readonly=true hidden id=sponsored_id name=sponsored_id value="{{node.id}}"/>
 							<button type=submit>
 								<img src="{{ node.max_sponsor.img }}" style="height: 4em; width: 4em; float:right;">
 							</button>

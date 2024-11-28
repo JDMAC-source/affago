@@ -226,6 +226,20 @@ class Sponsor(models.Model):
 	amount_spent = models.IntegerField(default=0)
 	trickles = models.IntegerField(default=0)
 	author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None)
+	sponsored_on_word = models.CharField(max_length=140, default='')
+	sponsored_on_dictionary = models.CharField(max_length=140, default='')
+	sponsored_on_space = models.CharField(max_length=140, default='')
+	sponsored_on_definition = models.CharField(max_length=140, default='')
+	sponsored_on_price = models.CharField(max_length=140, default='')
+	sponsored_on_searchurl = models.CharField(max_length=140, default='')
+	sponsored_on_viewvariable = models.CharField(max_length=140, default='')
+	sponsored_on_jobapp = models.CharField(max_length=140, default='')
+	sponsored_on_job = models.CharField(max_length=140, default='')
+	sponsored_on_anon = models.CharField(max_length=140, default='')
+	sponsored_on_angelnumber = models.CharField(max_length=140, default='')
+	sponsored_on_comment = models.CharField(max_length=140, default='')
+	sponsored_on_barcode = models.CharField(max_length=140, default='')
+	sponsored_on_post = models.CharField(max_length=140, default='')
 	votes = models.ManyToManyField(Votes_Source, default=None)
 	votes_count = models.IntegerField(default=0)
 	has_voted = models.ManyToManyField(Author, related_name="spo_has_voted", default=None)
@@ -260,6 +274,14 @@ class Definition(models.Model):
 	views = models.IntegerField(default=0)
 	comment_sources = models.ManyToManyField(Comment_Source, related_name="def_com", default=None)
 	sponsors = models.ManyToManyField(Sponsor, default=None)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
+
+	
 
 #Repeat of Words with OVERTOPVISION-onedictionary_to_rule_them_all
 class Translation(models.Model):
@@ -516,6 +538,11 @@ class Word(models.Model):
 	sponsors = models.ManyToManyField(Sponsor, default=None)
 	sponsor_count = models.IntegerField(default=0)
 	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
 	price_limit = models.IntegerField(default=0) # NEED TO MAKE IT LEGIT
 	viewcount = models.IntegerField(default=0)
 	spaces = models.ManyToManyField(SpaceSource, default=None)
@@ -589,17 +616,12 @@ class Word(models.Model):
 				sponsor.delete()
 
 	def max_sponsor(self):
-		max_price = 0
-
-		pks = Sponsor.objects.values_list('pk', flat=True)
-		random_pk = choice(pks)
-		random_obj = Sponsor.objects.get(pk=random_pk)
-		max_sponsor = random_obj
-		for sponsor in self.sponsors.all().filter(payperview=False):
-			if sponsor.allowable_expenditure >= sponsor.price_limit:
-				if sponsor.price_limit >= max_price:
-					max_price = sponsor.price_limit
-					max_sponsor = sponsor
+		max_sponsor = self.sponsors.all().order_by('-price_limit').first()
+		self.max_sponsor_id = max_sponsor.id
+		self.max_sponsor_url = max_sponsor.url
+		self.max_sponsor_price = max_sponsor.price
+		self.max_sponsor_img = max_sponsor.img
+		self.save()
 		return max_sponsor
 
 
@@ -676,7 +698,14 @@ class Votes(models.Model):
 class Votings(models.Model):
 	votes = models.ManyToManyField(Votes, default=None)
 	author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None)
-	sponsor = models.ManyToManyField(Sponsor, default=None)
+	sponsors = models.ManyToManyField(Sponsor, default=None)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
+	
 	ip = models.CharField(max_length=15, default="")
 	creation_date = models.DateTimeField(default=timezone.now)
 
@@ -969,7 +998,13 @@ class Price(models.Model):
     sum_invoices = models.IntegerField(default=0)
 
     sponsors = models.ManyToManyField(Sponsor, default=None)
-    sponsor_count = models.IntegerField(default=0)
+    sum_earnt_from_sponsors = models.IntegerField(default=0)
+    sum_sponsors = models.IntegerField(default=0)
+    max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+    max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+    max_sponsor_id = models.CharField(max_length=200, default='')
+    max_sponsor_price = models.IntegerField(default=0)
+	
 
     views = models.IntegerField(default=0)
 
@@ -1098,7 +1133,13 @@ class JobApplication(models.Model):
 	invite_code = models.CharField(max_length=200, default='')
 
 	sponsors = models.ManyToManyField(Sponsor, default=None)
-	sponsor_count = models.IntegerField(default=0)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	sum_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
 
 	views = models.IntegerField(default=0)
 	latest_change_date = models.DateTimeField(default=timezone.now)
@@ -1138,7 +1179,13 @@ class Job(models.Model):
 	expires_by = models.DateTimeField(default=timezone.now)
 
 	sponsors = models.ManyToManyField(Sponsor, default=None)
-	sponsor_count = models.IntegerField(default=0)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	sum_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
 
 	views = models.IntegerField(default=0)
 	latest_change_date = models.DateTimeField(default=timezone.now)
@@ -1259,8 +1306,13 @@ class Dictionary(models.Model):
 	continuation_fee = models.IntegerField(default=0)
 
 	sponsors = models.ManyToManyField(Sponsor, default=None)
-	sponsor_count = models.IntegerField(default=0)
+	sum_sponsors = models.IntegerField(default=0)
 	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
 
 	spaces = models.ManyToManyField(SpaceSource, default=None, related_name="dictionary_spaces")
 	spaces_count = models.IntegerField(default=0)
@@ -1308,18 +1360,16 @@ class Dictionary(models.Model):
 		return count
 
 	def max_sponsor(self):
-		max_price = 0
-		pks = Sponsor.objects.values_list('pk', flat=True)
-		random_pk = choice(pks)
-		random_obj = Sponsor.objects.get(pk=random_pk)
-		max_sponsor = random_obj
 		for word in self.words.all():
-			for sponsor in word.sponsors.all().filter(payperview=False):
-				if sponsor.allowable_expenditure >= sponsor.price_limit:
-					if sponsor.price_limit >= max_price:
-						max_price = sponsor.price_limit
-						max_sponsor = sponsor
-		return max_sponsor
+			word.max_sponsor()
+		max_word = self.words.order_by('-max_sponsor_price').first()
+		self.max_sponsor_id = max_word.max_sponsor_id
+		self.max_sponsor_url = max_word.max_sponsor_url
+		self.max_sponsor_img = max_word.max_sponsor_img
+		self.max_sponsor_price = max_word.max_sponsor_price
+		self.save()
+		return max_word.max_sponsor()
+
 
 	def prereq_ef_cost(self):
 		pr_c_ef_cost = 0
@@ -1428,6 +1478,13 @@ class AngelNumber(models.Model):
 	numbers = models.IntegerField(default=0)
 	description = models.TextField(max_length=14400)
 	sponsors = models.ManyToManyField(Sponsor, default=None)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	sum_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
 	attributions = models.ManyToManyField(Attribution, default=None)
 
 
@@ -1441,6 +1498,13 @@ class Comment(MPTTModel):
 	sum_dictionaries = models.IntegerField(default=0)
 	body = models.TextField(max_length=144000, default='')
 	sponsors = models.ManyToManyField(Sponsor, default=None)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	sum_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
 	top_price = models.IntegerField(default=0)
 	votes = models.ManyToManyField(Votes, default=None)
 	votes_count = models.IntegerField(default=0)
@@ -1454,6 +1518,12 @@ class Comment(MPTTModel):
 	sum_has_voted = models.IntegerField(default=0)
 	parent = TreeForeignKey('self', on_delete=models.CASCADE, default=None, null=True, blank=True, related_name='children', db_index=True)
 	children_count = models.IntegerField(default=0)
+
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+
 
 	def __str__(self):
 		return self.body
@@ -1476,7 +1546,16 @@ class Comment(MPTTModel):
 	
 
 	def max_sponsor(self):
-		max_sponsor = self.sponsors.order_by('-price_limit').first()
+		for dic in self.dictionaries.all():
+			max_sponsor = dic.max_sponsor()
+		if not max_sponsor:
+			max_sponsor = self.sponsors.order_by('-price_limit').first()
+		if not max_sponsor:
+			max_sponsor = Sponsor.objects.all().order_by('-price_limit').first()
+		self.max_sponsor_id = max_sponsor.id
+		self.max_sponsor_img = max_sponsor.img
+		self.max_sponsor_url = max_sponsor.url2
+		self.max_sponsor_price = max_sponsor.price_limit
 		return max_sponsor
 
 COMMENT_SORT_CHOICES = (
@@ -1548,6 +1627,12 @@ class SearchURL(models.Model):
 	sum_comments = models.IntegerField(default=0)
 	sponsors = models.ManyToManyField(Sponsor, default=None)
 	sum_sponsors = models.IntegerField(default=0)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
 	viewcount = models.IntegerField(default=0)
 	change_count = models.IntegerField(default=0)
 	latest_change_date = models.DateTimeField(default=timezone.now)
@@ -1585,6 +1670,12 @@ class Barcode(models.Model):
 	sum_comments = models.IntegerField(default=0)
 	sponsors = models.ManyToManyField(Sponsor, default=None)
 	sum_sponsors = models.IntegerField(default=0)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
 	viewcount = models.IntegerField(default=0)
 	change_count = models.IntegerField(default=0)
 	latest_change_date = models.DateTimeField(default=timezone.now)
@@ -1621,7 +1712,10 @@ class Post(models.Model):
 	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
 	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
 	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
 	sum_sponsors = models.IntegerField(default=0)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	
 	viewcount = models.IntegerField(default=0)
 	change_count = models.IntegerField(default=0)
 	latest_change_date = models.DateTimeField(default=timezone.now)
@@ -1686,6 +1780,7 @@ class Post(models.Model):
 		self.max_sponsor_id = max_sponsor.id
 		self.max_sponsor_img = max_sponsor.img
 		self.max_sponsor_url = max_sponsor.url2
+		self.max_sponsor_price = max_sponsor.price_limit
 		return max_sponsor
 
 	def max_url(self):
@@ -1895,7 +1990,7 @@ class MinecraftServer(models.Model):
 	theme = models.ManyToManyField(SpaceSource, default=None)
 	about = models.TextField(default='', max_length=4000)
 	website = models.URLField(default='', max_length=400)
-	game_modes = models.ManyToManyField(GameMode, default=None)
+	game_models = models.ManyToManyField(GameMode, default=None)
 	sponsor = models.ManyToManyField(Sponsor, default=None)
 
 
@@ -1920,7 +2015,14 @@ class Space(models.Model):
 	votes = models.ManyToManyField(Votes, default=None)
 	votes_count = models.IntegerField(default=0)
 	sponsors = models.ManyToManyField(Sponsor, default=None)
-	sponsor_count = models.IntegerField(default=0)
+	sum_sponsors = models.IntegerField(default=0)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
+	
 	approved_voters = models.ManyToManyField(Author, related_name='approved_voters', default=None)
 	approved_voter_count = models.IntegerField(default=0)
 	public = models.BooleanField(default=False)
@@ -2383,9 +2485,14 @@ class UserSpecificJavaScriptVariableViewLearning(models.Model):
 	author = models.OneToOneField(Author, default=None, on_delete=models.PROTECT)
 	description = models.TextField(max_length=1400, default='')
 	sponsors = models.ManyToManyField(Sponsor, default=None)
-	sponsor_count = models.IntegerField(default=0)
-	sum_sponsor_earnings = models.IntegerField(default=0)
-	sponsor_allowable_expenditure = models.IntegerField(default=0)
+	sum_sponsors = models.IntegerField(default=0)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
+	sum_sponsor_allowable_expenditure = models.IntegerField(default=0)
 
 
 	tob_zoom = models.ManyToManyField(NumStep, default=None)
@@ -2707,8 +2814,13 @@ class Anon(models.Model):
 	sum_earnt_from_dictionaries = models.IntegerField(default=0)
 
 	supported_by_sponsors = models.ManyToManyField(Sponsor, default=None, related_name='supported_by_sponsors')
-	sum_supported_by_sponsors = models.IntegerField(default=0)
-	sum_earnt_from_supports = models.IntegerField(default=0)
+	sum_sponsors = models.IntegerField(default=0)
+	sum_earnt_from_sponsors = models.IntegerField(default=0)
+	max_sponsor_url = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_img = models.URLField(max_length=2000, blank=True, default='')
+	max_sponsor_id = models.CharField(max_length=200, default='')
+	max_sponsor_price = models.IntegerField(default=0)
+	
 
 
 	supporting_sponsorships = models.ManyToManyField(Sponsor, default=None, related_name='supporting_sponsorships')

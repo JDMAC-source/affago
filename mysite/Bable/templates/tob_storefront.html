@@ -146,7 +146,7 @@
         		display: none;
         	}
         </style>
-        <form id="new_product_form" action="{% url 'Bable:create_product_w_price' users_post.id %}" method='POST'>{% csrf_token %}{{ product_form }}<button type="submit">Submit </button></form>
+        <form id="new_product_form" action="{% url 'Bable:create_product_w_price' user_storefront.id %}" method='POST'>{% csrf_token %}{{ product_form }}<button type="submit">Submit </button></form>
 		<div onclick="openComment('new_products_')">
 			Add Old Products +
 		</div>

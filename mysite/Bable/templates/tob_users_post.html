@@ -39,6 +39,7 @@ User: {{ user_anon.username.username }}'s Post: {{ users_post.title }} - Babylon
 </div>
 <div class=userspost>
 	{% if users_post %}
+		{% if users_post.public or users_author.username == request.user.username %}
 		<div class=posttitle style="display: block;">
 			<h3 style="display: block;">
 				<a href="{{ users_post.url2 }}" style="margin: auto; display: block; width: fit-content;">{{ users_post.title }}</a>
@@ -255,6 +256,8 @@ User: {{ user_anon.username.username }}'s Post: {{ users_post.title }} - Babylon
 							{% csrf_token %}
 							<input type=hidden value="{{ users_post.author.username }}" readonly>
 							<input type=hidden value="{{ users_post.max_sponsor.id }}" readonly>
+							<input readonly=true hidden id=sponsored_on name=sponsored_on value="post"/>
+							<input readonly=true hidden id=sponsored_id name=sponsored_id value="{{users_post.id}}"/>
 							<button type=submit>
 								<img src="{{ users_post.max_sponsor.img }}" style="height: 4em; width: 4em; float:right;">
 							</button>
@@ -355,13 +358,15 @@ User: {{ user_anon.username.username }}'s Post: {{ users_post.title }} - Babylon
 							{% endif %}
 						</div>
 						<div class=postcomsbodyad>
-							{% if node.dictionaries.all.sponsors.count %}
+							{% if node.sponsors.count %}
 							<form action="{% url 'Bable:clickthrough' %}" method=POST>
 							{% csrf_token %}
 							<input type=hidden value="{{ node.author.username }}" readonly>
-							<input type=hidden value="{{ node.dictionaries.max_sponsor.id }}" readonly>
+							<input type=hidden value="{{ node.max_sponsor.id }}" readonly>
+							<input readonly=true hidden id=sponsored_on name=sponsored_on value="comment"/>
+							<input readonly=true hidden id=sponsored_id name=sponsored_id value="{{node.id}}"/>
 							<button type=submit>
-								<img src="{{ post.max_sponsor.img }}" style="height: 4em; width: 4em; float:right;">
+								<img src="{{ node.max_sponsor.img }}" style="height: 4em; width: 4em; float:right;">
 							</button>
 						</form>
 							{% else %}
@@ -420,6 +425,9 @@ User: {{ user_anon.username.username }}'s Post: {{ users_post.title }} - Babylon
 				{% endrecursetree %}
 			{% endif %}
 		</div>
+		{% else %}
+		Private Post
+		{% endif %}
 	{% else %}
 		This post is concealed by private dictionaries.
 	{% endif %}
@@ -440,6 +448,8 @@ User: {{ user_anon.username.username }}'s Post: {{ users_post.title }} - Babylon
 <div class=userspost>
 	<div class=post>
 		{% if users_post %}
+		{% if users_post.public or users_author.username == request.user.username %}
+		
 			<div class=posttitle style="display: block;">
 			<h3 style="display: block;">
 				<a href="{{ users_post.url2 }}" style="margin: auto; display: block; width: fit-content;">{{ users_post.title }}</a>
@@ -534,6 +544,8 @@ User: {{ user_anon.username.username }}'s Post: {{ users_post.title }} - Babylon
 							{% csrf_token %}
 							<input type=hidden value="{{ users_post.author.username }}" readonly>
 							<input type=hidden value="{{ users_post.max_sponsor.id }}" readonly>
+							<input readonly=true hidden id=sponsored_on name=sponsored_on value="post"/>
+								<input readonly=true hidden id=sponsored_id name=sponsored_id value="{{users_post.id}}"/>
 							<button type=submit>
 								<img src="{{ users_post.max_sponsor.img }}" style="height: 4em; width: 4em; float:right;">
 							</button>
@@ -610,11 +622,13 @@ User: {{ user_anon.username.username }}'s Post: {{ users_post.title }} - Babylon
 							{% endif %}
 						</div>
 						<div class=postcomsbodyad>
-							{% if node.dictionaries.all.sponsors.count %}
+							{% if node.sponsors.count %}
 								<form action="{% url 'Bable:clickthrough' %}" method=POST>
 							{% csrf_token %}
 							<input type=hidden value="{{ node.author.username }}" readonly>
 							<input type=hidden value="{{ node.max_sponsor.id }}" readonly>
+							<input readonly=true hidden id=sponsored_on name=sponsored_on value="comment"/>
+							<input readonly=true hidden id=sponsored_id name=sponsored_id value="{{node.id}}"/>
 							<button type=submit>
 								<img src="{{ node.max_sponsor.img }}" style="height: 4em; width: 4em; float:right;">
 							</button>
@@ -653,6 +667,9 @@ User: {{ user_anon.username.username }}'s Post: {{ users_post.title }} - Babylon
 				{% endrecursetree %}
 			{% endif %}
 		</div>
+		{% else %}
+		Private Post
+		{% endif %}
 		{% else %}
 			<div class=post>
 				This post is concealed by private dictionaries.
