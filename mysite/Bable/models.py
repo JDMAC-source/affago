@@ -711,6 +711,7 @@ class Votings(models.Model):
 
 
 DATE_CHOICES_CHAR = (
+	("0,0,0,0,0,0","0 Minutes"),
 	("15,0,0,0,0,0","15 Minutes"),
 	("30,0,0,0,0,0","30 Minutes"),
 	("45,0,0,0,0,0","45 Minutes"),
@@ -2786,13 +2787,13 @@ class Anon(models.Model):
 	drawings = models.ManyToManyField(Drawing, default=None)
 	storefronts = models.ManyToManyField(Storefront, default=None)
 	storefront_sort_char = models.CharField(choices=STOREFRONT_SORT_CHOICES_CHAR, default="views", max_length=180)
-	storefront_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
-	storefront_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	storefront_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,120", max_length=180)
+	storefront_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,00,0,0,0,0,0", max_length=180)
 	saless = models.ManyToManyField(Sale, default=None)
 	products = models.ManyToManyField(Price, related_name="anon_product", default=None)
 	product_sort_char = models.CharField(choices=PRODUCT_SORT_CHOICES_CHAR, default="views", max_length=180)
-	product_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
-	product_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	product_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,120", max_length=180)
+	product_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,0", max_length=180)
 	purchases = models.ManyToManyField(Price, related_name="anon_purchase", default=None)
 	stripe_private_key = models.CharField(max_length=600, default='', null=True)
 	stripe_webhook_secret = models.CharField(max_length=600, default='', null=True)
@@ -2803,8 +2804,8 @@ class Anon(models.Model):
 	email = models.EmailField(max_length=144, default='', null=True)
 	anon_sort = models.IntegerField(choices=ANON_SORT_CHOICES, default=0)
 	anon_sort_char = models.CharField(choices=ANON_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
-	anon_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
-	anon_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	anon_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,120", max_length=180)
+	anon_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,0", max_length=180)
 	
 	friends = models.ManyToManyField(Author, default=None, related_name="friends")
 	mutuals_associate = models.ManyToManyField(Associate, default=None)
@@ -2838,26 +2839,26 @@ class Anon(models.Model):
 
 	dictionary_sort = models.IntegerField(choices=DICTIONARY_SORT_CHOICES, default=0)
 	dictionary_sort_char = models.CharField(choices=DICTIONARY_SORT_CHOICES_CHAR, default="views", max_length=180)
-	dictionary_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
-	dictionary_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	dictionary_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,120viewcount", max_length=180)
+	dictionary_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,0", max_length=180)
 	word_sort = models.IntegerField(choices=WORD_SORT_CHOICES, default=0)
 	word_sort_char = models.CharField(choices=WORD_SORT_CHOICES_CHAR, default="viewcount", max_length=180)
-	word_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
-	word_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	word_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,120viewcount", max_length=180)
+	word_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,0", max_length=180)
 	attribute_sort = models.IntegerField(choices=ATTRIBUTE_SORT_CHOICES, default=0)
 	attribute_sort_char = models.CharField(choices=ATTRIBUTE_SORT_CHOICES_CHAR, default="the_attribute_itself", max_length=180)
-	attribute_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
-	attribute_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	attribute_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,120viewcount", max_length=180)
+	attribute_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,0", max_length=180)
 	examples = models.ManyToManyField(Example, blank=True, default=None) # saved comments
 	sum_examples = models.IntegerField(default=0)
 	example_sort = models.IntegerField(choices=EXAMPLE_SORT_CHOICES, default=0)
 	example_sort_char = models.CharField(choices=EXAMPLE_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
-	example_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
-	example_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
+	example_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,120viewcount", max_length=180)
+	example_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,0viewcount", max_length=180)
 	sponsor_sort = models.IntegerField(choices=SPONSOR_SORT_CHOICES, default=0)
 	sponsor_sort_char = models.CharField(choices=SPONSOR_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
-	sponsor_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
-	sponsor_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
+	sponsor_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,120viewcount", max_length=180)
+	sponsor_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,0viewcount", max_length=180)
 	tasks = models.ManyToManyField(Task, default=None)
 	sum_tasks = models.IntegerField(default=0)
 	latest_change_date = models.DateTimeField(default=timezone.now)
@@ -2873,8 +2874,8 @@ class Anon(models.Model):
 	reposting_comment_sources = models.ManyToManyField(Comment_Source, default=None, related_name='reposting_comment_sources')
 	comment_sort = models.IntegerField(choices=COMMENT_SORT_CHOICES, default=0)
 	comment_sort_char = models.CharField(choices=COMMENT_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
-	comment_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
-	comment_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	comment_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,120", max_length=180)
+	comment_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,0", max_length=180)
 	
 
 	posts = models.ManyToManyField(Post, blank=True, default=None)
@@ -2882,8 +2883,8 @@ class Anon(models.Model):
 	sum_earnt_from_posts = models.IntegerField(default=0)
 	post_sort = models.IntegerField(choices=POST_SORT_CHOICES, default=0)
 	post_sort_char = models.CharField(choices=POST_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
-	post_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
-	post_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	post_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,120", max_length=180)
+	post_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,0", max_length=180)
 	
 	spaces = models.ManyToManyField(Space, blank=True, default=None, related_name='spaces')
 	sum_spaces = models.IntegerField(default=0)
@@ -2898,8 +2899,8 @@ class Anon(models.Model):
 	sum_spent_on_spaces = models.IntegerField(default=0)
 	space_sort = models.IntegerField(choices=SPACE_SORT_CHOICES, default=0)
 	space_sort_char = models.CharField(choices=SPACE_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
-	space_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
-	space_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	space_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,120", max_length=180)
+	space_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,0", max_length=180)
 	
 	created_votestyles = models.ManyToManyField(Votes, default=None, related_name='created_votestyles')
 	sum_created_votestyles = models.IntegerField(default=0)
@@ -2908,8 +2909,8 @@ class Anon(models.Model):
 	excluded_votestyles = models.ManyToManyField(Votes, default=None, related_name='excluded_votestyles')
 
 	past_votes = models.ManyToManyField(Votings, default=None, related_name='past_votes')
-	past_votes_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
-	past_votes_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	past_votes_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,120", max_length=180)
+	past_votes_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="0,0,0,0,0,0", max_length=180)
 
 	sum_past_votes = models.IntegerField(default=0)
 	sum_past_votes_earnings = models.IntegerField(default=0)
