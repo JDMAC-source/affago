@@ -59,6 +59,7 @@ from Bable.serializers import PostSerializer
 
 from django.http import StreamingHttpResponse
 import datetime
+import datetime as date
 import time
 
 
@@ -165,7 +166,7 @@ def tower_time(request):
 	#print(density)
 	#print(ip)
 	duration = request.POST['duration']
-	page_density = Page_Density.objects.create(ip_address=ip, time_spent=timeSpent, scroll_height=scrollHeight, client_height=clientHeight, duration=duration, scroll_type=loggedinanon_scroll_type)
+	page_density = Page_Density.objects.create(ip=ip, time_spent=timeSpent, scroll_height=scrollHeight, client_height=clientHeight, duration=duration, scroll_type=loggedinanon_scroll_type)
 	for post_id in post_ids:
 		page_density.post_ids.add(Post_id.objects.create(the_posts_id=post_id))
 	for dense in density:
