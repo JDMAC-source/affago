@@ -4192,6 +4192,12 @@ def tower_of_bable(request):
 		space_form = SpaceForm(request)
 		task_form = TaskForm()
 		word_form = WordForm(request)
+		if not loggedinanon.post_sort_from_date_char:
+			loggedinanon.post_sort_from_date_char = "0,0,0,0,0,0"
+			loggedinanon.save()
+		if not loggedinanon.post_sort_depth_char:
+			loggedinanon.post_sort_depth_char = "0,0,0,0,0,0"
+			loggedinanon.save()
 		startdate = date.today() + timedelta(minutes=loggedinanon.post_sort_from_date_char.split(',')[0], hours=loggedinanon.post_sort_from_date_char.split(',')[1], days=loggedinanon.post_sort_from_date_char.split(',')[2], weeks=loggedinanon.post_sort_from_date_char.split(',')[3], months=loggedinanon.post_sort_from_date_char.split(',')[4], years=loggedinanon.post_sort_from_date_char.split(',')[5])
 		enddate = startdate + timedelta(minutes=loggedinanon.post_sort_depth_char.split(',')[0], hours=loggedinanon.post_sort_depth_char.split(',')[1], days=loggedinanon.post_sort_depth_char.split(',')[2], weeks=loggedinanon.post_sort_depth_char.split(',')[3], months=loggedinanon.post_sort_depth_char.split(',')[4], years=loggedinanon.post_sort_depth_char.split(',')[5])
 		posts_by_viewcount = Post.objects.order_by(loggedinanon.post_sort_char).filter(latest_change_date__range=[startdate, enddate])[:25]
