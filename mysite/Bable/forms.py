@@ -965,6 +965,476 @@ class SearchURLForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SearchURLForm, self).__init__(*args, **kwargs)
        
+class PostFilterDepthForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('post_sort_depth_char',)
+    
+    def clean(self):
+        cleaned_data = super(PostFilterDepthForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(PostFilterDepthForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['post_sort_depth_char'].initial = current_anon.post_sort_depth_char
+        self.fields['post_sort_depth_char'].label = False
+        self.instance = current_anon
+
+
+
+class PostFilterFromDateForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('post_sort_from_date_char',)
+    
+    def clean(self):
+        cleaned_data = super(PostFilterFromDateForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(PostFilterFromDateForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['post_sort_from_date_char'].initial = current_anon.post_sort_from_date_char
+        self.fields['post_sort_from_date_char'].label = False
+        self.instance = current_anon
+
+
+
+
+
+
+
+
+class CommentFilterDepthForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('comment_sort_depth_char',)
+    
+    def clean(self):
+        cleaned_data = super(CommentFilterDepthForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(CommentFilterDepthForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['comment_sort_depth_char'].initial = current_anon.comment_sort_depth_char
+        self.fields['comment_sort_depth_char'].label = False
+        self.instance = current_anon
+
+
+
+class CommentFilterFromDateForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('comment_sort_from_date_char',)
+    
+    def clean(self):
+        cleaned_data = super(CommentFilterFromDateForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(CommentFilterFromDateForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['comment_sort_from_date_char'].initial = current_anon.comment_sort_from_date_char
+        self.fields['comment_sort_from_date_char'].label = False
+        self.instance = current_anon
+
+
+
+
+
+
+
+
+
+class StorefrontFilterDepthForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('storefront_sort_depth_char',)
+    
+    def clean(self):
+        cleaned_data = super(StorefrontFilterDepthForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(StorefrontFilterDepthForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['storefront_sort_depth_char'].initial = current_anon.storefront_sort_depth_char
+        self.fields['storefront_sort_depth_char'].label = False
+        self.instance = current_anon
+
+
+
+class StorefrontFilterFromDateForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('storefront_sort_from_date_char',)
+    
+    def clean(self):
+        cleaned_data = super(StorefrontFilterFromDateForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(StorefrontFilterFromDateForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['storefront_sort_from_date_char'].initial = current_anon.storefront_sort_from_date_char
+        self.fields['storefront_sort_from_date_char'].label = False
+        self.instance = current_anon
+
+
+
+
+
+
+
+
+
+class ProductFilterDepthForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('product_sort_depth_char',)
+    
+    def clean(self):
+        cleaned_data = super(ProductFilterDepthForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(ProductFilterDepthForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['product_sort_depth_char'].initial = current_anon.product_sort_depth_char
+        self.fields['product_sort_depth_char'].label = False
+        self.instance = current_anon
+
+
+
+class ProductFilterFromDateForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('product_sort_from_date_char',)
+    
+    def clean(self):
+        cleaned_data = super(ProductFilterFromDateForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(ProductFilterFromDateForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['product_sort_from_date_char'].initial = current_anon.product_sort_from_date_char
+        self.fields['product_sort_from_date_char'].label = False
+        self.instance = current_anon
+
+
+
+
+
+
+
+
+class AnonFilterDepthForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('anon_sort_depth_char',)
+    
+    def clean(self):
+        cleaned_data = super(AnonFilterDepthForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(AnonFilterDepthForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['anon_sort_depth_char'].initial = current_anon.anon_sort_depth_char
+        self.fields['anon_sort_depth_char'].label = False
+        self.instance = current_anon
+
+
+
+class AnonFilterFromDateForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('anon_sort_from_date_char',)
+    
+    def clean(self):
+        cleaned_data = super(AnonFilterFromDateForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(AnonFilterFromDateForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['anon_sort_from_date_char'].initial = current_anon.anon_sort_from_date_char
+        self.fields['anon_sort_from_date_char'].label = False
+        self.instance = current_anon
+
+
+
+
+
+
+
+
+class DictionaryFilterDepthForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('dictionary_sort_depth_char',)
+    
+    def clean(self):
+        cleaned_data = super(DictionaryFilterDepthForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(DictionaryFilterDepthForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['dictioanry_sort_depth_char'].initial = current_anon.dictioanry_sort_depth_char
+        self.fields['dictioanry_sort_depth_char'].label = False
+        self.instance = current_anon
+
+
+
+class DictionaryFilterFromDateForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('dictionary_sort_from_date_char',)
+    
+    def clean(self):
+        cleaned_data = super(DictionaryFilterFromDateForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(DictionaryFilterFromDateForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['dictionary_sort_from_date_char'].initial = current_anon.dictionary_sort_from_date_char
+        self.fields['dictionary_sort_from_date_char'].label = False
+        self.instance = current_anon
+
+
+
+
+
+
+
+
+class WordFilterDepthForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('word_sort_depth_char',)
+    
+    def clean(self):
+        cleaned_data = super(WordFilterDepthForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(WordFilterDepthForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['word_sort_depth_char'].initial = current_anon.word_sort_depth_char
+        self.fields['word_sort_depth_char'].label = False
+        self.instance = current_anon
+
+
+
+class WordFilterFromDateForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('word_sort_from_date_char',)
+    
+    def clean(self):
+        cleaned_data = super(WordFilterFromDateForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(WordFilterFromDateForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['word_sort_from_date_char'].initial = current_anon.word_sort_from_date_char
+        self.fields['word_sort_from_date_char'].label = False
+        self.instance = current_anon
+
+
+
+
+
+
+
+
+class AttributeFilterDepthForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('attribute_sort_depth_char',)
+    
+    def clean(self):
+        cleaned_data = super(AttributeFilterDepthForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(AttributeFilterDepthForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['attribte_sort_depth_char'].initial = current_anon.attribte_sort_depth_char
+        self.fields['attribte_sort_depth_char'].label = False
+        self.instance = current_anon
+
+
+
+class AttributeFilterFromDateForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('attribute_sort_from_date_char',)
+    
+    def clean(self):
+        cleaned_data = super(AttributeFilterFromDateForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(AttributeFilterFromDateForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['attribute_sort_from_date_char'].initial = current_anon.attribute_sort_from_date_char
+        self.fields['attribute_sort_from_date_char'].label = False
+        self.instance = current_anon
+
+
+
+
+
+
+
+
+class ExampleFilterDepthForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('example_sort_depth_char',)
+    
+    def clean(self):
+        cleaned_data = super(ExampleFilterDepthForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(ExampleFilterDepthForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['example_sort_depth_char'].initial = current_anon.example_sort_depth_char
+        self.fields['example_sort_depth_char'].label = False
+        self.instance = current_anon
+
+
+
+class ExampleFilterFromDateForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('example_sort_from_date_char',)
+    
+    def clean(self):
+        cleaned_data = super(ExampleFilterFromDateForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(ExampleFilterFromDateForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['example_sort_from_date_char'].initial = current_anon.example_sort_from_date_char
+        self.fields['example_sort_from_date_char'].label = False
+        self.instance = current_anon
+
+
+
+
+
+
+
+
+class SponsorFilterDepthForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('sponsor_sort_depth_char',)
+    
+    def clean(self):
+        cleaned_data = super(SponsorFilterDepthForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(SponsorFilterDepthForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['sponsor_sort_depth_char'].initial = current_anon.sponsor_sort_depth_char
+        self.fields['sponsor_sort_depth_char'].label = False
+        self.instance = current_anon
+
+
+
+class SponsorFilterFromDateForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('sponsor_sort_from_date_char',)
+    
+    def clean(self):
+        cleaned_data = super(SponsorFilterFromDateForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(SponsorFilterFromDateForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['sponsor_sort_from_date_char'].initial = current_anon.sponsor_sort_from_date_char
+        self.fields['sponsor_sort_from_date_char'].label = False
+        self.instance = current_anon
+
+
+
+
+
+
+
+
+class SpaceFilterDepthForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('space_sort_depth_char',)
+    
+    def clean(self):
+        cleaned_data = super(SpaceFilterDepthForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(SpaceFilterDepthForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['space_sort_depth_char'].initial = current_anon.space_sort_depth_char
+        self.fields['space_sort_depth_char'].label = False
+        self.instance = current_anon
+
+
+
+class SpaceFilterFromDateForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('space_sort_from_date_char',)
+    
+    def clean(self):
+        cleaned_data = super(SpaceFilterFromDateForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(SpaceFilterFromDateForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['space_sort_from_date_char'].initial = current_anon.space_sort_from_date_char
+        self.fields['space_sort_from_date_char'].label = False
+        self.instance = current_anon
+
+
+
+
+
+
+
+
+class PastVotesFilterDepthForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('past_votes_sort_depth_char',)
+    
+    def clean(self):
+        cleaned_data = super(PastVotesFilterDepthForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(PastVotesFilterDepthForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['past_votes_sort_depth_char'].initial = current_anon.past_votes_sort_depth_char
+        self.fields['past_votes_sort_depth_char'].label = False
+        self.instance = current_anon
+
+
+
+class PastVotesFilterFromDateForm(forms.ModelForm):
+    class Meta:
+        model = Anon
+        fields = ('past_votes_sort_from_date_char',)
+    
+    def clean(self):
+        cleaned_data = super(PastVotesFilterFromDateForm, self).clean()
+   
+    def __init__(self, request, *args, **kwargs):
+        super(PastVotesFilterFromDateForm, self).__init__(*args, **kwargs)
+        current_anon = Anon.objects.get(username=request.user)
+        self.fields['past_votes_sort_from_date_char'].initial = current_anon.past_votes_sort_from_date_char
+        self.fields['past_votes_sort_from_date_char'].label = False
+        self.instance = current_anon
+
+
+
+
+
+
+
+
 
 
 class PostForm(forms.ModelForm):

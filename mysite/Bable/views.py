@@ -2188,11 +2188,10 @@ def register_view(request):
 	else:
 		register_error = "Couldn't register that."
 	
-	posts_by_viewcount = Post.objects.order_by('viewcount')[:100]
 	count = 0
 	count100 = 100
 	mcount = 0
-	page_views, created = Pageviews.objects.get_or_create(page="tower_of_bable")
+	page_views, created = Pageviews.objects.get_or_create(page="register_view")
 	page_views.views += 1
 	page_views.save()
 	total = 0
@@ -4177,7 +4176,9 @@ def tower_of_bable(request):
 		space_form = SpaceForm(request)
 		task_form = TaskForm()
 		word_form = WordForm(request)
-		posts_by_viewcount = Post.objects.order_by(loggedinanon.post_sort_char)[:25]
+		startdate = date.today() + timedelta(minutes=loggedinanon.post_sort_from_date_char.split(',')[0], hours=loggedinanon.post_sort_from_date_char.split(',')[1], days=loggedinanon.post_sort_from_date_char.split(',')[2], weeks=loggedinanon.post_sort_from_date_char.split(',')[3], months=loggedinanon.post_sort_from_date_char.split(',')[4], years=loggedinanon.post_sort_from_date_char.split(',')[5])
+		enddate = startdate + timedelta(minutes=loggedinanon.post_sort_depth_char.split(',')[0], hours=loggedinanon.post_sort_depth_char.split(',')[1], days=loggedinanon.post_sort_depth_char.split(',')[2], weeks=loggedinanon.post_sort_depth_char.split(',')[3], months=loggedinanon.post_sort_depth_char.split(',')[4], years=loggedinanon.post_sort_depth_char.split(',')[5])
+		posts_by_viewcount = Post.objects.order_by(loggedinanon.post_sort_char).filter(latest_change_date__range=[startdate, enddate])[:25]
 		apply_votestyle_form = ApplyVotestyleForm(request)
 		create_votes_form = CreateVotesForm(request)
 		exclude_votes_form = ExcludeVotesForm(request)
@@ -4185,12 +4186,14 @@ def tower_of_bable(request):
 		exclude_dic_form = ExcludeDictionaryAuthorForm()
 		file_form = FileForm()
 		post_sort_form = PostSortForm(request)
+		post_filter_depth_form = PostFilterDepthForm(request)
+		post_filter_from_date_form = PostFilterFromDateForm(request)
 		
 		posts_values = list(posts_by_viewcount.values('img', 'url2', 'author__username', 'id', 'title', 'body', 'viewcount', 'votes_count', 'votes_uniques', 'latest_change_date', 'max_sponsor_id', 'max_sponsor_img'))
 		postscount = 25
 		posts_by_viewcount = posts_values
 		
-		the_response = render(request, 'tower_of_bable.html', {"basic_price": basic_price, "post_sort_form": post_sort_form, "postscount": postscount, "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "file_form": file_form, "total": total, "count": lower, "mcount": mcount, "count100": count100, "loggedinanon": loggedinanon, "posts": posts_by_viewcount, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+		the_response = render(request, 'tower_of_bable.html', {"post_filter_depth_form": post_filter_depth_form, "post_filter_from_date_form": post_filter_from_date_form,"basic_price": basic_price, "post_sort_form": post_sort_form, "postscount": postscount, "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "file_form": file_form, "total": total, "count": lower, "mcount": mcount, "count100": count100, "loggedinanon": loggedinanon, "posts": posts_by_viewcount, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
 			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
 	else:
 		posts_by_viewcount = Post.objects.order_by('viewcount')[:25]
@@ -4349,7 +4352,6 @@ def change_password(request):
 	
 	loginform = AuthenticationForm()
 	
-	posts_by_viewcount = Post.objects.order_by('viewcount')[:100]
 	count = 0
 	count100 = 100
 	mcount = 0
@@ -4404,8 +4406,7 @@ def change_password(request):
 		task_form = TaskForm()
 		word_form = WordForm(request)
 
-		posts_by_viewcount = Post.objects.order_by(loggedinanon.post_sort_char)[0:100]
-
+		
 
 		apply_votestyle_form = ApplyVotestyleForm(request)
 		create_votes_form = CreateVotesForm(request)
@@ -4466,8 +4467,7 @@ def tower_of_bable_count(request, count):
 	mcount = 0
 	if count > 25:
 		mcount = count - 25
-	posts_by_viewcount = Post.objects.order_by('viewcount')[count:count100]
-	postscount = posts_by_viewcount.count()
+		
 	loginform = AuthenticationForm()
 	if request.user.is_authenticated:
 		loggedinuser = User.objects.get(username=request.user.username)
@@ -4481,10 +4481,11 @@ def tower_of_bable_count(request, count):
 			pages_view.previous_page = previous_view.page_view
 			pages_view.previous_view_date = previous_view.view_date
 			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
-		posts_by_viewcount = Post.objects.order_by(loggedinanon.post_sort_char)[count:count100]
-	
-	
-	if request.user.is_authenticated:
+		startdate = date.today() + timedelta(minutes=loggedinanon.post_sort_from_date_char.split(',')[0], hours=loggedinanon.post_sort_from_date_char.split(',')[1], days=loggedinanon.post_sort_from_date_char.split(',')[2], weeks=loggedinanon.post_sort_from_date_char.split(',')[3], months=loggedinanon.post_sort_from_date_char.split(',')[4], years=loggedinanon.post_sort_from_date_char.split(',')[5])
+		enddate = startdate + timedelta(minutes=loggedinanon.post_sort_depth_char.split(',')[0], hours=loggedinanon.post_sort_depth_char.split(',')[1], days=loggedinanon.post_sort_depth_char.split(',')[2], weeks=loggedinanon.post_sort_depth_char.split(',')[3], months=loggedinanon.post_sort_depth_char.split(',')[4], years=loggedinanon.post_sort_depth_char.split(',')[5])
+		posts_by_viewcount = Post.objects.order_by(loggedinanon.post_sort_char).filter(latest_change_date__range=[startdate, enddate])[count:count100]
+		postscount = posts_by_viewcount.count()
+
 		dic_form = DictionaryForm()
 		post_form = PostForm(request)
 		space_form = SpaceForm(request)
@@ -4498,11 +4499,16 @@ def tower_of_bable_count(request, count):
 		exclude_dic_form = ExcludeDictionaryAuthorForm()
 
 		post_sort_form = PostSortForm(request)
+		post_filter_depth_form = PostFilterDepthForm(request)
+		post_filter_from_date_form = PostFilterFromDateForm(request)
+		
 		
 
 		the_response = render(request, 'tower_of_bable.html', {"basic_price": basic_price, "post_sort_form": post_sort_form, "postscount": postscount, "buyadvertisingform": buyadvertisingform, "total": total, "count": count, "mcount": mcount, "count100": count100, "posts": posts_by_viewcount, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'postform': post_form, 'spaceform': space_form, "post_form": post_form, 'taskform': task_form, 
 			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
 	else:
+		posts_by_viewcount = Post.objects.order_by('viewcount')[count:count100]
+		postscount = posts_by_viewcount.count()
 		the_response = render(request, 'tower_of_bable.html', {"basic_price": basic_price, "postscount": postscount, "buyadvertisingform": buyadvertisingform, "total": total, "count": count, "mcount": mcount, "count100": count100, "posts": posts_by_viewcount, 'loginform': loginform, 'registerform': registerform, })
 	the_response.set_cookie('current', 'tower_of_bable_count')
 	the_response.set_cookie('count', count)
@@ -4780,10 +4786,9 @@ def tob_space_view_count(request, space, count):
 
 
 	
-	particular_space = Space.objects.get(id=space)
 	users_space = Space.objects.get(id=space)
 	user_anon = users_space.author.to_anon()
-	spaces_posts = particular_space.posts.all()
+	spaces_posts = users_space.posts.all()
 	users_sponsors = users_space.sponsors.all()
 	try:
 		if spaces_posts is not None:
@@ -4793,7 +4798,7 @@ def tob_space_view_count(request, space, count):
 						spaces_posts = spaces_posts.order_by(loggedinanon.post_sort_char)[count:count+100]
 						space_viewable = True
 					else:
-						space_viewable = False
+						return HttpResponse("Not Invited To Space")
 				else:
 					spaces_posts = spaces_posts.order_by(loggedinanon.post_sort_char)[count:count+100]
 					space_viewable = True
@@ -4802,26 +4807,30 @@ def tob_space_view_count(request, space, count):
 					spaces_posts.order_by('viewcount')[:100]
 					space_viewable = True
 				else:
-					space_viewable = False
+					return HttpResponse("Space not public")
+		else:
+			if users_space.public:
+				space_viewable = True
+			else:
+				return HttpResponse("Space not public")
 	
 	except ObjectDoesNotExist:
-		users_space = Space.objects.get(author=user_author, the_space_itself__the_word_itself=space)
 		if request.user.is_authenticated:
 			if not users_space.public:
-				if len(users_space.filter(approved_votters__username=request.user.username))>0:
+				if request.user.username in users_space.approved_voters.all().values_list('username'):
 					spaces_posts = spaces_posts.order_by(loggedinanon.post_sort_char)[count:count+100]
 					space_viewable = True
 				else:
-					space_viewable = False
+					return HttpResponse("Not Invited To Space")
 			else:
 				spaces_posts = spaces_posts.order_by(loggedinanon.post_sort_char)[count:count+100]
-				space_viewable = True
+				return HttpResponse("Space not public")
 		else:
 			if users_space.public:
 				spaces_posts = spaces_posts.order_by(loggedinanon.post_sort_char)[count:count+100]
 				space_viewable = True
 			else:
-				space_viewable = False
+				return base_redirect(request, 0)
 
 
 	if request.user.is_authenticated:
@@ -6042,15 +6051,7 @@ def delete_storefront(request, storefront):
 	return base_redirect(request, 0)
 
 
-def tob_spaces_post(request, space, post, count):
-	tob_space = Space.objects.get(id=space)[:100]
-	tob_post = tob_space.posts.get(id=post)[:100]
-	count = int(count)
-	posts_comments = tob_post.comments.order_by('viewcount')[count:count+100]
-	user_themself = User.objects.get(username=user)
-	user_anon = Anon.objects.get(username=user_themself)
-	
-	
+def tob_spaces_post(request, space_id, post_id, count):
 	registerform = UserCreationForm()
 
 	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -6080,76 +6081,67 @@ def tob_spaces_post(request, space, post, count):
 			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
 		
 
-		dic_form = DictionaryForm()
-		post_form = PostForm(request)
-		space_form = SpaceForm(request)
-		task_form = TaskForm()
-		word_form = WordForm(request)
-	
-		apply_votestyle_form = ApplyVotestyleForm(request)
-		create_votes_form = CreateVotesForm(request)
-		exclude_votes_form = ExcludeVotesForm(request)
-		apply_dic_form = ApplyDictionaryForm(request)
-		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		tob_space = Space.objects.filter(id=int(space_id)).first()
 
-	if request.user.is_authenticated:
-		the_response = render(request, "tob_spaces_post.html", {"loggedinanon": loggedinanon, "tob_space": tob_space, "tob_post": tob_post, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
-			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
-	else:
-		the_response = render(request, "tob_spaces_post.html", {"tob_space": tob_space, "tob_post": tob_post, "registerform": registerform,  "loginform": loginform})
-	the_response.set_cookie('current', 'tob_spaces_post')
-	the_response.set_cookie('space', space)
-	the_response.set_cookie('post', post)
-	the_response.set_cookie('count', 0)
-	return the_response
-
-def tob_spaces_post_count(request, space, post, count):
-	count = int(count)
-	tob_space = Spaces.objects.get(id=space)[count:count+100]
-	tob_post = tob_space.posts.get(id=post)[count:count+100]
-	
-	
-	registerform = UserCreationForm()
-	
+		if loggedinauthor in tob_space.approved_voters.all() or tob_space.public:
+			dic_form = DictionaryForm()
+			post_form = PostForm(request)
+			space_form = SpaceForm(request)
+			task_form = TaskForm()
+			word_form = WordForm(request)
 		
-	
-	loginform = AuthenticationForm()
-	if request.user.is_authenticated:
-		loggedinuser = User.objects.get(username=request.user.username)
-		loggedinanon = Anon.objects.get(username=loggedinuser)
-		loggedinauthor = Author.objects.get(username=request.user.username)
+			apply_votestyle_form = ApplyVotestyleForm(request)
+			create_votes_form = CreateVotesForm(request)
+			exclude_votes_form = ExcludeVotesForm(request)
+			apply_dic_form = ApplyDictionaryForm(request)
+			exclude_dic_form = ExcludeDictionaryAuthorForm()
 
-		dic_form = DictionaryForm()
-		post_form = PostForm(request)
-		space_form = SpaceForm(request)
-		task_form = TaskForm()
-		word_form = WordForm(request)
-	
-		apply_votestyle_form = ApplyVotestyleForm(request)
-		create_votes_form = CreateVotesForm(request)
-		exclude_votes_form = ExcludeVotesForm(request)
-		apply_dic_form = ApplyDictionaryForm(request)
-		exclude_dic_form = ExcludeDictionaryAuthorForm()
-	
-	
-	if request.user.is_authenticated:
-		the_response = render(request, "tob_spaces_post.html", {"loggedinanon": loggedinanon, "tob_space": tob_space, "tob_post": tob_post, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
-			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
-	else:
-		the_response = render(request, "tob_spaces_post.html", {"tob_space": tob_space, "tob_post": tob_post, "registerform": registerform,  "loginform": loginform})
-	the_response.set_cookie('current', 'tob_spaces_post_count')
+			comment_filter_depth_form = CommentFilterDepthForm(request)
+			comment_filter_from_date_form = CommentFilterFromDateForm(request)
+			comment_form = CommentForm(request)
+
+			tob_post = tob_space.posts.filter(id=int(post_id)).first()
+			count = int(count)
+			startdate = date.today() + timedelta(minutes=loggedinanon.comment_sort_from_date_char.split(',')[0], hours=loggedinanon.comment_sort_from_date_char.split(',')[1], days=loggedinanon.comment_sort_from_date_char.split(',')[2], weeks=loggedinanon.comment_sort_from_date_char.split(',')[3], months=loggedinanon.comment_sort_from_date_char.split(',')[4], years=loggedinanon.comment_sort_from_date_char.split(',')[5])
+			enddate = startdate + timedelta(minutes=loggedinanon.comment_sort_depth_char.split(',')[0], hours=loggedinanon.comment_sort_depth_char.split(',')[1], days=loggedinanon.comment_sort_depth_char.split(',')[2], weeks=loggedinanon.comment_sort_depth_char.split(',')[3], months=loggedinanon.comment_sort_depth_char.split(',')[4], years=loggedinanon.comment_sort_depth_char.split(',')[5])
+			
+			tob_comments = tob_post.comments.order_by(loggedinanon.comment_sort_char).filter(latest_change_date__range=[startdate,enddate])[count:count+100]
+			
+			the_response = render(request, "tob_spaces_post.html", {"loggedinanon": loggedinanon, "tob_space": tob_space, "tob_post": tob_post, "tob_comments": tob_comments, "comment_form": comment_form, "comment_filter_from_date_form": comment_filter_from_date_form, "comment_filter_depth_form": comment_filter_depth_form, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "dic_form": dic_form, "registerform": registerform,  "loginform": loginform, 
+				"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+			the_response.set_cookie('current', 'tob_spaces_post')
+			the_response.set_cookie('space', int(space_id))
+			the_response.set_cookie('post', int(post_id))
+			the_response.set_cookie('count', count)
+			return the_response
+		else:
+			return redirect("Bable:tob_space_view_count", space_id, 0)
+	elif tob_space.public:
+		tob_post = tob_space.posts.filter(id=int(post_id)).first()
+		count = int(count)
+		tob_comments = tob_post.comments.all()[count:count+100]
+		
+		the_response = render(request, "tob_spaces_post.html", {"tob_space": tob_space, "tob_post": tob_post, "tob_comments": tob_comments, "registerform": registerform,  "loginform": loginform})
+		the_response.set_cookie('current', 'tob_spaces_post')
+		the_response.set_cookie('space', int(space_id))
+		the_response.set_cookie('post', int(post_id))
+		the_response.set_cookie('count', count)
+		return the_response
+	the_response.set_cookie('current', 'tob_space')
 	the_response.set_cookie('space', space)
-	the_response.set_cookie('post', post)
-	the_response.set_cookie('count', count)
-	return the_response
+	return base_redirect(request, 0)
 
-def tob_spaces_posts_comment(request, space, post, comment):
+
+def tob_spaces_posts_comment(request, space_id, post_id, comment_id):
 	user_themself = User.objects.get(username=user)
 	user_anon = Anon.objects.get(username=user_themself)
+	space_id = int(space_id)
+	post_id = int(post_id)
+	comment_id = int(comment_id)
 
 	registerform = UserCreationForm()
 	
-		
+	tob_space = Space.objects.filter(id=space_id).first()
 	
 	loginform = AuthenticationForm()
 	if request.user.is_authenticated:
@@ -6157,46 +6149,56 @@ def tob_spaces_posts_comment(request, space, post, comment):
 		loggedinanon = Anon.objects.get(username=loggedinuser)
 		loggedinauthor = Author.objects.get(username=request.user.username)
 
-		dic_form = DictionaryForm()
-		post_form = PostForm(request)
-		space_form = SpaceForm(request)
-		task_form = TaskForm()
-		word_form = WordForm(request)
+		if loggedinauthor in tob_space.approved_voters.all() or tob_space.public:
 
-		apply_votestyle_form = ApplyVotestyleForm(request)
-		create_votes_form = CreateVotesForm(request)
-		exclude_votes_form = ExcludeVotesForm(request)
-		apply_dic_form = ApplyDictionaryForm(request)
-		exclude_dic_form = ExcludeDictionaryAuthorForm()
-	
-	users_spaces = user_anon.spaces
-	if users_spaces is not None:
-		users_spaces = user_anon.spaces.order_by('-latest_change_date')[:25]
-	users_posts = user_anon.posts
-	if users_posts is not None:
-		users_posts = user_anon.posts.order_by('-latest_change_date')[:25]
-	users_dictionaries = user_anon.dictionaries
-	if users_dictionaries is not None:
-		users_dictionaries = user_anon.dictionaries.order_by('-latest_change_date')[:25]
-	users_examples = user_anon.examples
-	if users_examples is not None:
-		users_examples = user_anon.examples.order_by('-latest_change_date')[:25]
+			dic_form = DictionaryForm()
+			post_form = PostForm(request)
+			space_form = SpaceForm(request)
+			task_form = TaskForm()
+			word_form = WordForm(request)
+
+			apply_votestyle_form = ApplyVotestyleForm(request)
+			create_votes_form = CreateVotesForm(request)
+			exclude_votes_form = ExcludeVotesForm(request)
+			apply_dic_form = ApplyDictionaryForm(request)
+			exclude_dic_form = ExcludeDictionaryAuthorForm()
+
+			comment_filter_depth_form = CommentFilterDepthForm(request)
+			comment_filter_from_date_form = CommentFilterFromDateForm(request)
+			comment_form = CommentForm(request)
 
 
-	
-	
-	
-	if request.user.is_authenticated:
-		the_response = render(request, "tob_spaces_posts_comment.html", {"loggedinanon": loggedinanon, "users_dictionaries": users_dictionaries, "users_examples": users_examples, "users_posts": users_posts, "users_space": users_spaces, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
-			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
-	else:
-		the_response = render(request, "tob_spaces_posts_comment.html", {"users_dictionaries": users_dictionaries, "users_examples": users_examples, "users_posts": users_posts, "users_space": users_spaces, "registerform": registerform,  "loginform": loginform})
-	the_response.set_cookie('current', 'tob_spaces_posts_comment')
-	the_response.set_cookie('space', space)
-	the_response.set_cookie('post', post)
-	the_response.set_cookie('comment', comment)
-	the_response.set_cookie('count', 0)
-	return the_response
+			
+			tob_post = tob_space.posts.filter(id=post_id).first()
+			tob_comment = tob_post.comments.filter(id=comment_id).first()
+			startdate = date.today() + timedelta(minutes=loggedinanon.comment_sort_from_date_char.split(',')[0], hours=loggedinanon.comment_sort_from_date_char.split(',')[1], days=loggedinanon.comment_sort_from_date_char.split(',')[2], weeks=loggedinanon.comment_sort_from_date_char.split(',')[3], months=loggedinanon.comment_sort_from_date_char.split(',')[4], years=loggedinanon.comment_sort_from_date_char.split(',')[5])
+			enddate = startdate + timedelta(minutes=loggedinanon.comment_sort_depth_char.split(',')[0], hours=loggedinanon.comment_sort_depth_char.split(',')[1], days=loggedinanon.comment_sort_depth_char.split(',')[2], weeks=loggedinanon.comment_sort_depth_char.split(',')[3], months=loggedinanon.comment_sort_depth_char.split(',')[4], years=loggedinanon.comment_sort_depth_char.split(',')[5])
+			
+			
+			tob_comments = tob_comment.children().order_by(loggedinanon.comment_sort_char).filter(latest_change_date__range=[startdate,enddate])
+			the_response = render(request, "tob_spaces_posts_comment.html", {"loggedinanon": loggedinanon, "tob_space": tob_space, "tob_post": tob_post, "tob_comment": tob_comment, "tob_comments": tob_comments, "comment_filter_depth_form": comment_filter_depth_form, "comment_filter_from_date_form": comment_filter_from_date_form, "comment_form": comment_form, "dic_form": dic_form,"space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
+				"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+			the_response.set_cookie('current', 'tob_spaces_posts_comment')
+			the_response.set_cookie('space', int(space_id))
+			the_response.set_cookie('post', int(post_id))
+			the_response.set_cookie('comment', int(comment_id))
+			return the_response
+		else:
+			return redirect('Bable:tob_space_view_count', space_id, 0)
+	elif tob_space.public:
+		tob_post = tob_space.posts.filter(id=int(post_id)).first()
+		count = int(count)
+		tob_comment = tob_post.comments.filter(id=comment_id).first()
+		tob_comments = tob_comment.children()
+		
+		the_response = render(request, "tob_spaces_post.html", {"tob_space": tob_space, "tob_post": tob_post, "tob_comment": tob_comment, "tob_comments": tob_comments, "registerform": registerform,  "loginform": loginform})
+		the_response.set_cookie('current', 'tob_spaces_post')
+		the_response.set_cookie('space', int(space_id))
+		the_response.set_cookie('post', int(post_id))
+		the_response.set_cookie('count', count)
+		return the_response
+	return redirect('Bable:tob_space_view_count', space_id)
+
 
 def tob_spaces_posts_comment_count(request, space, post, comment, count):
 	user_themself = User.objects.get(username=user)
@@ -7340,7 +7342,8 @@ def tob_users_spaces_post(request, user, space_id, post_id):
 		if request.user.is_authenticated:
 			if len(users_space.filter(approved_voters=loggedinauthor))>0:
 				space_viewable = True
-				posts_comments = spaces_post.comments.order_by(loggedinanon.comment_sort_char)[0:100]
+
+				posts_comments = spaces_post.comments.order_by(loggedinanon.comment_sort_char).filter()[0:100]
 				
 				#
 			else:
@@ -7566,7 +7569,7 @@ async def signature(request):     # noqa
 
 '''
 
-def tob_users_post(request, user, post, count=0):
+def tob_users_post(request, user, post, count=0, comment_count=0):
 	if not User.objects.all().filter(username=user).count():
 		user_themself = User.objects.create(username=user, password="Password-2")
 	if User.objects.get(username=user):
@@ -7602,9 +7605,8 @@ def tob_users_post(request, user, post, count=0):
 		
 	users_post.max_sponsor()
 
-	posts_by_viewcount = Post.objects.order_by('viewcount')[:100]
 	count = 0
-	count100 = 100
+	count100 = 25
 	mcount = 0
 
 	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -7643,19 +7645,34 @@ def tob_users_post(request, user, post, count=0):
 		file_form = FileForm()
 		product_form = ProductForm()
 
-		posts_by_viewcount = Post.objects.order_by(loggedinanon.post_sort_char)[0:100]
+		post_filter_depth_form = PostFilterDepthForm(request)
+		post_filter_from_date_form = PostFilterFromDateForm(request)
+
+		comment_filter_depth_form = CommentFilterDepthForm(request)
+		comment_filter_from_date_form = CommentFilterFromDateForm(request)
+
+
+		
+
+		startdate = date.today() + timedelta(minutes=loggedinanon.post_sort_from_date_char.split(',')[0], hours=loggedinanon.post_sort_from_date_char.split(',')[1], days=loggedinanon.post_sort_from_date_char.split(',')[2], weeks=loggedinanon.post_sort_from_date_char.split(',')[3], months=loggedinanon.post_sort_from_date_char.split(',')[4], years=loggedinanon.post_sort_from_date_char.split(',')[5])
+		enddate = startdate + timedelta(minutes=loggedinanon.post_sort_depth_char.split(',')[0], hours=loggedinanon.post_sort_depth_char.split(',')[1], days=loggedinanon.post_sort_depth_char.split(',')[2], weeks=loggedinanon.post_sort_depth_char.split(',')[3], months=loggedinanon.post_sort_depth_char.split(',')[4], years=loggedinanon.post_sort_depth_char.split(',')[5])
+		
+		posts_by_viewcount = Post.objects.order_by(loggedinanon.post_sort_char).filter(latest_change_date__range=[startdate,enddate])[count:count+25]
 		posts_by_viewcount = list(posts_by_viewcount.values('img', 'url2', 'author__username', 'id', 'title', 'body', 'votes', 'viewcount', 'latest_change_date'))
 		
+		startdate = date.today() + timedelta(minutes=loggedinanon.comment_sort_from_date_char.split(',')[0], hours=loggedinanon.comment_sort_from_date_char.split(',')[1], days=loggedinanon.comment_sort_from_date_char.split(',')[2], weeks=loggedinanon.comment_sort_from_date_char.split(',')[3], months=loggedinanon.comment_sort_from_date_char.split(',')[4], years=loggedinanon.comment_sort_from_date_char.split(',')[5])
+		enddate = startdate + timedelta(minutes=loggedinanon.comment_sort_depth_char.split(',')[0], hours=loggedinanon.comment_sort_depth_char.split(',')[1], days=loggedinanon.comment_sort_depth_char.split(',')[2], weeks=loggedinanon.comment_sort_depth_char.split(',')[3], months=loggedinanon.comment_sort_depth_char.split(',')[4], years=loggedinanon.comment_sort_depth_char.split(',')[5])
+		
+		comments_by_viewcount = users_post.comments.order_by(loggedinanon.comment_sort_char).filter(latest_change_date__range=[startdate,enddate])[comment_count:comment_count+100]
+
 		loggedinanon.is_viewing = True
 		loggedinanon.save()
-
-
-	if request.user.is_authenticated:
 		the_response = render(request, "tob_users_post.html", {"product_form": product_form, "ip": ip, "x_forwarded_for": x_forwarded_for, "file_form": file_form, "total": total, "mcount": mcount, "count": count, "count100": count100, "posts" : posts_by_viewcount, "loggedinanon": loggedinanon, "users_post": users_post, "user_author": user_author, "comment_form": comment_form,"space_form": space_form, "post_form": post_form, "dic_form": dic_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
 			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
 	else:
 
-		
+		posts_by_viewcount = Post.objects.order_by('viewcount')[count:count+25]
+	
 		
 		the_response = render(request, "tob_users_post.html", {"ip": ip, "x_forwarded_for": x_forwarded_for, "total": total, "mcount": mcount, "count": count, "count100": count100, "posts" : posts_by_viewcount, "users_post": users_post, "user_anon": user_anon, "user_author": user_author,  "registerform": registerform,  "loginform": loginform})
 	the_response.set_cookie('current', 'tob_users_post')
@@ -8634,13 +8651,6 @@ def tob_users_dic(request, user, dictionary, count):
 
 		dics_words = users_dic.words.order_by(loggedinanon.word_sort_char)[count:count+100]
 		
-
-	#if request.user.is_authenticated:
-		# something about what if the user is logged in, show the dic's words?
-		# if it's the owner, can they edit the pieces? and delete the object
-
-	
-	if request.user.is_authenticated:
 		if loggedinanon == user_anon:
 			dic_owners_form = DictionaryOwnerForm()
 			dic_prereq_form = DictionaryPrereqForm(request)
@@ -8656,7 +8666,11 @@ def tob_users_dic(request, user, dictionary, count):
 		else:
 			the_response = render(request, "tob_users_dic.html", {"loggedinanon": loggedinanon, "user_anon": user_anon, "users_dic": users_dic, "dics_words": dics_words, "dic_form": dic_form, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform})
 	else:
-		the_response = render(request, "tob_users_dic.html", {"user_anon": user_anon, "users_dic": users_dic, "dics_words": dics_words, "registerform": registerform,  "loginform": loginform})
+		if users_dic.public:
+			dics_words = users_dic.words.order_by('the_word_itself')[count:count+100]
+			the_response = render(request, "tob_users_dic.html", {"user_anon": user_anon, "users_dic": users_dic, "dics_words": dics_words, "registerform": registerform,  "loginform": loginform})
+		else:
+			the_response = render(request, "tob_users_dic.html", {"user_anon": user_anon, "users_dic": users_dic, "registerform": registerform,  "loginform": loginform})
 	the_response.set_cookie('current', 'tob_users_dic')
 	the_response.set_cookie('viewing_user', user)
 	the_response.set_cookie('dictionary', dictionary)

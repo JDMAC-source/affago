@@ -681,6 +681,44 @@ class Votings(models.Model):
 	creation_date = models.DateTimeField(default=timezone.now)
 
 
+DATE_CHOICES_CHAR = (
+	("15,0,0,0,0,0","15 Minutes"),
+	("30,0,0,0,0,0","30 Minutes"),
+	("45,0,0,0,0,0","45 Minutes"),
+	("0,1,0,0,0,0","Hourly"),
+	("0,2,0,0,0,0","2 Hourly"),
+	("0,4,0,0,0,0","4 Hourly"),
+	("0,6,0,0,0,0","6 Hourly"),
+	("0,8,0,0,0,0","8 Hourly"),
+	("0,10,0,0,0,0","10 Hourly"),
+	("0,12,0,0,0,0","12 Hourly"),
+	("0,16,0,0,0,0","16 Hourly"),
+	("0,18,0,0,0,0","18 Hourly"),
+	("0,20,0,0,0,0","20 Hourly"),
+	("0,0,1,0,0,0","1 Daily"),
+	("0,36,0,0,0,0","1.5 Daily"),
+	("0,0,2,0,0,0","2 Daily"),
+	("0,0,3,0,0,0","3 Daily"),
+	("0,0,4,0,0,0","4 Daily"),
+	("0,0,5,0,0,0","5 Daily"),
+	("0,0,0,1,0,0","Weekly"),
+	("0,0,0,2,0,0","2 Weekly"),
+	("0,0,0,0,1,0","Monthly"),
+	("0,0,0,0,2,0","2 Monthly"),
+	("0,0,0,0,3,0","3 Monthly"),
+	("0,0,0,0,4,0","4 Monthly"),
+	("0,0,0,0,6,0","6 Monthly"),
+	("0,0,0,0,9,0","9 Monthly"),
+	("0,0,0,0,0,1","Yearly"),
+	("0,0,0,0,18,0","18 Monthly"),
+	("0,0,0,0,0,2","2 Yearly"),
+	("0,0,0,0,0,3","3 Yearly"),
+	("0,0,0,0,0,4","4 Yearly"),
+	("0,0,0,0,0,5","5 Yearly"),
+	("0,0,0,0,0,120","All Time"),
+)
+
+
 # of difference
 class Analysis(models.Model):
 	the_critique_itself = models.ManyToManyField(Word, default=None)
@@ -2592,21 +2630,62 @@ class UserSpecificJavaScriptVariableViewLearning(models.Model):
 	base_plus_zoom = models.ManyToManyField(NumStep, default=None, related_name="base_plus_zoom")
 	base_plus_zoom_repeat = models.BooleanField(default=True)
 	
+BASE_TOKEN_TYPE_CHOICES_CHAR = (
+	("preferred_pronouns","Preferred Pronouns"),
+	("trigger_adjectives","Trigger Adjectives"),
+	("trigger_nouns","Trigger Nouns"),
+	("trigger_verbs","Trigger Verbs"),
+	("trigger_adverbs","Trigger Adverbs"),
+	("concerned_for_as_targeted_pronouns","Concern for as Targeted Pronouns"),
+	("concerned_for_as_accusational_verbs","Concern for as Accusational Verbs"),
+	("mantras", "Mantras/Chants"),
+	("karmas", "Karmas/Deservations"),
+	("dharmas", "Dharmas/Duties"),
+	("ways", "Ways/Types"),
+
+
+)
 
 
 
 
+
+class BaseToken(models.Model):
+	type = models.CharField(choices=BASE_TOKEN_TYPE_CHOICES_CHAR, max_length=140, default='pronoun')
+	word = models.CharField(max_length=140, default='')
+
+class BaseTokenSearch(models.Model):
+	base_token = models.ManyToManyField(BaseToken, default=None)
+	usernames_returned = models.ManyToManyField(Author, default=None)
+	username_who_searched = models.CharField(max_length=140, default='')
+	creation_date = models.DateTimeField(default=timezone.now)
 
 
 class Anon(models.Model):
+	base_token_searches = models.ManyToManyField(BaseTokenSearch, default=None)
+	preferred_pronouns = models.ManyToManyField(BaseToken, default=None, related_name="preferred_pronouns")
+	trigger_adjectives = models.ManyToManyField(BaseToken, default=None, related_name="trigger_adjectives")
+	trigger_nouns = models.ManyToManyField(BaseToken, default=None, related_name="trigger_nouns")
+	trigger_verbs = models.ManyToManyField(BaseToken, default=None, related_name="trigger_verbs")
+	trigger_adverbs = models.ManyToManyField(BaseToken, default=None, related_name="preferred_pronouns")
+	concerned_for_as_targeted_pronouns = models.ManyToManyField(BaseToken, default=None, related_name="targeted_pronouns")
+	concerned_for_as_accusational_verbs = models.ManyToManyField(BaseToken, default=None, related_name="accusational_verbs")
+	mantras = models.ManyToManyField(BaseToken, default=None, related_name="mantras")
+	karmas = models.ManyToManyField(BaseToken, default=None, related_name="kharmas")
+	dharmas = models.ManyToManyField(BaseToken, default=None, related_name="dharmas")
+	ways = models.ManyToManyField(BaseToken, default=None, related_name="ways")
 	angel_numbers = models.ManyToManyField(AngelNumber, default=None)
 	minecraft_servers = models.ManyToManyField(MinecraftServer, default=None)
 	drawings = models.ManyToManyField(Drawing, default=None)
 	storefronts = models.ManyToManyField(Storefront, default=None)
 	storefront_sort_char = models.CharField(choices=STOREFRONT_SORT_CHOICES_CHAR, default="views", max_length=180)
+	storefront_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	storefront_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
 	saless = models.ManyToManyField(Sale, default=None)
 	products = models.ManyToManyField(Price, related_name="anon_product", default=None)
 	product_sort_char = models.CharField(choices=PRODUCT_SORT_CHOICES_CHAR, default="views", max_length=180)
+	product_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	product_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
 	purchases = models.ManyToManyField(Price, related_name="anon_purchase", default=None)
 	stripe_private_key = models.CharField(max_length=600, default='', null=True)
 	stripe_webhook_secret = models.CharField(max_length=600, default='', null=True)
@@ -2617,7 +2696,9 @@ class Anon(models.Model):
 	email = models.EmailField(max_length=144, default='', null=True)
 	anon_sort = models.IntegerField(choices=ANON_SORT_CHOICES, default=0)
 	anon_sort_char = models.CharField(choices=ANON_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
-
+	anon_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	anon_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	
 	friends = models.ManyToManyField(Author, default=None, related_name="friends")
 	mutuals_associate = models.ManyToManyField(Associate, default=None)
 
@@ -2645,16 +2726,26 @@ class Anon(models.Model):
 
 	dictionary_sort = models.IntegerField(choices=DICTIONARY_SORT_CHOICES, default=0)
 	dictionary_sort_char = models.CharField(choices=DICTIONARY_SORT_CHOICES_CHAR, default="views", max_length=180)
+	dictionary_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
+	dictionary_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
 	word_sort = models.IntegerField(choices=WORD_SORT_CHOICES, default=0)
 	word_sort_char = models.CharField(choices=WORD_SORT_CHOICES_CHAR, default="viewcount", max_length=180)
+	word_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
+	word_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
 	attribute_sort = models.IntegerField(choices=ATTRIBUTE_SORT_CHOICES, default=0)
 	attribute_sort_char = models.CharField(choices=ATTRIBUTE_SORT_CHOICES_CHAR, default="the_attribute_itself", max_length=180)
+	attribute_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
+	attribute_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
 	examples = models.ManyToManyField(Example, blank=True, default=None) # saved comments
 	sum_examples = models.IntegerField(default=0)
 	example_sort = models.IntegerField(choices=EXAMPLE_SORT_CHOICES, default=0)
 	example_sort_char = models.CharField(choices=EXAMPLE_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
+	example_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
+	example_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
 	sponsor_sort = models.IntegerField(choices=SPONSOR_SORT_CHOICES, default=0)
 	sponsor_sort_char = models.CharField(choices=SPONSOR_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
+	sponsor_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
+	sponsor_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="viewcount", max_length=180)
 	tasks = models.ManyToManyField(Task, default=None)
 	sum_tasks = models.IntegerField(default=0)
 	latest_change_date = models.DateTimeField(default=timezone.now)
@@ -2670,13 +2761,17 @@ class Anon(models.Model):
 	reposting_comment_sources = models.ManyToManyField(Comment_Source, default=None, related_name='reposting_comment_sources')
 	comment_sort = models.IntegerField(choices=COMMENT_SORT_CHOICES, default=0)
 	comment_sort_char = models.CharField(choices=COMMENT_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
-
+	comment_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	comment_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	
 
 	posts = models.ManyToManyField(Post, blank=True, default=None)
 	sum_posts = models.IntegerField(default=0)
 	sum_earnt_from_posts = models.IntegerField(default=0)
 	post_sort = models.IntegerField(choices=POST_SORT_CHOICES, default=0)
 	post_sort_char = models.CharField(choices=POST_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
+	post_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	post_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
 	
 	spaces = models.ManyToManyField(Space, blank=True, default=None, related_name='spaces')
 	sum_spaces = models.IntegerField(default=0)
@@ -2691,7 +2786,9 @@ class Anon(models.Model):
 	sum_spent_on_spaces = models.IntegerField(default=0)
 	space_sort = models.IntegerField(choices=SPACE_SORT_CHOICES, default=0)
 	space_sort_char = models.CharField(choices=SPACE_SORT_CHOICES_CHAR, default="latest_change_date", max_length=180)
-
+	space_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	space_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	
 	created_votestyles = models.ManyToManyField(Votes, default=None, related_name='created_votestyles')
 	sum_created_votestyles = models.IntegerField(default=0)
 	saved_votestyles = models.ManyToManyField(Votes, default=None, related_name='saved_votestyles')
@@ -2699,6 +2796,9 @@ class Anon(models.Model):
 	excluded_votestyles = models.ManyToManyField(Votes, default=None, related_name='excluded_votestyles')
 
 	past_votes = models.ManyToManyField(Votings, default=None, related_name='past_votes')
+	past_votes_sort_depth_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+	past_votes_sort_from_date_char = models.CharField(choices=DATE_CHOICES_CHAR, default="", max_length=180)
+
 	sum_past_votes = models.IntegerField(default=0)
 	sum_past_votes_earnings = models.IntegerField(default=0)
 	search_urls = models.ManyToManyField(SearchURL, default=None)
