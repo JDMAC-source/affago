@@ -95,6 +95,7 @@ class Author(models.Model):
 			for post in anons_posts:
 				if post not in anon.posts.all():
 					anon.posts.add(post)
+			anon.save()
 			return anon
 		else:
 			if not User.objects.filter(username=self.username[0:149]).count():
@@ -108,13 +109,15 @@ class Author(models.Model):
 				for post in anons_posts:
 					if post not in anon.posts.all():
 						anon.posts.add(post)
+				anon.save()
 				return anon
 			else:
-				anon = Anon.objects.create(username=user)
+				anon, created = Anon.objects.create(username=user)
 				anons_posts = Post.objects.all().filter(author=Author.objects.get(username=self.username[0:149]))
 				for post in anons_posts:
 					if post not in anon.posts.all():
 						anon.posts.add(post)
+				anon.save()
 				return anon
 
 
