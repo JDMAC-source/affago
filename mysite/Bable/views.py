@@ -4193,10 +4193,10 @@ def tower_of_bable(request):
 		task_form = TaskForm()
 		word_form = WordForm(request)
 		if not loggedinanon.post_sort_from_date_char:
-			loggedinanon.post_sort_from_date_char = "0,0,0,0,0,0"
+			loggedinanon.post_sort_from_date_char = "0,0,0,0"
 			loggedinanon.save()
 		if not loggedinanon.post_sort_depth_char:
-			loggedinanon.post_sort_depth_char = "0,0,0,0,0,0"
+			loggedinanon.post_sort_depth_char = "0,0,0,10000"
 			loggedinanon.save()
 		startdate = date.today() + timedelta(minutes=int(loggedinanon.post_sort_from_date_char.split(',')[0]), hours=int(loggedinanon.post_sort_from_date_char.split(',')[1]), days=int(loggedinanon.post_sort_from_date_char.split(',')[2]), weeks=int(loggedinanon.post_sort_from_date_char.split(',')[3]))
 		enddate = startdate + timedelta(minutes=int(loggedinanon.post_sort_depth_char.split(',')[0]), hours=int(loggedinanon.post_sort_depth_char.split(',')[1]), days=int(loggedinanon.post_sort_depth_char.split(',')[2]), weeks=int(loggedinanon.post_sort_depth_char.split(',')[3]))
@@ -6350,7 +6350,21 @@ def change_post_sort_char(request):
 			post_sort_form.save()
 	return base_redirect(request, 0)
 
+@login_required
+def change_post_filter_depth(request):
+	if request.method == "POST":
+		post_filter_depth_form = PostFilterDepthForm(request, data=request.POST)
+		if post_filter_depth_form.is_valid():
+			post_filter_depth_form.save()
+	return base_redirect(request, 0)
 
+@login_required
+def change_post_filter_from_date(request):
+	if request.method == "POST":
+		post_filter_from_date_form = PostFilterFromDateForm(request, data=request.POST)
+		if post_filter_from_date_form.is_valid():
+			post_filter_from_date_form.save()
+	return base_redirect(request, 0)
 
 def tob_sponsor(request, sponsor):
 

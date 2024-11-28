@@ -49,6 +49,30 @@ BabylonPolice.com - incentivised-ascento-secrecy
 		});
 	</script>
 </div>
+<div class=possectionsort>
+	<form name=post_filter_from_date action="{% url 'Bable:change_post_filter_from_date' %}" method=post>
+		{% csrf_token %}
+		{{ post_filter_from_date_form }}
+	</form>
+	<script>
+		var form = document.querySelector('form[name="post_filter_from_date"]');
+		form.addEventListener('change', function() {
+		    form.submit();
+		});
+	</script>
+</div>
+<div class=possectionsort>
+	<form name=post_filter_depth action="{% url 'Bable:change_post_filter_depth' %}" method=post>
+		{% csrf_token %}
+		{{ post_filter_depth_form }}
+	</form>
+	<script>
+		var form = document.querySelector('form[name="post_filter_depth"]');
+		form.addEventListener('change', function() {
+		    form.submit();
+		});
+	</script>
+</div>
 <style>
 	.posttitle h4 {
 		font-size: 1.5em;
