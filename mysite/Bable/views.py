@@ -59,7 +59,8 @@ from Bable.serializers import PostSerializer
 
 from django.http import StreamingHttpResponse
 import datetime
-import datetime as date
+from datetime import date
+from datetime import timedelta
 import time
 
 
