@@ -11067,7 +11067,10 @@ def clickthrough(request):
 			sponsor = Sponsor.objects.first()
 			sponsor_id = sponsor.id
 		clicked_sponsor = Sponsor.objects.get(id=int(sponsor_id))
-		parked_author = Author.objects.get(username=author)
+		if author:
+			parked_author = Author.objects.get(username=author)
+		else:
+			parked_author = Author.objects.get(username="Test")
 
 		page_views, created = Pageviews.objects.get_or_create(page="clickthrough")
 		page_views.views += 1

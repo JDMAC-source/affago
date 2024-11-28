@@ -2667,7 +2667,7 @@ class Anon(models.Model):
 	trigger_adjectives = models.ManyToManyField(BaseToken, default=None, related_name="trigger_adjectives")
 	trigger_nouns = models.ManyToManyField(BaseToken, default=None, related_name="trigger_nouns")
 	trigger_verbs = models.ManyToManyField(BaseToken, default=None, related_name="trigger_verbs")
-	trigger_adverbs = models.ManyToManyField(BaseToken, default=None, related_name="preferred_pronouns")
+	trigger_adverbs = models.ManyToManyField(BaseToken, default=None, related_name="trigger_adverbs")
 	concerned_for_as_targeted_pronouns = models.ManyToManyField(BaseToken, default=None, related_name="targeted_pronouns")
 	concerned_for_as_accusational_verbs = models.ManyToManyField(BaseToken, default=None, related_name="accusational_verbs")
 	mantras = models.ManyToManyField(BaseToken, default=None, related_name="mantras")
