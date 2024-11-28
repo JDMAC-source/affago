@@ -4198,8 +4198,8 @@ def tower_of_bable(request):
 		if not loggedinanon.post_sort_depth_char:
 			loggedinanon.post_sort_depth_char = "0,0,0,0,0,0"
 			loggedinanon.save()
-		startdate = date.today() + timedelta(minutes=loggedinanon.post_sort_from_date_char.split(',')[0], hours=loggedinanon.post_sort_from_date_char.split(',')[1], days=loggedinanon.post_sort_from_date_char.split(',')[2], weeks=loggedinanon.post_sort_from_date_char.split(',')[3], years=loggedinanon.post_sort_from_date_char.split(',')[5])
-		enddate = startdate + timedelta(minutes=loggedinanon.post_sort_depth_char.split(',')[0], hours=loggedinanon.post_sort_depth_char.split(',')[1], days=loggedinanon.post_sort_depth_char.split(',')[2], weeks=loggedinanon.post_sort_depth_char.split(',')[3], years=loggedinanon.post_sort_depth_char.split(',')[5])
+		startdate = date.today() + timedelta(minutes=loggedinanon.post_sort_from_date_char.split(',')[0], hours=loggedinanon.post_sort_from_date_char.split(',')[1], days=loggedinanon.post_sort_from_date_char.split(',')[2], weeks=loggedinanon.post_sort_from_date_char.split(',')[3])
+		enddate = startdate + timedelta(minutes=loggedinanon.post_sort_depth_char.split(',')[0], hours=loggedinanon.post_sort_depth_char.split(',')[1], days=loggedinanon.post_sort_depth_char.split(',')[2], weeks=loggedinanon.post_sort_depth_char.split(',')[3], )
 		posts_by_viewcount = Post.objects.order_by(loggedinanon.post_sort_char).filter(latest_change_date__range=[startdate, enddate])[:25]
 		apply_votestyle_form = ApplyVotestyleForm(request)
 		create_votes_form = CreateVotesForm(request)
@@ -4503,8 +4503,8 @@ def tower_of_bable_count(request, count):
 			pages_view.previous_page = previous_view.page_view
 			pages_view.previous_view_date = previous_view.view_date
 			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
-		startdate = date.today() + timedelta(minutes=loggedinanon.post_sort_from_date_char.split(',')[0], hours=loggedinanon.post_sort_from_date_char.split(',')[1], days=loggedinanon.post_sort_from_date_char.split(',')[2], weeks=loggedinanon.post_sort_from_date_char.split(',')[3], months=loggedinanon.post_sort_from_date_char.split(',')[4], years=loggedinanon.post_sort_from_date_char.split(',')[5])
-		enddate = startdate + timedelta(minutes=loggedinanon.post_sort_depth_char.split(',')[0], hours=loggedinanon.post_sort_depth_char.split(',')[1], days=loggedinanon.post_sort_depth_char.split(',')[2], weeks=loggedinanon.post_sort_depth_char.split(',')[3], months=loggedinanon.post_sort_depth_char.split(',')[4], years=loggedinanon.post_sort_depth_char.split(',')[5])
+		startdate = date.today() + timedelta(minutes=loggedinanon.post_sort_from_date_char.split(',')[0], hours=loggedinanon.post_sort_from_date_char.split(',')[1], days=loggedinanon.post_sort_from_date_char.split(',')[2], weeks=loggedinanon.post_sort_from_date_char.split(',')[3])
+		enddate = startdate + timedelta(minutes=loggedinanon.post_sort_depth_char.split(',')[0], hours=loggedinanon.post_sort_depth_char.split(',')[1], days=loggedinanon.post_sort_depth_char.split(',')[2], weeks=loggedinanon.post_sort_depth_char.split(',')[3])
 		posts_by_viewcount = Post.objects.order_by(loggedinanon.post_sort_char).filter(latest_change_date__range=[startdate, enddate])[count:count100]
 		postscount = posts_by_viewcount.count()
 
@@ -6127,8 +6127,8 @@ def tob_spaces_post(request, space_id, post_id, count):
 
 			tob_post = tob_space.posts.filter(id=int(post_id)).first()
 			count = int(count)
-			startdate = date.today() + timedelta(minutes=loggedinanon.comment_sort_from_date_char.split(',')[0], hours=loggedinanon.comment_sort_from_date_char.split(',')[1], days=loggedinanon.comment_sort_from_date_char.split(',')[2], weeks=loggedinanon.comment_sort_from_date_char.split(',')[3], months=loggedinanon.comment_sort_from_date_char.split(',')[4], years=loggedinanon.comment_sort_from_date_char.split(',')[5])
-			enddate = startdate + timedelta(minutes=loggedinanon.comment_sort_depth_char.split(',')[0], hours=loggedinanon.comment_sort_depth_char.split(',')[1], days=loggedinanon.comment_sort_depth_char.split(',')[2], weeks=loggedinanon.comment_sort_depth_char.split(',')[3], months=loggedinanon.comment_sort_depth_char.split(',')[4], years=loggedinanon.comment_sort_depth_char.split(',')[5])
+			startdate = date.today() + timedelta(minutes=loggedinanon.comment_sort_from_date_char.split(',')[0], hours=loggedinanon.comment_sort_from_date_char.split(',')[1], days=loggedinanon.comment_sort_from_date_char.split(',')[2], weeks=loggedinanon.comment_sort_from_date_char.split(',')[3])
+			enddate = startdate + timedelta(minutes=loggedinanon.comment_sort_depth_char.split(',')[0], hours=loggedinanon.comment_sort_depth_char.split(',')[1], days=loggedinanon.comment_sort_depth_char.split(',')[2], weeks=loggedinanon.comment_sort_depth_char.split(',')[3])
 			
 			tob_comments = tob_post.comments.order_by(loggedinanon.comment_sort_char).filter(latest_change_date__range=[startdate,enddate])[count:count+100]
 			
@@ -6196,8 +6196,8 @@ def tob_spaces_posts_comment(request, space_id, post_id, comment_id):
 			
 			tob_post = tob_space.posts.filter(id=post_id).first()
 			tob_comment = tob_post.comments.filter(id=comment_id).first()
-			startdate = date.today() + timedelta(minutes=loggedinanon.comment_sort_from_date_char.split(',')[0], hours=loggedinanon.comment_sort_from_date_char.split(',')[1], days=loggedinanon.comment_sort_from_date_char.split(',')[2], weeks=loggedinanon.comment_sort_from_date_char.split(',')[3], months=loggedinanon.comment_sort_from_date_char.split(',')[4], years=loggedinanon.comment_sort_from_date_char.split(',')[5])
-			enddate = startdate + timedelta(minutes=loggedinanon.comment_sort_depth_char.split(',')[0], hours=loggedinanon.comment_sort_depth_char.split(',')[1], days=loggedinanon.comment_sort_depth_char.split(',')[2], weeks=loggedinanon.comment_sort_depth_char.split(',')[3], months=loggedinanon.comment_sort_depth_char.split(',')[4], years=loggedinanon.comment_sort_depth_char.split(',')[5])
+			startdate = date.today() + timedelta(minutes=loggedinanon.comment_sort_from_date_char.split(',')[0], hours=loggedinanon.comment_sort_from_date_char.split(',')[1], days=loggedinanon.comment_sort_from_date_char.split(',')[2], weeks=loggedinanon.comment_sort_from_date_char.split(',')[3])
+			enddate = startdate + timedelta(minutes=loggedinanon.comment_sort_depth_char.split(',')[0], hours=loggedinanon.comment_sort_depth_char.split(',')[1], days=loggedinanon.comment_sort_depth_char.split(',')[2], weeks=loggedinanon.comment_sort_depth_char.split(',')[3])
 			
 			
 			tob_comments = tob_comment.children().order_by(loggedinanon.comment_sort_char).filter(latest_change_date__range=[startdate,enddate])
@@ -7692,14 +7692,14 @@ def tob_users_post(request, user, post, count=0, comment_count=0):
 
 		
 
-		startdate = date.today() + timedelta(minutes=loggedinanon.post_sort_from_date_char.split(',')[0], hours=loggedinanon.post_sort_from_date_char.split(',')[1], days=loggedinanon.post_sort_from_date_char.split(',')[2], weeks=loggedinanon.post_sort_from_date_char.split(',')[3], months=loggedinanon.post_sort_from_date_char.split(',')[4], years=loggedinanon.post_sort_from_date_char.split(',')[5])
-		enddate = startdate + timedelta(minutes=loggedinanon.post_sort_depth_char.split(',')[0], hours=loggedinanon.post_sort_depth_char.split(',')[1], days=loggedinanon.post_sort_depth_char.split(',')[2], weeks=loggedinanon.post_sort_depth_char.split(',')[3], months=loggedinanon.post_sort_depth_char.split(',')[4], years=loggedinanon.post_sort_depth_char.split(',')[5])
+		startdate = date.today() + timedelta(minutes=loggedinanon.post_sort_from_date_char.split(',')[0], hours=loggedinanon.post_sort_from_date_char.split(',')[1], days=loggedinanon.post_sort_from_date_char.split(',')[2], weeks=loggedinanon.post_sort_from_date_char.split(',')[3])
+		enddate = startdate + timedelta(minutes=loggedinanon.post_sort_depth_char.split(',')[0], hours=loggedinanon.post_sort_depth_char.split(',')[1], days=loggedinanon.post_sort_depth_char.split(',')[2], weeks=loggedinanon.post_sort_depth_char.split(',')[3])
 		
 		posts_by_viewcount = Post.objects.order_by(loggedinanon.post_sort_char).filter(latest_change_date__range=[startdate,enddate])[count:count+25]
 		posts_by_viewcount = list(posts_by_viewcount.values('img', 'url2', 'author__username', 'id', 'title', 'body', 'votes', 'viewcount', 'latest_change_date'))
 		
-		startdate = date.today() + timedelta(minutes=loggedinanon.comment_sort_from_date_char.split(',')[0], hours=loggedinanon.comment_sort_from_date_char.split(',')[1], days=loggedinanon.comment_sort_from_date_char.split(',')[2], weeks=loggedinanon.comment_sort_from_date_char.split(',')[3], months=loggedinanon.comment_sort_from_date_char.split(',')[4], years=loggedinanon.comment_sort_from_date_char.split(',')[5])
-		enddate = startdate + timedelta(minutes=loggedinanon.comment_sort_depth_char.split(',')[0], hours=loggedinanon.comment_sort_depth_char.split(',')[1], days=loggedinanon.comment_sort_depth_char.split(',')[2], weeks=loggedinanon.comment_sort_depth_char.split(',')[3], months=loggedinanon.comment_sort_depth_char.split(',')[4], years=loggedinanon.comment_sort_depth_char.split(',')[5])
+		startdate = date.today() + timedelta(minutes=loggedinanon.comment_sort_from_date_char.split(',')[0], hours=loggedinanon.comment_sort_from_date_char.split(',')[1], days=loggedinanon.comment_sort_from_date_char.split(',')[2], weeks=loggedinanon.comment_sort_from_date_char.split(',')[3])
+		enddate = startdate + timedelta(minutes=loggedinanon.comment_sort_depth_char.split(',')[0], hours=loggedinanon.comment_sort_depth_char.split(',')[1], days=loggedinanon.comment_sort_depth_char.split(',')[2], weeks=loggedinanon.comment_sort_depth_char.split(',')[3])
 		
 		comments_by_viewcount = users_post.comments.order_by(loggedinanon.comment_sort_char).filter(latest_change_date__range=[startdate,enddate])[comment_count:comment_count+100]
 
