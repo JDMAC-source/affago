@@ -7903,9 +7903,9 @@ def tob_users_post(request, user, post, count=0, comment_count=0):
 		posts_by_viewcount = Post.objects.filter(latest_change_date__range=[enddate, startdate]).order_by(loggedinanon.post_sort_char)[count:count+25]
 		posts_by_viewcount = list(posts_by_viewcount.values('img', 'url2', 'author__username', 'id', 'title', 'body', 'votes', 'viewcount', 'latest_change_date'))
 		if not loggedinanon.comment_sort_from_date_char:
-				loggedinanon.comment_sort_from_date_char = "0,0,0,0"
-			if not loggedinanon.comment_sort_depth_char:
-				loggedinanon.comment_sort_depth_char = "0,0,0,10000"
+			loggedinanon.comment_sort_from_date_char = "0,0,0,0"
+		if not loggedinanon.comment_sort_depth_char:
+			loggedinanon.comment_sort_depth_char = "0,0,0,10000"
 		startdate = datetime.datetime.now() - timedelta(minutes=int(loggedinanon.comment_sort_from_date_char.split(',')[0]), hours=int(loggedinanon.comment_sort_from_date_char.split(',')[1]), days=int(loggedinanon.comment_sort_from_date_char.split(',')[2]), weeks=int(loggedinanon.comment_sort_from_date_char.split(',')[3]))
 		enddate = startdate - timedelta(minutes=int(loggedinanon.comment_sort_depth_char.split(',')[0]), hours=int(loggedinanon.comment_sort_depth_char.split(',')[1]), days=int(loggedinanon.comment_sort_depth_char.split(',')[2]), weeks=int(loggedinanon.comment_sort_depth_char.split(',')[3]))
 		
