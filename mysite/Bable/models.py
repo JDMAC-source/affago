@@ -2960,7 +2960,7 @@ class IpAddress(models.Model):
 	ip_address = models.TextField(default='', max_length=200)
 
 class UserViews(models.Model):
-	anon = models.ForeignKey(Anon, default=None, on_delete=models.PROTECT)
+	anon = models.ForeignKey(Anon, default=None, on_delete=models.PROTECT, null=True)
 	view_date = models.DateTimeField(default=timezone.now)
 	ip_address = models.TextField(default='', max_length=200)
 	httpxforwardfor = models.TextField(default='', max_length=20000)
