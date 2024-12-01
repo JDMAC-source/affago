@@ -11310,6 +11310,7 @@ def tob_dics_count(request, count):
 
 def clickthrough(request):
 	##3 charge
+
 	if request.method == "POST":
 		sponsor_id = request.POST.get('sponsor_id')
 		author = request.POST.get('author')
@@ -11328,6 +11329,14 @@ def clickthrough(request):
 		page_views, created = Pageviews.objects.get_or_create(page="clickthrough")
 		page_views.views += 1
 		page_views.save()
+
+		x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+		if x_forwarded_for:
+			x_forwarded_for = x_forwarded_for.split(',')[0]
+		ip = request.META.get('REMOTE_ADDR')
+		ip_addy, created = IpAddress.objects.get_or_create(ip_address=ip)
+		page_views.ip_addresses.add(ip_addy)
+
 
 
 		parked_anon = parked_author.to_anon()
