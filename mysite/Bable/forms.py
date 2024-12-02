@@ -594,8 +594,7 @@ class InsertSponsorForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(InsertSponsorForm, self).__init__(*args, **kwargs)
         all_sponsors = Sponsor.objects.filter(author__username=request.user.username).all()
-        spon.append(sponsor.id)
-        self.fields['identifier'] = forms.ChoiceField(choices=[(e, e) for e in spon])
+        self.fields['identifier'] = forms.ChoiceField(choices=[(e, e) for e in all_sponsors.values_list("id", flat=True)])
 
 
 
