@@ -19,7 +19,7 @@ from django.conf import settings
 from django.urls import re_path as url
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
-
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.sitemaps.views import sitemap
 
 from Bable.sitemaps import Static_Sitemap, Post_Sitemap, Anon_Sitemap, Dictionary_Sitemap, Word_Sitemap
@@ -38,10 +38,11 @@ sitemaps = {
 urlpatterns = [
 	url(r'^paypal/', include('paypal.standard.ipn.urls')),
 	path('B/', include('Bable.urls')),
+    path('ads.txt', RedirectView.as_view(url=staticfiles_storage.url("ads.txt"))),
     path('cancel/', CancelView.as_view(), name='cancel'),
     path('success/', SuccessView.as_view(), name='success'),
     path('', RedirectView.as_view(pattern_name='Bable:landingpage')),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     
     
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
