@@ -4402,12 +4402,802 @@ def landingpage_roadmaps(request):
 		
 		the_response = render(request, 'landingpage_roadmaps.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
 	
-	the_response.set_cookie('current', 'landingpage')
+	the_response.set_cookie('current', 'landingpage_roadmaps')
+	return the_response
+
+
+def landingpage_editors_choice(request):
+	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+
+	
+	count = 0
+	count100 = 100
+	mcount = 0
+
+	buyadvertisingform = BuyAdvertisingForm()
+
+
+	page_views, created = Pageviews.objects.get_or_create(page="landingpage_editors_choice")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+	total = 0
+	for page in Pageviews.objects.all():
+		total += page.views
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_editors_choice", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		
+		the_response = render(request, 'landingpage_editors_choice.html', { "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		previous_view = UserViews.objects.filter(ip_address=ip).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_editors_choice", ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+		the_response = render(request, 'landingpage_editors_choice.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
+	
+	the_response.set_cookie('current', 'landingpage_editors_choice')
 	return the_response
 
 
 
+def landingpage_features_list(request):
+	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
 
+	
+	count = 0
+	count100 = 100
+	mcount = 0
+
+	buyadvertisingform = BuyAdvertisingForm()
+
+
+	page_views, created = Pageviews.objects.get_or_create(page="landingpage_features_list")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+	total = 0
+	for page in Pageviews.objects.all():
+		total += page.views
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_features_list", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		
+		the_response = render(request, 'landingpage_features_list.html', { "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		previous_view = UserViews.objects.filter(ip_address=ip).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_features_list", ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+		the_response = render(request, 'landingpage_features_list.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
+	
+	the_response.set_cookie('current', 'landingpage_features_list')
+	return the_response
+
+
+def landingpage_goals(request):
+	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+
+	
+	count = 0
+	count100 = 100
+	mcount = 0
+
+	buyadvertisingform = BuyAdvertisingForm()
+
+
+	page_views, created = Pageviews.objects.get_or_create(page="landingpage_goals")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+	total = 0
+	for page in Pageviews.objects.all():
+		total += page.views
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_goals", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		
+		the_response = render(request, 'landingpage_goals.html', { "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		previous_view = UserViews.objects.filter(ip_address=ip).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_roadmap", ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+		the_response = render(request, 'landingpage_goals.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
+	
+	the_response.set_cookie('current', 'landingpage_goals')
+	return the_response
+
+
+def landingpage_how_tos(request):
+	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+
+	
+	count = 0
+	count100 = 100
+	mcount = 0
+
+	buyadvertisingform = BuyAdvertisingForm()
+
+
+	page_views, created = Pageviews.objects.get_or_create(page="landingpage_how_tos")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+	total = 0
+	for page in Pageviews.objects.all():
+		total += page.views
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_how_tos", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		
+		the_response = render(request, 'landingpage_how_tos.html', { "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		previous_view = UserViews.objects.filter(ip_address=ip).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_how_tos", ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+		the_response = render(request, 'landingpage_how_tos.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
+	
+	the_response.set_cookie('current', 'landingpage_how_tos')
+	return the_response
+
+
+def landingpage_improvement_notes(request):
+	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+
+	
+	count = 0
+	count100 = 100
+	mcount = 0
+
+	buyadvertisingform = BuyAdvertisingForm()
+
+
+	page_views, created = Pageviews.objects.get_or_create(page="landingpage_improvement_notes")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+	total = 0
+	for page in Pageviews.objects.all():
+		total += page.views
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_improvement_notes", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		
+		the_response = render(request, 'landingpage_improvement_notes.html', { "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		previous_view = UserViews.objects.filter(ip_address=ip).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_improvement_notes", ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+		the_response = render(request, 'landingpage_improvement_notes.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
+	
+	the_response.set_cookie('current', 'landingpage_improvement_notes')
+	return the_response
+
+
+def landingpage_mission(request):
+	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+
+	
+	count = 0
+	count100 = 100
+	mcount = 0
+
+	buyadvertisingform = BuyAdvertisingForm()
+
+
+	page_views, created = Pageviews.objects.get_or_create(page="landingpage_mission")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+	total = 0
+	for page in Pageviews.objects.all():
+		total += page.views
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_mission", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		
+		the_response = render(request, 'landingpage_mission.html', { "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		previous_view = UserViews.objects.filter(ip_address=ip).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_mission", ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+		the_response = render(request, 'landingpage_mission.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
+	
+	the_response.set_cookie('current', 'landingpage_mission')
+	return the_response
+
+
+def landingpage_pitch_decks(request):
+	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+
+	
+	count = 0
+	count100 = 100
+	mcount = 0
+
+	buyadvertisingform = BuyAdvertisingForm()
+
+
+	page_views, created = Pageviews.objects.get_or_create(page="landingpage_pitch_decks")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+	total = 0
+	for page in Pageviews.objects.all():
+		total += page.views
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_pitch_decks", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		
+		the_response = render(request, 'landingpage_pitch_decks.html', { "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		previous_view = UserViews.objects.filter(ip_address=ip).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_pitch_decks", ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+		the_response = render(request, 'landingpage_pitch_decks.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
+	
+	the_response.set_cookie('current', 'landingpage_pitch_decks')
+	return the_response
+
+
+def landingpage_problems_solutions(request):
+	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+
+	
+	count = 0
+	count100 = 100
+	mcount = 0
+
+	buyadvertisingform = BuyAdvertisingForm()
+
+
+	page_views, created = Pageviews.objects.get_or_create(page="landingpage_problems_solutions")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+	total = 0
+	for page in Pageviews.objects.all():
+		total += page.views
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_problems_solutions", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		
+		the_response = render(request, 'landingpage_problems_and_solutions.html', { "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		previous_view = UserViews.objects.filter(ip_address=ip).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_problems_solutions", ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+		the_response = render(request, 'landingpage_problems_and_solutions.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
+	
+	the_response.set_cookie('current', 'landingpage_problems_solutions')
+	return the_response
+
+
+def landingpage_tasks(request):
+	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+
+	
+	count = 0
+	count100 = 100
+	mcount = 0
+
+	buyadvertisingform = BuyAdvertisingForm()
+
+
+	page_views, created = Pageviews.objects.get_or_create(page="landingpage_tasks")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+	total = 0
+	for page in Pageviews.objects.all():
+		total += page.views
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_tasks", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		
+		the_response = render(request, 'landingpage_tasks.html', { "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		previous_view = UserViews.objects.filter(ip_address=ip).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_tasks", ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+		the_response = render(request, 'landingpage_tasks.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
+	
+	the_response.set_cookie('current', 'landingpage_tasks')
+	return the_response
+
+
+def landingpage_values(request):
+	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+
+	
+	count = 0
+	count100 = 100
+	mcount = 0
+
+	buyadvertisingform = BuyAdvertisingForm()
+
+
+	page_views, created = Pageviews.objects.get_or_create(page="landingpage_values")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+	total = 0
+	for page in Pageviews.objects.all():
+		total += page.views
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_values", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		
+		the_response = render(request, 'landingpage_values.html', { "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		previous_view = UserViews.objects.filter(ip_address=ip).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_values", ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+		the_response = render(request, 'landingpage_values.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
+	
+	the_response.set_cookie('current', 'landingpage_values')
+	return the_response
+
+
+
+def landingpage_vision(request):
+	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
+	registerform = UserCreationForm()
+	
+		
+	
+	loginform = AuthenticationForm()
+
+	
+	count = 0
+	count100 = 100
+	mcount = 0
+
+	buyadvertisingform = BuyAdvertisingForm()
+
+
+	page_views, created = Pageviews.objects.get_or_create(page="landingpage_vision")
+	page_views.views += 1
+	page_views.save()
+
+	translation = page_views.translation
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		x_forwarded_for = x_forwarded_for.split(',')[0]
+	ip = request.META.get('REMOTE_ADDR')
+
+	total = 0
+	for page in Pageviews.objects.all():
+		total += page.views
+
+	if request.user.is_authenticated:
+		loggedinuser = User.objects.get(username=request.user.username)
+		loggedinanon = Anon.objects.get(username=loggedinuser)
+		loggedinauthor = Author.objects.get(username=request.user.username)
+		previous_view = UserViews.objects.filter(anon=loggedinanon).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_vision", anon=loggedinanon, ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		dic_form = DictionaryForm()
+		post_form = PostForm(request)
+		space_form = SpaceForm(request)
+		task_form = TaskForm()
+		word_form = WordForm(request)
+		apply_votestyle_form = ApplyVotestyleForm(request)
+		create_votes_form = CreateVotesForm(request)
+		exclude_votes_form = ExcludeVotesForm(request)
+		apply_dic_form = ApplyDictionaryForm(request)
+		exclude_dic_form = ExcludeDictionaryAuthorForm()
+		
+		the_response = render(request, 'landingpage_vision.html', { "ip": ip, "x_forwarded_for": x_forwarded_for, "buyadvertisingform": buyadvertisingform, "loggedinanon": loggedinanon, 'loginform': loginform, 'registerform': registerform,  'word_form': word_form, 'dic_form':dic_form, 'space_form': space_form, "post_form": post_form, 'task_form': task_form, 
+			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
+	else:
+		previous_view = UserViews.objects.filter(ip_address=ip).order_by('-view_date').first()
+		pages_view = UserViews.objects.create(page_view="landingpage_vision", ip_address=ip, httpxforwardfor=x_forwarded_for)
+		page_views.user_views.add(pages_view)
+		if previous_view:
+			pages_view.previous_view_id = previous_view.id
+			pages_view.previous_page = previous_view.page_view
+			pages_view.previous_view_date = previous_view.view_date
+			pages_view.previous_view_time_between_pages = datetime.datetime.now(timezone.utc) - previous_view.view_date
+		
+		the_response = render(request, 'landingpage_vision.html', {"buyadvertisingform": buyadvertisingform, "ip": ip, "x_forwarded_for": x_forwarded_for, 'loginform': loginform, 'registerform': registerform, })
+	
+	the_response.set_cookie('current', 'landingpage_vision')
+	return the_response
 
 def change_password(request):
 	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
