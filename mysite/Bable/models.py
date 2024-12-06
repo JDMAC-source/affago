@@ -2962,11 +2962,11 @@ class IpAddress(models.Model):
 class UserViews(models.Model):
 	anon = models.ForeignKey(Anon, default=None, on_delete=models.PROTECT, null=True)
 	view_date = models.DateTimeField(default=timezone.now)
-	ip_address = models.TextField(default='', max_length=200)
-	httpxforwardfor = models.TextField(default='', max_length=20000)
-	page_view = models.CharField(max_length=200, default='')
-	previous_view_id = models.CharField(max_length=144, default='')
-	previous_page = models.CharField(max_length=200, default='')
+	ip_address = models.TextField(default='', max_length=200, null=True)
+	httpxforwardfor = models.TextField(default='', max_length=20000, null=True)
+	page_view = models.CharField(max_length=200, default='', null=True)
+	previous_view_id = models.CharField(max_length=144, default='', null=True)
+	previous_page = models.CharField(max_length=200, default='', null=True)
 	previous_view_date = models.DateTimeField(default=timezone.now)
 	previous_view_time_between_pages = models.DurationField(default=datetime.timedelta(days=0, seconds=1))
 

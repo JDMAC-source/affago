@@ -12,7 +12,7 @@ urls1 = ["https://phandroid.com/feed/", "https://www.nextpit.com/feed/main.xml",
 # more writing
 urls2 = ["https://blogs.perficient.com/category/industries/healthcare/feed/", "https://hitconsultant.net/feed/", "https://www.eonline.com/syndication/feeds/rssfeeds/topstories.xml", "http://www.tmz.com/rss", "https://feeds.distribution.dotdashmeredith.com/v3/rss/4780ef1e-1952-43da-abd9-3b7c690f1f72", "https://hollywoodlife.com/feed/", "https://theshaderoom.com/feed/", "http://www.filmfare.com/feeds/feeds.xml", "https://yogossip.com/rss.xml"]
 
-urls3 = ["https://allcelebrities.us/feed/", "https://www.pinkvilla.com/rss.xml", "https://socialitelife.com/feed/", "https://www.closerweekly.com/feed/", "https://allaboutthetea.com/feed/", "https://celebmix.com/feed/", "https://www.entertainmentdaily.co.uk/feed/", "https://www.soapoperadigest.com/feed/?q=rss", "https://vipmagazine.ie/feed/", "https://www.yahoo.com/celebrity/rss", "https://www.buzzfeed.com/celebrity.xml", "https://www.usmagazine.com/feed/"]
+urls3 = ["https://allcelebrities.us/feed/", "https://www.pinkvilla.com/rss.xml", "https://socialitelife.com/feed/", "https://www.closerweekly.com/feed/", "https://allaboutthetea.com/feed/", "https://celebmix.com/feed/", "https://www.entertainmentdaily.co.uk/feed/", "https://www.soapoperadigest.com/feed/?q=rss", "https://vipmagazine.ie/feed/", "https://www.buzzfeed.com/celebrity.xml", "https://www.usmagazine.com/feed/"]
 
 for rss_url in urls:
     xml = base + rss_url
