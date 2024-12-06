@@ -6,15 +6,13 @@ import feedparser
 from requests import get
 
 base = ""
-urls = ["https://notayesmanseconomics.wordpress.com/feed/", "https://tinybuddha.com/feed", "https://goodemma.com/feed/", "https://beherenownetwork.com/feed/", "https://mindfulbalance.org/feed/", "https://gentwenty.com/feed/", "https://news.usni.org/feed", "https://www.marinelink.com/news/rss", "https://www.maritime-executive.com/articles.rss", "https://www.bairdmaritime.com/feed/", "https://mfame.guru/category/maritime-news/feed/", "https://africaports.co.za/feed/", "https://www.gearnews.com/manufacturer/fender/feed/", "https://blog.rosettastone.com/feed/", "https://feeds.acast.com/public/shows/66068dc22d276f001657edb1"]
+urls = ["https://bankloch.blogspot.com/feeds/posts/default", "https://www.pymnts.com/feed/", "https://www.thespuzz.com/feed/", "http://www.macrumors.com/macrumors.xml", "https://9to5mac.com/feed/", "http://www.macworld.com/index.rss", "http://daringfireball.net/feeds/main", "https://www.apple.com/newsroom/rss-feed.rss", "http://www.imore.com/feed", "https://www.cultofmac.com/feed/", "https://www.macobserver.com/feed/", "https://www.mactrast.com/feed"]
 # more writing
-urls1 = ["https://www.turkishclass101.com/feed", "https://www.olesentuition.co.uk/blog-feed.xml", "https://www.youtube.com/feeds/videos.xml?channel_id=UCesZBmRS6IgZ3uuiB8RdX0A&x=1", "https://tarunbharat.com/feed/", "https://suryakantdolase.blogspot.com/feeds/posts/default", "https://www.e-abhivyakti.com/feed/", "https://prahaar.in/feed/", "https://nagarchaufer.com/?feed=rss2", "https://pudhari.news/feed", "https://ww2.kqed.org/mindshift/feed/", "http://feeds.feedburner.com/elearningindustry", "https://www.weareteachers.com/feed", "https://www.nytimes.com/section/learning/rss.xml"]
-
-urls0 = ["http://www.insidehighered.com/rss/feed/ihe", "https://feeds.megaphone.fm/KAP3710732955"]
-
+urls1 = ["http://feeds.feedburner.com/idropnews/feed", "http://www.nytimes.com/topic/company/apple-incorporated/rss.xml", "https://apple.stackexchange.com/feeds/week", "https://www.makeuseof.com/service/ios/feed/", "https://www.theverge.com/apple/rss/index.xml", "https://www.engadget.com/topics/apple/rss.xml", "http://feeds.arstechnica.com/arstechnica/apple/", "https://www.idownloadblog.com/feed/", "https://mashable.com/category/apple/feed/"]
 # more writing
-urls2 = ["https://larryferlazzo.edublogs.org/feed/", "https://hechingerreport.org/feed/", "https://www.edtechreview.in/feed/", "https://www.gettingsmart.com/feed/", "https://edsource.org/feed/atom", "http://www.eschoolnews.com/feed/", "http://www.middleweb.com/feed/", "https://classtechtips.com/feed/", "https://dianeravitch.net/feed/", "https://caffeinatedrage.com/feed/", "https://www.theguardian.com/teacher-network/rss", "https://www.christiantoday.com/rss", "http://www.thinkinganglicans.org.uk/feed/rdf/", "https://astepfwd.com/feed", "https://www.premierchristianity.com/2055.rss"]
+urls2 = ["https://www.redmondpie.com/category/apple/feed/", "https://www.ilounge.com/feed", "https://macsecurity.net/feed", "https://feeds.feedburner.com/iphoneincanada", "https://ioshacker.com/feed", "https://feedpress.me/sixcolors", "https://mjtsai.com/blog/feed/", "https://www.theapplepost.com/feed/", "https://www.aboveavalon.com/notes?format=RSS", "https://tidbits.com/feed/", "http://appadvice.com/appnn/feed/rss", "https://www.iphonelife.com/blog/all/all/feed"]
 
+urls3 = ["https://osxdaily.com/feed/", "https://macdailynews.com/feed/", "https://www.iclarified.com/rss/rss.xml", "https://appleosophy.com/feed/", "https://www.theguardian.com/technology/apple/rss", "https://www.youtube.com/feeds/videos.xml?channel_id=UCE_M8A5yxnLfW0KghEeajjw&x=1", "https://pcper.com/feed/", "https://www.tomshardware.com/feeds/rss2/all.xml", "https://www.wepc.com/feed/", "https://en.overclocking.com/feed/", "https://www.pcguide.com/feed/"]
 
 for rss_url in urls:
     xml = base + rss_url
@@ -82,8 +80,9 @@ for rss_url in urls2:
         print(r.status_code)
         print(r.text)
 
-# no .link
-for rss_url in urls0:
+
+
+for rss_url in urls3:
     xml = base + rss_url
 
     # Limit feed output to 5 items
@@ -99,7 +98,9 @@ for rss_url in urls0:
         print(item.title)
         print(item.summary)
         
-        r = requests.post('https://www.predictionary.us/B/posts/',data={'title':item.title, "body":item.summary})
+        r = requests.post('https://www.predictionary.us/B/posts/',data={'title':item.title, "body":item.summary, "url2": item.link})
         
         print(r.status_code)
         print(r.text)
+
+

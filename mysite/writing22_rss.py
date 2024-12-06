@@ -6,15 +6,13 @@ import feedparser
 from requests import get
 
 base = ""
-urls = ["https://notayesmanseconomics.wordpress.com/feed/", "https://tinybuddha.com/feed", "https://goodemma.com/feed/", "https://beherenownetwork.com/feed/", "https://mindfulbalance.org/feed/", "https://gentwenty.com/feed/", "https://news.usni.org/feed", "https://www.marinelink.com/news/rss", "https://www.maritime-executive.com/articles.rss", "https://www.bairdmaritime.com/feed/", "https://mfame.guru/category/maritime-news/feed/", "https://africaports.co.za/feed/", "https://www.gearnews.com/manufacturer/fender/feed/", "https://blog.rosettastone.com/feed/", "https://feeds.acast.com/public/shows/66068dc22d276f001657edb1"]
+urls = ["https://www.vortez.net/news_rss", "https://tftcentral.co.uk/feed", "https://thinkcomputers.org/feed/", "https://wccftech.com/topic/hardware/feed/", "https://www.igorslab.de/en/feed/", "https://www.techpowerup.com/rss/reviews", "https://feeds.feedburner.com/VideoCardzcom", "https://www.pcworld.com/feed", "https://www.fierceelectronics.com/rss/xml", "https://www.gas-sensing.com/news/feed/", "https://feeds.feedburner.com/SensorTips", "http://feeds.feedburner.com/publicoRSS", "https://www.portugal.com/feed/"]
 # more writing
-urls1 = ["https://www.turkishclass101.com/feed", "https://www.olesentuition.co.uk/blog-feed.xml", "https://www.youtube.com/feeds/videos.xml?channel_id=UCesZBmRS6IgZ3uuiB8RdX0A&x=1", "https://tarunbharat.com/feed/", "https://suryakantdolase.blogspot.com/feeds/posts/default", "https://www.e-abhivyakti.com/feed/", "https://prahaar.in/feed/", "https://nagarchaufer.com/?feed=rss2", "https://pudhari.news/feed", "https://ww2.kqed.org/mindshift/feed/", "http://feeds.feedburner.com/elearningindustry", "https://www.weareteachers.com/feed", "https://www.nytimes.com/section/learning/rss.xml"]
-
-urls0 = ["http://www.insidehighered.com/rss/feed/ihe", "https://feeds.megaphone.fm/KAP3710732955"]
-
+urls1 = ["https://www.bocadolobo.com/blog/category/furniture/feed/", "https://primeeventos.com.br/feed/", "https://www.blogdoscruzeiros.com/feed/", "https://www.funchaldailyphoto.com/feeds/posts/default", "https://feeds.feedburner.com/tympanus", "https://edpamanu.blogspot.com/feeds/posts/default?alt=rss", "https://susannedrechsler.wordpress.com/feed/", "https://tympanus.net/codrops/feed/", "http://mixologynews.com.br/feed/", "http://blog.winetourismportugal.com/rss.xml", "https://www.youtube.com/feeds/videos.xml?channel_id=UCw0V33yTFGA5iEujve75zwQ"]
 # more writing
-urls2 = ["https://larryferlazzo.edublogs.org/feed/", "https://hechingerreport.org/feed/", "https://www.edtechreview.in/feed/", "https://www.gettingsmart.com/feed/", "https://edsource.org/feed/atom", "http://www.eschoolnews.com/feed/", "http://www.middleweb.com/feed/", "https://classtechtips.com/feed/", "https://dianeravitch.net/feed/", "https://caffeinatedrage.com/feed/", "https://www.theguardian.com/teacher-network/rss", "https://www.christiantoday.com/rss", "http://www.thinkinganglicans.org.uk/feed/rdf/", "https://astepfwd.com/feed", "https://www.premierchristianity.com/2055.rss"]
+urls2 = ["https://www.youtube.com/feeds/videos.xml?channel_id=UCq-4yNTWjFcAj_iFTTmv4Aw", "https://www.youtube.com/feeds/videos.xml?channel_id=UCXmR58tBJnQD0qvz6t_noTA", "https://theintellify.com/feed/", "https://www.youtube.com/feeds/videos.xml?channel_id=UCutPI2lji_hFToXec7qOCFA", "https://www.forbes.com/innovation/feed2", "https://feeds.feedburner.com/intelnewsroom", "http://feeds.feedburner.com/RenewableEnergyNewsRssFeed", "https://cleantechnica.com/feed/", "https://www.altenergymag.com/rss/news", "http://www.carbonbrief.org/rss"]
 
+urls3 = ["https://www.exaputra.com/feeds/posts/default", "https://www.eservices4u.com.au/blog-feed.xml", "https://solarindustrymag.com/feed", "https://www.2greenenergy.com/blog/feed/", "http://cleantechies.com/feed/", "https://www.theguardian.com/environment/renewableenergy/rss", "http://feeds.mashable.com/mashable", "http://feeds.mashable.com/mashable/entertainment", "https://mashable.com/culture/feed/", "http://feeds.mashable.com/mashable/tech", "https://mashable.com/category/social-good/feed/", "https://dev.to/feed"]
 
 for rss_url in urls:
     xml = base + rss_url
@@ -82,8 +80,9 @@ for rss_url in urls2:
         print(r.status_code)
         print(r.text)
 
-# no .link
-for rss_url in urls0:
+
+
+for rss_url in urls3:
     xml = base + rss_url
 
     # Limit feed output to 5 items
@@ -99,7 +98,9 @@ for rss_url in urls0:
         print(item.title)
         print(item.summary)
         
-        r = requests.post('https://www.predictionary.us/B/posts/',data={'title':item.title, "body":item.summary})
+        r = requests.post('https://www.predictionary.us/B/posts/',data={'title':item.title, "body":item.summary, "url2": item.link})
         
         print(r.status_code)
         print(r.text)
+
+
