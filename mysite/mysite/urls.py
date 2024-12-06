@@ -26,6 +26,7 @@ from Bable.sitemaps import Static_Sitemap, Post_Sitemap, Anon_Sitemap, Dictionar
 
 from Bable.views import CancelView, SuccessView
 from django.views.generic import View
+from django.http.response import HttpResponse
 class Adsense(View):
     def get(self, request, *args, **kwargs):
         return HttpResponse('google.com, pub-3397601491384059, DIRECT, f08c47fec0942fa0')
