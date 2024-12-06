@@ -29,7 +29,7 @@ from django.views.generic import View
 from django.http.response import HttpResponse
 class Adsense(View):
     def get(self, request, *args, **kwargs):
-        return HttpResponse('google.com, pub-3397601491384059, DIRECT, f08c47fec0942fa0')
+        return HttpResponse('google.com, pub-3397601491384059, DIRECT, f08c47fec0942fa0', content_type="text/plain")
 sitemaps = {
     'post': Post_Sitemap(),
     'static': Static_Sitemap(),
