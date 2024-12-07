@@ -6,13 +6,13 @@ import feedparser
 from requests import get
 
 base = ""
-urls = ["https://cybersecurity.att.com/site/blog-all-rss", "https://www.mcafee.com/blogs/feed/", "http://feeds.trendmicro.com/TrendMicroResearch", "https://www.bleepingcomputer.com/feed"]
+urls = ["http://feeds.trendmicro.com/TrendMicroResearch", "https://www.bleepingcomputer.com/feed"]
 # more writing
-urls1 = ["http://www.techrepublic.com/rssfeeds/topic/security/?feedType=rssfeeds", "https://www.proofpoint.com/us/rss.xml", "https://heimdalsecurity.com/blog/feed/", "http://securityaffairs.co/wordpress/feed", "https://www.tripwire.com/state-of-security/feed/", "https://www.secpod.com/blog/feed/", "https://www.cyberdefensemagazine.com/feed/", "https://socprime.com/feed/", "https://www.lastwatchdog.com/feed/", "https://any.run/cybersecurity-blog/feed/", "https://www.helpnetsecurity.com/feed/", "https://www.cm-alliance.com/cybersecurity-blog/rss.xml"]
+urls1 = ["http://www.techrepublic.com/rssfeeds/topic/security/?feedType=rssfeeds", "https://heimdalsecurity.com/blog/feed/", "http://securityaffairs.co/wordpress/feed", "https://www.tripwire.com/state-of-security/feed/", "https://www.secpod.com/blog/feed/", "https://www.cyberdefensemagazine.com/feed/", "https://socprime.com/feed/", "https://www.lastwatchdog.com/feed/", "https://any.run/cybersecurity-blog/feed/", "https://www.helpnetsecurity.com/feed/", "https://www.cm-alliance.com/cybersecurity-blog/rss.xml"]
 # more writing
 urls2 = ["https://www.wsj.com/xml/rss/3_7455.xml", "https://www.wsj.com/xml/rss/3_7014.xml", "https://www.wsj.com/xml/rss/3_7041.xml", "https://www.wsj.com/xml/rss/3_7085.xml", "https://www.johndcook.com/blog/feed/", "https://www.technologyreview.com/feed/", "https://terrytao.wordpress.com/feed/", "https://towardsdatascience.com/feed", "https://egyptian-gazette.com/technology/feed/", "https://startuptalky.com/rss/", "https://startupreporter.in/feed/", "https://officechai.com/feed/", "https://entrackr.com/feed/"]
 
-urls3 = ["https://inc42.com/feed/", "https://yourstory.com//feed", "https://www.indianweb2.com/feeds/posts/default", "http://www.autoblog.com/rss.xml", "https://www.automotive-fleet.com/rss", "https://www.am-online.com/news/latest-news/rss.xml", "https://www.automotiveaddicts.com/feed", "https://autospies.com/rss.aspx", "https://www.automotiveworld.com/feed/", "https://paultan.org/feed/", "https://ihsmarkit.com/BlogFeed.ashx?i=Automotive"]
+urls3 = ["https://inc42.com/feed/", "https://yourstory.com//feed", "https://www.indianweb2.com/feeds/posts/default", "http://www.autoblog.com/rss.xml", "https://www.automotive-fleet.com/rss", "https://www.am-online.com/news/latest-news/rss.xml", "https://www.automotiveaddicts.com/feed"]
 
 for rss_url in urls:
     xml = base + rss_url

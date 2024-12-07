@@ -12,7 +12,7 @@ urls1 = ["https://www.manify.nl/feed/", "https://www.31mag.nl/feed/", "https://w
 # more writing
 urls2 = ["https://www.startupdaily.net/feed/", "https://medium.com/feed/swlh", "https://yourstory.com/feed/", "https://blog.ourcrowd.com/feed/", "https://www.alleywatch.com/category/startups/feed/", "https://www.techpluto.com/feed", "https://alltopstartups.com/feed/", "https://siliconcanals.com/news/startups/feed/", "https://gritdaily.com/feed/", "https://startups.co.uk/feed/", "https://feeds.feedburner.com/siliconflorist", "https://futurestartup.com/feed/", "https://www.startupcan.ca/feed/", "https://startuptipsdaily.com/feed/"]
 
-urls3 = [""]
+urls3 = ["https://www.automotiveworld.com/feed/", "https://paultan.org/feed/", "https://ihsmarkit.com/BlogFeed.ashx?i=Automotive"]
 
 for rss_url in urls:
     xml = base + rss_url

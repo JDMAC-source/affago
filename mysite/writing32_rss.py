@@ -6,7 +6,7 @@ import feedparser
 from requests import get
 
 base = ""
-urls = ["http://feeds.feedburner.com/TheHackersNews", "https://www.darkreading.com/rss_simple.asp?f_auth=322", "http://feeds.feedburner.com/Securityweek", "https://www.helpnetsecurity.com/feed/", "https://hackread.com/feed/", "https://cyble.com/feed/", "https://www.itsecurityguru.org/feed/", "http://searchsecurity.techtarget.com/rss/Security-Wire-Daily-News.xml", "https://www.csoonline.com/news/index.rss"]
+urls = ["http://feeds.feedburner.com/TheHackersNews", "https://www.darkreading.com/rss_simple.asp?f_auth=322", "http://feeds.feedburner.com/Securityweek", "https://www.helpnetsecurity.com/feed/", "https://hackread.com/feed/", "https://cyble.com/feed/", "https://www.itsecurityguru.org/feed/", "https://www.csoonline.com/news/index.rss"]
 # more writing
 urls1 = ["https://gbhackers.com/feed/", "https://www.bankinfosecurity.com/rss-feeds", "https://www.cyberdefensemagazine.com/feed/", "https://www.cybersecurity-insiders.com/feed/", "https://www.grahamcluley.com/feed/", "https://informationsecuritybuzz.com/feed/", "https://www.govinfosecurity.com/rssFeeds.php?type=main", "https://thecyberpost.com/feed/", "https://www.gsmarena.com/rss-news-reviews.php3"]
 # more writing

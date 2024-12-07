@@ -6,13 +6,13 @@ import feedparser
 from requests import get
 
 base = ""
-urls = ["https://deadline.com/feed/", "http://www.vanityfair.com/rss", "https://perezhilton.com/feed/", "https://www.bollywoodlife.com/feed/", "http://www.justjared.com/feed/", "https://stylecaster.com/feed/", "https://realityblurb.com/feed/", "https://balleralert.com/feed/", "https://feeds.feedburner.com/bossiprss", "http://www.glamourmagazine.co.uk/rss", "https://thejasminebrand.com/feed/", "https://www.celebitchy.com/feed/"]
+urls = ["https://www.cbc.ca/cmlink/rss-technology", "https://blog.bestbuy.ca/feed"]
 # more writing
-urls1 = ["https://sandrarose.com/feed/", "https://www.thehollywoodgossip.com/feed", "https://www.gofugyourself.com/feed", "https://www.intouchweekly.com/?feed=posts-p1", "https://www.lifeandstylemag.com/?feed=posts-p1", "https://www.jimmystarsworld.com/feed/", "https://ohnotheydidnt.livejournal.com/data/rss/", "https://bckonline.com/feed/", "https://www.femalefirst.co.uk/celebrities/rss", "https://www.wesmirch.com/feed.xml", "https://gossipbucket.com/feed/", "https://feeds.extratv.com/atom/"]
+urls1 = ["https://chinadigitaltimes.net/feed/", "https://thediplomat.com/category/china-power/feed/", "https://china-environment-news.net/feed/", "http://www.nytimes.com/topic/destination/china/rss.xml", "http://feeds.beijingbulletin.com/rss/55582c89cb296d4c", "https://www.chinaentertainmentnews.com/feeds/posts/default", "https://news.microsoft.com/feed/", "http://feeds.windowscentral.com/wmexperts", "https://blogs.windows.com/feed/", "https://mspoweruser.com/feed/" ,"https://www.zdnet.com/blog/microsoft/rss.xml", "https://msftnewsnow.com/feed/", "https://techcommunity.microsoft.com/plugins/custom/microsoft/o365/custom-blog-rss?tid=-3510255867542948717&size=25"]
 # more writing
-urls2 = ["https://feeds.toofab.com/atom", "https://w-newz.blogspot.com/feeds/posts/default?alt=rss", "https://rsvpmagazine.ie/feed", "http://www.cambio.com/rss.xml", "https://www.allabouttrh.com/feed/", "https://ohmygossip.nordenbladet.com/feed", "https://hushhushbiz.com/feed/", "https://honkmagazine.com/feed/", "https://www.youtube.com/feeds/videos.xml?channel_id=UCotI-SqRXnkAZX4bMqlRNjw&x=1", "https://www.youtube.com/feeds/videos.xml?channel_id=UCdtXPiqI2cLorKaPrfpKc4g&x=1"]
+urls2 = [""]
 
-urls3 = ["https://www.youtube.com/feeds/videos.xml?channel_id=UCXTcOUK4-Oy933BDO3DbXLQ", "https://www.youtube.com/feeds/videos.xml?channel_id=UCP1hdrxYHdebGqbQawOMRpQ", "https://www.youtube.com/feeds/videos.xml?channel_id=UCZF0z6CyEs_e_IXaB57xqSA", "https://www.youtube.com/feeds/videos.xml?channel_id=UCdILIiuXr2UQUhc5SFVbKtw", "https://www.youtube.com/feeds/videos.xml?channel_id=UCbY6-Gp0aEHJpS9vPtcKWeA", "https://www.youtube.com/feeds/videos.xml?channel_id=UChJfh0Y4ycfMbf2SHQzRasg"]
+urls3 = [""]"https://cybersecurity.att.com/site/blog-all-rss"
 
 for rss_url in urls:
     xml = base + rss_url
