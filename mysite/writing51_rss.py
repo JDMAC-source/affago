@@ -6,13 +6,13 @@ import feedparser
 from requests import get
 
 base = ""
-urls = ["http://renocontractor.ca/feed", "https://www.myhousedesignbuild.com/feed/", "https://tanglycottage.wordpress.com/feed/", "http://www.englishhomestead.com/feeds/posts/default", "https://gardenerd.com/feed", "https://www.organicgardener.com.au/rss", "https://www.espoma.com/feed/", "https://sustainablegarden.blogspot.com/feeds/posts/default", "https://gardentherapy.ca/feed/"]
+urls = ["http://gardentherapy.ca/feed", "http://feeds.feedblitz.com/thistlewoodfarm", "http://feeds.feedburner.com/dreamgreendiy/dyiE", "https://feeds.feedburner.com/busyinbrooklyn", "https://feeds.feedburner.com/petticoatjunktion/lvrn", "https://artzyfartzycreations.com/feed/", "https://blog.embracehomeloans.com/feed/", "https://www.wdrb.com/search/?f=rss&t=article&c=news&l=50&s=start_time&sd=desc"]
 # more writing
-urls1 = ["http://earth911.com/feed/", "https://ecofriend.com/feed", "https://greenlivingguy.com/feed/", "https://forestnation.com/feed/", "https://www.fool.com/a/feeds/partner/googlechromefollow?apikey=5e092c1f-c5f9-4428-9219-908a47d2e2de", "https://www.automotiveworld.com/feed/", "https://paultan.org/feed/"]
+urls1 = ["https://www.wtvq.com/feed/", "https://www.wnky.com/feed/", "https://www.wlky.com/topstories-rss", "http://feeds.kentucky.statenews.net/rss/7dea3e4d4c76f3fa", "https://www.lex18.com/news/covering-kentucky.rss", "https://lexingtonky.news/feed/", "https://ky-leadernews.com/feed/", "https://www.wkrn.com/news/kentucky/feed/", "https://www.owensborotimes.com/feed/", "https://www.safetyandhealthmagazine.com/rss/topic/99-news"]
 # more writing
-urls2 = ["https://www.insurancejournal.com/topics/homeowners-insurance/feed/", "https://www.addicted2decorating.com/feed?x=2", "https://feeds.feedburner.com/southernhospitalityblog/PQqu", "http://feeds.apartmenttherapy.com/apartmenttherapy/main", "https://stylebyemilyhenderson.com/feed", "https://www.chrislovesjulia.com/feed/", "http://feeds.feedblitz.com/drivenbydecor?x=1"]
+urls2 = ["https://safetyrisk.net/feed/", "http://dramarnathgiri.blogspot.com/feeds/posts/default", "https://ohsinsider.com/feed/", "https://www.sindonews.com/feed", "https://www.surveysensum.com/feed", "https://asean.org/feed/", "https://mediaindonesia.com/feed", "https://www.weddingku.com/rss/", "https://businessnews.co.id/feed/", "https://www.viva.co.id/get/all", "http://feeds.indonesianews.net/rss/f9295dc05093c851"]
 
-urls3 = ["https://www.hellolovelystudio.com/feed", "https://missmustardseed.com/feed/atom/", "https://www.worthingcourtblog.com/feed", "https://startathomedecor.com/feed/", "https://thecitycottage.com/feed/", "https://growandsharegarden.wordpress.com/feed/", "https://www.latimes.com/world-nation/rss2.0.xml#nt=1col-7030col1", "https://www.latimes.com/business/rss2.0.xml"]
+urls3 = ["https://www.atlantamagazine.com/feed/", "https://www.thefalcoholic.com/rss", "https://www.artsatl.org/feed/", "https://atlanta.eater.com/rss/index.xml", "https://365atlantatraveler.com/feed/", "http://feeds.feedblitz.com/atlonthecheap", "https://www.fanbolt.com/feed/", "http://www.ventureatlanta.org/feed/", "http://www.atlantaeats.com/feed/", "https://www.tonetoatl.com/feeds/posts/default"]
 
 for rss_url in urls:
     xml = base + rss_url

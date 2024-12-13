@@ -6,13 +6,13 @@ import feedparser
 from requests import get
 
 base = ""
-urls = ["http://renocontractor.ca/feed", "https://www.myhousedesignbuild.com/feed/", "https://tanglycottage.wordpress.com/feed/", "http://www.englishhomestead.com/feeds/posts/default", "https://gardenerd.com/feed", "https://www.organicgardener.com.au/rss", "https://www.espoma.com/feed/", "https://sustainablegarden.blogspot.com/feeds/posts/default", "https://gardentherapy.ca/feed/"]
+urls = ["http://www.latimes.com/politics/rss2.0.xml", "https://www.latimes.com/health/rss2.0.xml", "https://www.latimes.com/science/rss2.0.xml", "https://www.latimes.com/style/rss2.0.xml", "https://www.latimes.com/environment/rss2.0.xml#nt=1col-7030col1", "https://www.latimes.com/food/rss2.0.xml", "https://www.latimes.com/entertainment/rss2.0.xml", "https://www.latimes.com/sports/rss2.0.xml"]
 # more writing
-urls1 = ["http://earth911.com/feed/", "https://ecofriend.com/feed", "https://greenlivingguy.com/feed/", "https://forestnation.com/feed/", "https://www.fool.com/a/feeds/partner/googlechromefollow?apikey=5e092c1f-c5f9-4428-9219-908a47d2e2de", "https://www.automotiveworld.com/feed/", "https://paultan.org/feed/"]
+urls1 = ["https://www.latimes.com/opinion/rss2.0.xml#nt=1col-7030col1", "https://www.latimes.com/obituaries/rss2.0.xml#nt=1col-7030col1", "https://www.latimes.com/topic/education.rss", "https://www.latimes.com/topic/fires.rss", "https://www.latimes.com/homeless-housing.rss", "https://www.latimes.com/entertainment-arts/movies/rss2.0.xml#nt=1col-7030col1", "https://www.latimes.com/entertainment-arts/tv/rss2.0.xml#nt=1col-7030col1"]
 # more writing
-urls2 = ["https://www.insurancejournal.com/topics/homeowners-insurance/feed/", "https://www.addicted2decorating.com/feed?x=2", "https://feeds.feedburner.com/southernhospitalityblog/PQqu", "http://feeds.apartmenttherapy.com/apartmenttherapy/main", "https://stylebyemilyhenderson.com/feed", "https://www.chrislovesjulia.com/feed/", "http://feeds.feedblitz.com/drivenbydecor?x=1"]
+urls2 = ["https://www.latimes.com/topic/earthquakes.rss", "https://www.latimes.com/entertainment-arts/awards/rss2.0.xml#nt=1col-7030col1", "https://www.youtube.com/feeds/videos.xml?channel_id=UC-BlDCX__nCLs_ZF9meYQbw&x=1", "https://budgetsaresexy.com/feed/", "https://family-budgeting.co.uk/feed/", "https://becentsational.com/feed/", "https://www.booandmaddie.com/category/home-life/feed/"]
 
-urls3 = ["https://www.hellolovelystudio.com/feed", "https://missmustardseed.com/feed/atom/", "https://www.worthingcourtblog.com/feed", "https://startathomedecor.com/feed/", "https://thecitycottage.com/feed/", "https://growandsharegarden.wordpress.com/feed/", "https://www.latimes.com/world-nation/rss2.0.xml#nt=1col-7030col1", "https://www.latimes.com/business/rss2.0.xml"]
+urls3 = ["https://www.thehomelife.co.uk/feed/", "https://www.ukhomeimprovement.co.uk/feed/", "https://www.totallandscapecare.com/feed", "https://www.lawnandlandscape.com/rss/", "https://feeds.feedburner.com/landscapemanagementpro", "https://www.turfmagazine.com/feed/", "https://www.prolandscapermagazine.com/feed/", "http://www.twostylishkays.com/feeds/posts/default"]
 
 for rss_url in urls:
     xml = base + rss_url

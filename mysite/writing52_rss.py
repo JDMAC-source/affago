@@ -6,13 +6,13 @@ import feedparser
 from requests import get
 
 base = ""
-urls = ["http://renocontractor.ca/feed", "https://www.myhousedesignbuild.com/feed/", "https://tanglycottage.wordpress.com/feed/", "http://www.englishhomestead.com/feeds/posts/default", "https://gardenerd.com/feed", "https://www.organicgardener.com.au/rss", "https://www.espoma.com/feed/", "https://sustainablegarden.blogspot.com/feeds/posts/default", "https://gardentherapy.ca/feed/"]
+urls = ["https://www.atlantarealestateforum.com/feed/", "https://www.peachtreehoops.com/rss/index.xml", "https://www.idahofallsidaho.gov/RSSFeed.aspx?ModID=1&CID=All-newsflash.xml", "https://www.eastidahonews.com/feed/", "https://localnews8.com/feed/", "https://www.boisestatepublicradio.org/news.rss", "https://www.idahoednews.org/feed/", "https://kidotalkradio.com/feed/", "https://idahobusinessreview.com/feed/", "https://idahodispatch.com/feed/"]
 # more writing
-urls1 = ["http://earth911.com/feed/", "https://ecofriend.com/feed", "https://greenlivingguy.com/feed/", "https://forestnation.com/feed/", "https://www.fool.com/a/feeds/partner/googlechromefollow?apikey=5e092c1f-c5f9-4428-9219-908a47d2e2de", "https://www.automotiveworld.com/feed/", "https://paultan.org/feed/"]
+urls1 = ["https://idahocapitalsun.com/feed/", "https://www.politicshome.com/social-affairs/rss", "http://feeds.feedburner.com/daily-express-weather", "https://www.spendwithpennies.com/feed/", "https://feeds.distribution.dotdashmeredith.com/v3/rss/62c70e16-3226-4bc0-879f-b3ef408d0972", "https://juliasalbum.com/feed/", "https://whatsgabycooking.com/feed/", "https://www.rachelcooks.com/feed/", "https://tastecooking.com/feed/", "https://mommyshomecooking.com/feed/"]
 # more writing
-urls2 = ["https://www.insurancejournal.com/topics/homeowners-insurance/feed/", "https://www.addicted2decorating.com/feed?x=2", "https://feeds.feedburner.com/southernhospitalityblog/PQqu", "http://feeds.apartmenttherapy.com/apartmenttherapy/main", "https://stylebyemilyhenderson.com/feed", "https://www.chrislovesjulia.com/feed/", "http://feeds.feedblitz.com/drivenbydecor?x=1"]
+urls2 = ["http://angiesrecipes.blogspot.com/feeds/posts/default?alt=rss", "http://barbbrinker.blogspot.com/feeds/posts/default?alt=rss", "https://tastesbetterfromscratch.com/feed/", "https://communitynewspapers.com/category/miami-gardens-news/feed/", "https://www.airedalebka.org.uk/blog-feed.xml", "https://homebusinessmag.com/feed", "https://thinkoutsidethecubiclenow.com/feed/", "https://flamesnation.ca/feed/", "https://feeds.feedburner.com/CalgaryDealsBlog"]
 
-urls3 = ["https://www.hellolovelystudio.com/feed", "https://missmustardseed.com/feed/atom/", "https://www.worthingcourtblog.com/feed", "https://startathomedecor.com/feed/", "https://thecitycottage.com/feed/", "https://growandsharegarden.wordpress.com/feed/", "https://www.latimes.com/world-nation/rss2.0.xml#nt=1col-7030col1", "https://www.latimes.com/business/rss2.0.xml"]
+urls3 = ["https://itsdatenight.com/feed/", "https://calgaryherald.com/category/life/swerve/feed", "https://www.mysanantonio.com/default/feed/local-news-176.php", "https://sanantonioreport.org/feed/", "https://www.sacurrent.com/sanantonio/Rss.xml", "http://feeds.bizjournals.com/bizj_sanantonio", "https://sanantonio.culturemap.com/feeds/news/?format=xml", "http://feeds.thesanantonionews.net/rss/f18f75b7970654da", "https://www.kens5.com/feeds/syndication/rss/news/local"]
 
 for rss_url in urls:
     xml = base + rss_url

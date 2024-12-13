@@ -6,13 +6,13 @@ import feedparser
 from requests import get
 
 base = ""
-urls = ["http://renocontractor.ca/feed", "https://www.myhousedesignbuild.com/feed/", "https://tanglycottage.wordpress.com/feed/", "http://www.englishhomestead.com/feeds/posts/default", "https://gardenerd.com/feed", "https://www.organicgardener.com.au/rss", "https://www.espoma.com/feed/", "https://sustainablegarden.blogspot.com/feeds/posts/default", "https://gardentherapy.ca/feed/"]
+urls = ["https://thriftshopcommando.blogspot.com/feeds/posts/default?alt=rss", "https://www.keepingcurrentmatters.com/feed", "https://insteading.com/feed/", "https://www.thegoodtrade.com/features?format=rss", "https://bezen.eco/feed/", "https://alfordhomes.com/feed", "https://www.ecoustics.com/home-theater/feed/", "https://hometheaterhifi.com/feed/", "https://www.insideci.co.uk/our-rss-feeds/full-site.aspx"]
 # more writing
-urls1 = ["http://earth911.com/feed/", "https://ecofriend.com/feed", "https://greenlivingguy.com/feed/", "https://forestnation.com/feed/", "https://www.fool.com/a/feeds/partner/googlechromefollow?apikey=5e092c1f-c5f9-4428-9219-908a47d2e2de", "https://www.automotiveworld.com/feed/", "https://paultan.org/feed/"]
+urls1 = ["https://www.digitaltrends.com/home-theater/feed/", "https://www.soundandvision.com/rss.xml", "https://hometheaterreview.com/feed/", "https://www.cepro.com/category/audio-video/home-theater/feed/", "https://blog.omnioutdoorliving.com/feed/", "https://stylebyemilyhenderson.com/feed", "http://feeds.apartmenttherapy.com/apartmenttherapy/main", "https://feeds.feedburner.com/houzz"]
 # more writing
-urls2 = ["https://www.insurancejournal.com/topics/homeowners-insurance/feed/", "https://www.addicted2decorating.com/feed?x=2", "https://feeds.feedburner.com/southernhospitalityblog/PQqu", "http://feeds.apartmenttherapy.com/apartmenttherapy/main", "https://stylebyemilyhenderson.com/feed", "https://www.chrislovesjulia.com/feed/", "http://feeds.feedblitz.com/drivenbydecor?x=1"]
+urls2 = ["https://abeautifulmess.com/feed/", "http://cococozy.com/feed/", "https://www.residencestyle.com/feed/", "https://www.chrislovesjulia.com/feed/", "https://www.home-designing.com/feed", "https://www.remodelista.com/rss/", "https://thedesignfiles.net/feed/", "https://www.decoist.com/feed/", "https://onekindesign.com/feed/", "https://theinteriorsaddict.com/feed", "https://www.desiretoinspire.net/feed/"]
 
-urls3 = ["https://www.hellolovelystudio.com/feed", "https://missmustardseed.com/feed/atom/", "https://www.worthingcourtblog.com/feed", "https://startathomedecor.com/feed/", "https://thecitycottage.com/feed/", "https://growandsharegarden.wordpress.com/feed/", "https://www.latimes.com/world-nation/rss2.0.xml#nt=1col-7030col1", "https://www.latimes.com/business/rss2.0.xml"]
+urls3 = ["https://www.pufikhomes.com/en/feed/", "https://www.sadecor.co.za/interior-design-blog/feed/", "http://mydesignchic.com/feed/", "https://beckiowens.com/feed/", "https://feeds.feedburner.com/a_beautiful_mess", "http://www.addicted2decorating.com/feed", "https://southernhospitalityblog.com/feed/", "https://www.manmadediy.com//feed", "https://craftgossip.com/feed/", "https://www.handymantips.org/feed/"]
 
 for rss_url in urls:
     xml = base + rss_url

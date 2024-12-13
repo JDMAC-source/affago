@@ -6,13 +6,13 @@ import feedparser
 from requests import get
 
 base = ""
-urls = ["http://renocontractor.ca/feed", "https://www.myhousedesignbuild.com/feed/", "https://tanglycottage.wordpress.com/feed/", "http://www.englishhomestead.com/feeds/posts/default", "https://gardenerd.com/feed", "https://www.organicgardener.com.au/rss", "https://www.espoma.com/feed/", "https://sustainablegarden.blogspot.com/feeds/posts/default", "https://gardentherapy.ca/feed/"]
+urls = ["https://www.archanaskitchen.com/?format=feed&type=atom", "https://mytastycurry.com/feed", "https://www.youtube.com/feeds/videos.xml?channel_id=UCmoX4QULJ9MB00xW4coMiOw&x=1", "https://www.youtube.com/feeds/videos.xml?channel_id=UC_R8qIXaTKpkAJuuiZhHTmA&x=1", "https://www.youtube.com/feeds/videos.xml?channel_id=UCg_QZ-5-zU6eQjxIHjnyqQg", "http://www.archdaily.com/feed/rss/", "https://architizer.wpengine.com/feed/"]
 # more writing
-urls1 = ["http://earth911.com/feed/", "https://ecofriend.com/feed", "https://greenlivingguy.com/feed/", "https://forestnation.com/feed/", "https://www.fool.com/a/feeds/partner/googlechromefollow?apikey=5e092c1f-c5f9-4428-9219-908a47d2e2de", "https://www.automotiveworld.com/feed/", "https://paultan.org/feed/"]
+urls1 = ["https://www.dezeen.com/feed/", "https://www.archpaper.com/feed", "https://www.decoist.com/feed/", "https://www.designboom.com/feed/", "http://www.architecturalrecord.com/rss/articles", "https://feeds.feedburner.com/contemporist", "https://bestcafedesigns.com/feed/", "https://www.architectsjournal.co.uk/feed", "https://feeds.feedburner.com/architecturelab", "https://buildingandinteriors.com/feed/"]
 # more writing
-urls2 = ["https://www.insurancejournal.com/topics/homeowners-insurance/feed/", "https://www.addicted2decorating.com/feed?x=2", "https://feeds.feedburner.com/southernhospitalityblog/PQqu", "http://feeds.apartmenttherapy.com/apartmenttherapy/main", "https://stylebyemilyhenderson.com/feed", "https://www.chrislovesjulia.com/feed/", "http://feeds.feedblitz.com/drivenbydecor?x=1"]
+urls2 = ["http://archeyes.com/feed", "https://bustler.net/feed", "https://brandondonnelly.com/feed/", "https://www.avontuura.com/feed/", "http://www.urbanrealm.com/rss", "https://www.archiseek.com/feed/", "https://worldarchitecture.org/blogs/wanews/rss/", "https://zeenews.india.com/rss/india-national-news.xml", "https://zeenews.india.com/rss/world-news.xml", "https://zeenews.india.com/rss/business.xml"]
 
-urls3 = ["https://www.hellolovelystudio.com/feed", "https://missmustardseed.com/feed/atom/", "https://www.worthingcourtblog.com/feed", "https://startathomedecor.com/feed/", "https://thecitycottage.com/feed/", "https://growandsharegarden.wordpress.com/feed/", "https://www.latimes.com/world-nation/rss2.0.xml#nt=1col-7030col1", "https://www.latimes.com/business/rss2.0.xml"]
+urls3 = ["https://zeenews.india.com/rss/sports-news.xml", "https://zeenews.india.com/rss/entertainment-news.xml", "https://zeenews.india.com/rss/technology-news.xml", "https://www.baunetz-id.de/rss-latest.xml", "http://design-milk.com/feed/", "https://www.designboom.com/feed/", "https://www.dezeen.com/feed", "https://www.printmag.com/blog-feed.xml", "https://www.hongkiat.com/blog/feed/", "https://www.creativebloq.com/feed?x=1"]
 
 for rss_url in urls:
     xml = base + rss_url
