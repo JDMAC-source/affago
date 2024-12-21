@@ -7921,9 +7921,11 @@ def tob_user_view_count(request, user, count=0):
 		#	dic_names += [dic.the_dictionary_itself]
 		#word_form.fields["home_dictionary"].queryset = Dictionary_Source.objects.filter(author=loggedinauthor).values_list('the_dictionary_itself', flat=True)	# Specific
 		#comment_form = CommentForm(request, value_from_object) # Make in template {% if loggedin %}
-	
+		comment_form = CommentForm(request)
+
+
 	if request.user.is_authenticated:
-		the_response = render(request, "tob_user_view.html", {"post_sort_form": post_sort_form, "file_form": file_form, "email_form": email_form, "wallet_form": wallet_form, "total": total, "loggedinanon": loggedinanon, "users_posts": users_posts, "users_spaces": users_spaces, "user_anon": user_anon, 
+		the_response = render(request, "tob_user_view.html", {"comment_form": comment_form, "post_sort_form": post_sort_form, "file_form": file_form, "email_form": email_form, "wallet_form": wallet_form, "total": total, "loggedinanon": loggedinanon, "users_posts": users_posts, "users_spaces": users_spaces, "user_anon": user_anon, 
 			"bread_form": bread_form,"dic_form": dic_form, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "apply_votes_form": apply_votes_form, "registerform": registerform,  "loginform": loginform, 
 			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
 	else:
