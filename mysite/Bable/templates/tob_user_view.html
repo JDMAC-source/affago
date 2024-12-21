@@ -452,6 +452,7 @@ User: {{ user_anon.username.username }} - Babylon Police
 			{% endfor %}
 		</div>
 		<div class=userother>
+			{% if request.user.is_authenticated %}
 			<div class=sendmessage>
 				Send Message:
 				<form id=sendmessage action="{% url 'Bable:create_comment' 'msg' user_anon.id 0 %}" method=post>
@@ -460,6 +461,7 @@ User: {{ user_anon.username.username }} - Babylon Police
 					<button type=submit>Send Message</button>
 				</form>
 			</div>
+			{% endif %}
 		</div>
 	{% endif %}
 	<div class=usersspaces>
