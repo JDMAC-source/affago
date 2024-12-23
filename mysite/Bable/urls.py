@@ -84,7 +84,6 @@ urlpatterns = [
 	path('annotate_url_comment_delete/<search_url_id>/<comment_id>/', views.annotate_url_comment_delete, name='annotate_url_comment_delete'),
 	path('annotate_url_post_edits/<search_url_id>/', views.annotate_url_post_edits, name='annotate_url_post_edits'),
 	path('index/count/<count>/', views.tower_of_bable_count, name='tower_of_bable_count'),
-	path('index/time/', views.tower_time, name='tower_time'),
 	path('spaces/', views.tob_view_spaces, name='tob_view_spaces'),
 	path('spaces/count/<count>/', views.tob_view_spaces_count, name='tob_view_spaces_count'),
 	path('space/<space>/count/<count>/', views.tob_space_view_count, name='tob_space_view_count'),

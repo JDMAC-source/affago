@@ -156,29 +156,6 @@ def autocomplete_votestyles(request):
 		json = list(data)
 		return JsonResponse(json, safe=False)
 
-def tower_time(request):
-	ip = request.META.get('REMOTE_ADDR')
-	timeSpent = request.POST['timeSpent']
-	density = request.POST.getlist('density[]', False)
-	post_ids = request.POST.getlist('ids[]', False)
-	scrollHeight = request.POST['scrollHeight']
-	clientHeight = request.POST['clientHeight']
-	loggedinanon_scroll_type = request.POST['scroll_type']
-	#print(density)
-	#print(ip)
-	duration = request.POST['duration']
-	page_density = Page_Density.objects.create(ip=ip, time_spent=timeSpent, scroll_height=scrollHeight, client_height=clientHeight, duration=duration, scroll_type=loggedinanon_scroll_type)
-	for post_id in post_ids:
-		page_density.post_ids.add(Post_id.objects.create(the_posts_id=post_id))
-	for dense in density:
-		page_density.density.add(Densitivity.objects.create(dense=float(dense)//1))
-	page_density.save()
-	if request.user.is_authenticated:
-		loggedinanon = Anon.objects.get(username=request.user)
-		loggedinanon.home_page_density.add(page_density)
-		loggedinanon.save()
-	print("success")
-	return HttpResponse("")
 
 
 @login_required
