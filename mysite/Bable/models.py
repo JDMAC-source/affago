@@ -2127,7 +2127,7 @@ class Space(models.Model):
 		pks = Sponsor.objects.values_list('pk', flat=True)
 		if not pks:
 			Sponsor.objects.get(id=1).delete()
-			new_spon = Sponsor.objects.create(img="https://www.predictionary.us/B/static/babylonpolice.com.gif", url2="https://www.predictionary.us", author=Author.object.get(username='test'))
+			new_spon = Sponsor.objects.create(img="https://www.predictionary.us/B/static/bullseye_3.jpeg", url2="https://www.predictionary.us", author=Author.object.get(username='test'))
 			pks = [new_spon.id]
 		random_pk = choice(pks)
 		random_obj = Sponsor.objects.get(pk=random_pk)
