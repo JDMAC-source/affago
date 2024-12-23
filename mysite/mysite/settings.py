@@ -29,7 +29,7 @@ STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 SECRET_KEY = env('SECRET_KEY')
 OPEN_AI_API_KEY = env("OPEN_AI_API_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 COINBASE_COMMERCE_API_KEY = env('COINBASE_COMMERCE_API_KEY')
 
