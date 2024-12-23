@@ -5560,7 +5560,7 @@ def tob_space_view(request, space):
 	
 	particular_space = Space.objects.get(id=space)
 	users_space = Space.objects.get(id=space)
-	user = User.objects.get(id=int(users_space.author.to_full().username.id))
+	user = User.objects.get(id=int(users_space.author.to_anon().username.id))
 	user_anon = Anon.objects.get(username=user)
 		
 	spaces_posts = particular_space.posts.all()
