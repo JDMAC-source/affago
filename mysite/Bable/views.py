@@ -4174,10 +4174,8 @@ def tower_of_bable(request):
 		basic_price.stripe_product_id = "prod_OS2pk9gZWam5Ye"
 		basic_price.price = 500
 		basic_price.save()
-	sponsor, x = Sponsor.objects.get_or_create(id=1)
-	sponsor.delete()
 	test = Author.objects.get(username='test')
-	sponsor, x = Sponsor.objects.get_or_create(id=1, allowable_expenditure=1000000000000, the_sponsorship_phrase="If S is Alpha S is G", img="https://www.predictionary.us/static/bullseye_3.jpeg", url2="https://www.predictionary.us/user/test/space/iverdabefore/count/0/", price_limit=1, author=test)
+	sponsor, x = Sponsor.objects.get_or_create(allowable_expenditure=1000000000000, the_sponsorship_phrase="If S is Alpha S is G", img="https://www.predictionary.us/static/bullseye_3.jpeg", url2="https://www.predictionary.us/user/test/space/iverdabefore/count/0/", price_limit=1, author=test)
 
 
 
