@@ -10,9 +10,9 @@
 
 {% block title %}
 {% if count %}
-User: {{ user_anon.username.username }} {{ count }} - Babylon Police
+User: {{ user_anon.username.username }} {{ count }} - Predictionary
 {% else %}
-User: {{ user_anon.username.username }} - Babylon Police
+User: {{ user_anon.username.username }} - Predictionary
 {% endif %}
 {% endblock %}
 
@@ -21,7 +21,7 @@ User: {{ user_anon.username.username }} - Babylon Police
 {% block inserts %}
 <meta name="viewport" content="width=device-width">
 <meta property="og:description" content="User: {{ user_anon.username.username }} - Babylon Police">
-<meta property="og:image" content="{% static 'babylonpolice.jpg' %}">
+<meta property="og:image" content="{% static 'bullseye_3.jpeg' %}">
 <script>
 	document.addEventListener("DOMContentLoaded", function() {
 	elements = document.getElementsByClassName("csrf");
@@ -498,7 +498,7 @@ User: {{ user_anon.username.username }} - Babylon Police
 							</button>
 						</form>
 					{% else %}
-						<img src="{% static 'babylonpolice.com.gif' %}" style="height: 6em; width: 6em;">
+						<img src="{% static 'bullseye_3.jpeg' %}" style="height: 6em; width: 6em;">
 					{% endif %}
 				</div>
 				{% if space.author.username == request.user.username %}
@@ -646,7 +646,7 @@ User: {{ user_anon.username.username }} - Babylon Police
 					{% if dictionary.max_sponsor %}
 						<a href="{% url 'Bable:clickthrough' dictionary.author.username dictionary.max_sponsor.id %}">{% if dictionary.max_sponsor.img %}<img src="{{ dictionary.max_sponsor.img }}" style="height: 6em; width: 6em;">{% endif %}</a>
 					{% else %}
-						<img src="{% static 'babylonpolice.com.gif' %}" style="height: 6em; width: 6em;">
+						<img src="{% static 'bullseye_3.jpeg' %}" style="height: 6em; width: 6em;">
 					{% endif %}
 				</div>
 				{% if request.user.username == user_anon.username.username %}
@@ -778,7 +778,7 @@ User: {{ user_anon.username.username }} - Babylon Police
 								{% if exa.max_sponsor %}
 									<a href="{% url 'Bable:clickthrough' exa.author.username exa.max_sponsor.id %}">{% if exa.max_sponsor.img %}<img src="{{ exa.max_sponsor.img }}" style="height: 6em; width: 6em;">{% endif %}</a>
 								{% else %}
-									<img src="{% static 'babylonpolice.com.gif' %}" style="height: 6em; width: 6em;">
+									<img src="{% static 'bullseye_3.jpeg' %}" style="height: 6em; width: 6em;">
 								{% endif %}
 							</div>
 							{% if request.user.username == user_anon.username.username %}
@@ -851,7 +851,7 @@ User: {{ user_anon.username.username }} - Babylon Police
 							{% if post.img %}
 								<a href="{{ post.url }}"><img src="{{ post.img }}" style="height: 6em; width: 6em;"></a>
 							{% else %}
-								<a href="{{ post.url }}"><img src="{% static 'babylonpolice.com.gif' %}" style="height: 6em; width: 6em;"></a>
+								<a href="{{ post.url }}"><img src="{% static 'bullseye_3.jpeg' %}" style="height: 6em; width: 6em;"></a>
 							{% endif %}
 						</div>
 						<div class=posttitle>
@@ -873,7 +873,7 @@ User: {{ user_anon.username.username }} - Babylon Police
 							</button>
 						</form> <!-- if no sponsor input default ad -->
 					{% else %}
-						<a href="https://www.babylonpolice.com/"><img src="{% static 'babylonpolice.com.gif' %}" style="height: 4em; width: 4em; float:right;"></a>
+						<a href="https://www.predictionary.us/"><img src="{% static 'bullseye_3.jpeg' %}" style="height: 4em; width: 4em; float:right;"></a>
 					{% endif %}
 					</div>
 						{% if post.author.username == user_anon.username.username %}
@@ -1067,7 +1067,7 @@ User: {{ user_anon.username.username }} - Babylon Police
 							</button>
 						</form>
 				{% else %}
-					<img src="{% static 'babylonpolice.com.gif' %}" style="z-index: 1; height: 6em; width: 6em;">
+					<img src="{% static 'bullseye_3.jpeg' %}" style="z-index: 1; height: 6em; width: 6em;">
 				{% endif %}
 			</div>
 			<div class=space_left>
@@ -1145,7 +1145,7 @@ User: {{ user_anon.username.username }} - Babylon Police
 				{% if dictionary.sponsors_count or dictionary.max_sponsor %}
 					<a href="{% url 'Bable:clickthrough' dictionary.author.username dictionary.max_sponsor.id %}"><img src="{{ dictionary.max_sponsor.img }}" style="height: 6em; width: 6em;"></a>
 				{% else %}
-					<img src="{% static 'babylonpolice.com.gif' %}" style="height: 6em; width: 6em;">
+					<img src="{% static 'bullseye_3.jpeg' %}" style="height: 6em; width: 6em;">
 				{% endif %}
 			</div>
 			<div class=dictionary_left>
@@ -1244,7 +1244,7 @@ User: {{ user_anon.username.username }} - Babylon Police
 							{% if exa.max_sponsor %}
 								<a href="{% url 'Bable:clickthrough' exa.author.username exa.max_sponsor.id %}"><img src="{{ exa.max_sponsor.img }}" style="height: 6em; width: 6em;"></a>
 							{% else %}
-								<img src="{% static 'babylonpolice.com.gif' %}" style="height: 6em; width: 6em;">
+								<img src="{% static 'bullseye_3.jpeg' %}" style="height: 6em; width: 6em;">
 							{% endif %}
 						</div>
 						<div class=exacha>
