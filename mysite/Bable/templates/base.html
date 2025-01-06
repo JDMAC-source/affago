@@ -52,9 +52,6 @@
 						<img src="{% static 'towerofbable.png' %}" style="height: 1em; width: 1em" onclick="showhideleft()" alt="Apply Votes">&nbsp; <a href="{% url 'Bable:tower_of_bable' %}">
 							{{ request.META.HTTP_HOST|stripwww }}
 						</a>
-						{% if request.user.is_authenticated %}
-							<p>{{ loggedinanon.false_wallet }} <img src="{% static '$$$888.png' %}" style="height: 1em; width: 1em;" alt="moneyflipbrokerbrokerbrokedbroken ld"></p>
-						{% endif %}
 					</h1>
 				</div>
 				<div class="bar">
@@ -159,6 +156,11 @@
 					</div>
 				</div>
 				-->
+			</div>
+			<div class=header-inner>
+				{% if request.user.is_authenticated %}
+					<p>{{ loggedinanon.false_wallet }} <img src="{% static '$$$888.png' %}" style="height: 1em; width: 1em;" alt="moneyflipbrokerbrokerbrokedbroken ld"></p>
+				{% endif %}
 			</div>
 			<div class=header-lower>
 				<div style="display: inline-block; border-radius:5px; border: 1px white solid;">
