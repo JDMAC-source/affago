@@ -161,6 +161,15 @@ a, a:link, a:visited, a:focus, a:hover, a:active {
 	margin: auto;
 }
 
+.header-middle {
+	position: fixed;
+	background-color: #1f1f1f;
+	z-index: 10;
+	display: table;
+	width: 100%;
+	margin: auto;
+}
+
 .account {
 	display: inline-block;
 	font-family: 'futura-pt';
