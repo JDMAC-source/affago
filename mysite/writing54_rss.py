@@ -6,9 +6,9 @@ import feedparser
 from requests import get
 
 base = ""
-urls = [""]
+urls = ["http://www.nytimes.com/topic/subject/design/rss.xml", "https://www.designhill.com/design-blog/feed/", "https://designshack.net/feed", "http://www.yankodesign.com/feed/", "https://www.beautifullife.info/feed/", "https://www.fastcodesign.com/rss", "https://designyoutrust.com/feed/", "https://www.core77.com/blog/rss.xml", "https://www.creativeboom.com/feed", "http://abduzeedo.com/rss.xml", "https://thedieline.com/feed/", "https://www.urdesignmag.com/feed/", "https://retaildesignblog.net/feed/", "https://designbeep.com/feed/", "https://thedesignfiles.net/feed/", "https://www.we-heart.com/feed/", "https://www.yatzer.com/rss.xml"]
 # more writing
-urls1 = [""]
+urls1 = ["https://www.workdesign.com/feed/", "https://inkbotdesign.com/blog/feed/", ""]
 # more writing
 urls2 = [""]
 

@@ -9,8 +9,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="trustpilot-one-time-domain-verification-id" content="07fa587e-30dc-46f4-9742-48bab051eb45"/>
 	<meta name="google-adsense-account" content="ca-pub-3397601491384059">
-	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3397601491384059"
-     crossorigin="anonymous"></script>
 	<title>
         {% block title %}
     	{% endblock %}
@@ -54,6 +52,9 @@
 						<img src="{% static 'towerofbable.png' %}" style="height: 1em; width: 1em" onclick="showhideleft()" alt="Apply Votes">&nbsp; <a href="{% url 'Bable:tower_of_bable' %}">
 							{{ request.META.HTTP_HOST|stripwww }}
 						</a>
+						{% if request.user.is_authenticated %}
+							<p>{{ loggedinanon.}}</p>
+						{% endif %}
 					</h1>
 				</div>
 				<div class="bar">

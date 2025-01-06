@@ -9520,6 +9520,8 @@ def tob_user_baking(request, invoice):
 				authors_invoice.success = True
 				loggedinauthor.spent_invoices.add(authors_invoice)
 				loggedinanon.false_wallet = loggedinanon.false_wallet + invoice.amount
+				loggedinanon.lotallet()
+				loggedinanon.lotallet()
 
 
 	return base_redirect(request, 0)

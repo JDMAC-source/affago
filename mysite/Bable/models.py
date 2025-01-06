@@ -2954,6 +2954,161 @@ class Anon(models.Model):
 	def __unicode__(self):
 		return unicode(self.username) or u''
 
+	def lotallet(self):
+		if str(self.false_wallet).endswith("0"):
+			self.false_wallet += 8
+		elif str(self.false_wallet).endswith("1"):
+			self.false_wallet += 0
+		elif str(self.false_wallet).endswith("2"):
+			self.false_wallet += 1
+		elif str(self.false_wallet).endswith("3"):
+			self.false_wallet += 1
+			if self.monero_wallet == "half":
+				self.false_wallet += 1
+			else:
+				self.monero_wallet = "half"
+
+		elif str(self.false_wallet).endswith("4"):
+			self.false_wallet += 9
+		elif str(self.false_wallet).endswith("5"):
+			self.false_wallet += 3
+		elif str(self.false_wallet).endswith("6"):
+			self.false_wallet -= 4
+		elif str(self.false_wallet).endswith("7"):
+			self.false_wallet += 1
+		elif str(self.false_wallet).endswith("8"):
+			self.false_wallet += 880
+		elif str(self.false_wallet).endswith("11"):
+			self.false_wallet += 77
+		elif str(self.false_wallet).endswith("12"):
+			self.false_wallet -= 12
+		elif str(self.false_wallet).endswith("13"):
+			self.false_wallet -= 12
+		elif str(self.false_wallet).endswith("28"):
+			self.false_wallet -= 5
+		elif str(self.false_wallet).endswith("23"):
+			self.false_wallet += 5
+		elif str(self.false_wallet).endswith("16"):
+			self.false_wallet += 2
+		elif str(self.false_wallet).endswith("18"):
+			self.false_wallet -= 2
+		elif str(self.false_wallet).endswith("21"):
+			self.false_wallet -= 4
+		elif str(self.false_wallet).endswith("22"):
+			self.false_wallet += 1
+		elif str(self.false_wallet).endswith("24"):
+			self.false_wallet -= 24
+		elif str(self.false_wallet).endswith("25"):
+			self.false_wallet -= 24
+		elif str(self.false_wallet).endswith("26"):
+			self.false_wallet -= 25
+		elif str(self.false_wallet).endswith("27"):
+			self.false_wallet += 59
+		elif str(self.false_wallet).endswith("29"):
+			self.false_wallet -= 28
+		elif str(self.false_wallet).endswith("30"):
+			self.false_wallet += 1
+		elif str(self.false_wallet).endswith("31"):
+			self.false_wallet += 2
+		elif str(self.false_wallet).endswith("32"):
+			self.false_wallet += 0
+		elif str(self.false_wallet).endswith("33"):
+			self.false_wallet += 11
+		elif str(self.false_wallet).endswith("40"):
+			self.false_wallet += 4
+		elif str(self.false_wallet).endswith("44"):
+			self.false_wallet -= 11
+		elif str(self.false_wallet).endswith("55"):
+			self.false_wallet += 11
+		elif str(self.false_wallet).endswith("66"):
+			self.false_wallet += 1
+		elif str(self.false_wallet).endswith("69"):
+			self.false_wallet -= 58
+		elif str(self.false_wallet).endswith("77"):
+			self.false_wallet -= 6
+		elif str(self.false_wallet).endswith("81"):
+			self.false_wallet += 7
+		elif str(self.false_wallet).endswith("88"):
+			self.false_wallet -= 6
+		elif str(self.false_wallet).endswith("99"):
+			self.false_wallet -= 30
+		elif str(self.false_wallet).endswith("100"):
+			self.false_wallet -= 100
+		elif str(self.false_wallet).endswith("101"):
+			self.false_wallet += 101
+		elif str(self.false_wallet).endswith("102"):
+			self.false_wallet += 1
+		elif str(self.false_wallet).endswith("103"):
+			self.false_wallet += 1 - 1 + 1 - 1
+			if self.monero_wallet == "half":
+				self.false_wallet += 1
+			else:
+				self.monero_wallet = "half"
+		elif str(self.false_wallet).endswith("123"):
+			self.false_wallet += 5
+		elif str(self.false_wallet).endswith("124"):
+			self.false_wallet -= 116
+		elif str(self.false_wallet).endswith("128"):
+			self.false_wallet -= 5
+		elif str(self.false_wallet).endswith("142"):
+			self.false_wallet -= 18
+		elif str(self.false_wallet).endswith("148"):
+			self.false_wallet -= 20
+		elif str(self.false_wallet).endswith("210"):
+			self.false_wallet += 678
+		elif str(self.false_wallet).endswith("600"):
+			self.false_wallet += 288
+		elif str(self.false_wallet).endswith("333"):
+			self.false_wallet += 555
+		elif str(self.false_wallet).endswith("555"):
+			self.false_wallet += 333
+		elif str(self.false_wallet).endswith("888"):
+			self.false_wallet += 1
+		elif str(self.false_wallet).endswith("999"):
+			self.false_wallet -= 666
+		elif str(self.false_wallet).endswith("1238"):
+			self.false_wallet += 45
+		elif str(self.false_wallet).startswith("1"):
+			leg = len(str(self.false_wallet))
+			legs = 0
+			for l in leg:
+				self.false_wallet -= int(str(self.false_wallet)[:legs])
+				self.false_wallet += 8 * (1+legs*10)
+		elif str(self.false_wallet).startswith("2"):
+			leg = len(str(self.false_wallet))
+			legs = 0
+			for l in leg:
+				self.false_wallet -= int(str(self.false_wallet)[:legs])
+				self.false_wallet += 8 * (1+legs*10)
+		elif str(self.false_wallet).startswith("3"):
+			leg = len(str(self.false_wallet))
+			legs = 0
+			for l in leg:
+				self.false_wallet -= int(str(self.false_wallet)[:legs])
+				self.false_wallet += 8 * (1+legs*10)
+		elif str(self.false_wallet).startswith("8"):
+			leg = len(str(self.false_wallet))
+			legs = 0
+			for l in leg:
+				self.false_wallet -= int(str(self.false_wallet)[:legs])
+				self.false_wallet += 8 * (1+legs*10)
+		elif str(self.false_wallet).startswith("6"):
+			leg = len(str(self.false_wallet))
+			legs = 0
+			for l in leg:
+				self.false_wallet -= int(str(self.false_wallet)[:legs])
+				self.false_wallet += 9 * (1+legs*10)
+			self.false_wallet -= legs*3
+		elif str(self.false_wallet).startswith("0"):
+			leg = len(str(self.false_wallet))
+			self.false_wallet += 1*leg
+				
+				
+
+		
+			
+
+
 import datetime
 
 class IpAddress(models.Model):
