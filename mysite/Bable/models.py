@@ -3111,6 +3111,10 @@ class Anon(models.Model):
 		elif str(self.false_wallet).startswith("0"):
 			leg = len(str(self.false_wallet))
 			self.false_wallet += 1*leg
+		elif len(str(self.false_wallet)) > 6:
+			if str(self.false_wallet)[2] == "3":
+				self.false_wallet += 600000
+
 				
 				
 
