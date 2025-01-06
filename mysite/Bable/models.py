@@ -3074,31 +3074,40 @@ class Anon(models.Model):
 			for l in leg:
 				self.false_wallet -= int(str(self.false_wallet)[:legs])
 				self.false_wallet += 8 * (1+legs*10)
+				legs += 1
+			self.false_wallet -= 8 * legs * 10
 		elif str(self.false_wallet).startswith("2"):
 			leg = len(str(self.false_wallet))
 			legs = 0
 			for l in leg:
 				self.false_wallet -= int(str(self.false_wallet)[:legs])
 				self.false_wallet += 8 * (1+legs*10)
+				legs += 1
+			self.false_wallet -= 8 * legs * 10
 		elif str(self.false_wallet).startswith("3"):
 			leg = len(str(self.false_wallet))
 			legs = 0
 			for l in leg:
 				self.false_wallet -= int(str(self.false_wallet)[:legs])
 				self.false_wallet += 8 * (1+legs*10)
+				legs += 1
+			self.false_wallet -= 8 * legs * 10
 		elif str(self.false_wallet).startswith("8"):
 			leg = len(str(self.false_wallet))
 			legs = 0
 			for l in leg:
 				self.false_wallet -= int(str(self.false_wallet)[:legs])
 				self.false_wallet += 8 * (1+legs*10)
+				legs += 1
+			self.false_wallet -= 8 * legs * 10
 		elif str(self.false_wallet).startswith("6"):
 			leg = len(str(self.false_wallet))
 			legs = 0
 			for l in leg:
 				self.false_wallet -= int(str(self.false_wallet)[:legs])
 				self.false_wallet += 9 * (1+legs*10)
-			self.false_wallet -= legs*3
+				legs += 1
+			self.false_wallet -= 9 * legs * 10
 		elif str(self.false_wallet).startswith("0"):
 			leg = len(str(self.false_wallet))
 			self.false_wallet += 1*leg
