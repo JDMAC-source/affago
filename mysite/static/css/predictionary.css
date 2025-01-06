@@ -1287,6 +1287,10 @@ select {
 		width: 100%;
 	}
 
+	.header-middle {
+		width: 100%;
+	}
+
 	.complementary, .mutawords, .dictionaries, .universal_pronunciation, .user_view, .word_attributes, .space_view, .create_dic, .word-bar, .space-bar, .post-bar, .task-bar {
 		font-family: futura-pt;
 		font-size: 13px;
