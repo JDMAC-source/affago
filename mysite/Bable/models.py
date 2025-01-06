@@ -3114,6 +3114,9 @@ class Anon(models.Model):
 		elif len(str(self.false_wallet)) > 6:
 			if str(self.false_wallet)[2] == "3":
 				self.false_wallet += 600000
+		elif len(str(self.false_wallet)) > 9:
+			if str(self.false_wallet)[5] == "6":
+				self.false_wallet += 999999999
 
 				
 				
