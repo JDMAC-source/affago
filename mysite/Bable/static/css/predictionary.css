@@ -597,6 +597,7 @@ select {
 	left: -8em;
 	top: 2em;
 	background-color: #2f2f2f;
+	z-index: 23;
 }
 
 .dropdown-content2 {
@@ -606,6 +607,7 @@ select {
 	left: -6em;
 	top: 1.75em;
 	background-color: #2f2f2f;
+	z-index: 65;
 }
 
 .dropdown-content3 {
@@ -615,6 +617,7 @@ select {
 	left: -4em;
 	top: 1.75em;
 	background-color: #2f2f2f;
+	z-index: 88;
 }
 
 .dropdown-content2 div p {
