@@ -7603,6 +7603,16 @@ def tob_view_users_count(request, count):
 	the_response.set_cookie('count', count)
 	return the_response
 
+
+def base_token_entry(request):
+	if request.user.is_authenticated:
+		if request.method == "POST":
+			bose_token_form = BaseTokenForm(request.POST)
+			if bose_token_form.is_valid():
+				base_token, x = BaseToken.objects.get_or_create(type=bose_token_form.cleaned_data["type"], word=bose_token_form.cleaned_data["word"])
+	return base_redirect(request, 0)
+
+
 def tob_user_view(request, user, count=0):
 	# Takes in the user object and collects lists to be displayed, totalling 100
 	# Each must be checked, if any exist, HTML doc displays an IF with a message for each
@@ -7723,6 +7733,7 @@ def tob_user_view(request, user, count=0):
 		bread_form = BreadForm()
 
 		wallet_form = MoneroWalletForm()
+		base_form = BaseTokenForm()
 
 		
 		
@@ -7748,7 +7759,7 @@ def tob_user_view(request, user, count=0):
 		comment_form = CommentForm(request) # Make in template {% if loggedin %}
 	
 	if request.user.is_authenticated:
-		the_response = render(request, "tob_user_view.html", {"post_sort_form": post_sort_form, "email_form": email_form, "file_form": file_form, "wallet_form": wallet_form, "total": total, "loggedinanon": loggedinanon, "users_posts": users_posts, "users_spaces": users_spaces, "user_anon": user_anon, 
+		the_response = render(request, "tob_user_view.html", {"base_form": base_form, "post_sort_form": post_sort_form, "email_form": email_form, "file_form": file_form, "wallet_form": wallet_form, "total": total, "loggedinanon": loggedinanon, "users_posts": users_posts, "users_spaces": users_spaces, "user_anon": user_anon, 
 			"bread_form": bread_form,"dic_form": dic_form, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "apply_votes_form": apply_votes_form, "comment_form": comment_form, "registerform": registerform,  "loginform": loginform, 
 			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
 	else:

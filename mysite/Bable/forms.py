@@ -1502,7 +1502,17 @@ class ColourStepForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ColourStepForm, self).__init__(*args, **kwargs)
 
-      
+
+
+class BaseTokenForm(forms.ModelForm):
+    class Meta:
+        model = BaseToken
+        fields = ('type', 'word',)
+
+    def __init__(self, *args, **kwargs):
+        super(BaseTokenForm, self).__init__(*args, **kwargs)
+
+     
 
 class SpaceDataForm(forms.ModelForm):
     class Meta:
