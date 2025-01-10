@@ -53,7 +53,7 @@ User: {{ user_anon.username.username }} - Predictionary
 	{% if user_anon.username.username == request.user.username %}
 		<div class=userself>
 			<div class=baseform>
-				<form action="{% url 'Bable:base_token_form' %}" method=POST>
+				<form action="{% url 'Bable:base_token_entry' %}" method=POST>
 					{% csrf_token %}
 					{{ base_form }}
 					<button type=submit>Submit</button>

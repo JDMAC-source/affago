@@ -159,11 +159,11 @@
 			</div>
 			<div class=header-middle>
 				{% if request.user.is_authenticated %}
-					<p>{{ loggedinanon.false_wallet }} <img src="{% static '$$$8880.00.png' %}" style="height: 1em; width: 1em;" alt="moneyflipbrokerbrokerbrokedbroken ld"></p>
+					<p style="height: 50px;">{{ loggedinanon.false_wallet }} <img src="{% static '$$$8880.00.png' %}" style="height: 1em; width: 1em;" alt="moneyflipbrokerbrokerbrokedbroken ld"></p>
 				{% endif %}
 			</div>
 			
-			<div class=header-lower>
+			<div class=header-lower style="display: inline-block;">
 				<div style="display: inline-block; border-radius:5px; border: 1px white solid;">
 					<div class="space_view" style="display: inline-block; border-radius:4px; border: 1px #e3dac9 solid;">
 						<a href="{% url 'Bable:tob_view_spaces' %}">Spaces</a>
