@@ -211,7 +211,7 @@
 				</div>
 			</div>
 		</header>
-		<div class="forum">
+		<div class="boardpinup" id=dontchange>
 			<div id="leftsidenav" class="leftsidenav" style="margin-top: 3em;">
 				<a href="javascript:void(0)" class="leftclosebtn" onclick="closeleftNav()">&times;</a>
 				{% if request.user.is_authenticated %}
@@ -422,7 +422,7 @@
 					</form>
 				</div>
 			</div>
-			<div id="postindex" style="position:relative; top: 120px; padding-right: 0px; overflow-y: clip;">
+			<div id="postindex" style="position:relative; top: 240px; padding-right: 0px; overflow-y: clip;">
 				<div id=registerterms>
 					<div class=terms>
 						<a href="{% url 'Bable:about' %}">Terms and Conditions</a>
