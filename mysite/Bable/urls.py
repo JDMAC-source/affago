@@ -44,6 +44,7 @@ urlpatterns = [
     path('api/jwt/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('checkout/<int:pk>', views.CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
 	path('keyup/<int:pk>/<int:post_id>', views.KeyupCheckoutSessionView.as_view(), name='keyup-checkout-session'),
+	path('keyup_storefront/<int:pk>/<int:storefront_id>', views.StorefrontKeyupCheckoutSessionView.as_view(), name='storefront-keyup-checkout-session'),
 
 	# path('admin/', admin.site.urls),
 	path('logout/', views.logout_user, name='logout_user'),
@@ -52,6 +53,7 @@ urlpatterns = [
 	path('grabvoteid/', views.grabvoteid, name='grabvoteid'),
 	#path('gensim_test/', views.gensim_test, name='gensim_test'),
 	path('create_product_w_price/<post_id>/', views.create_product_w_price, name='create_product_w_price'),
+	path('create_product_w_price/<storefront_id>/storefront/', views.create_product_w_price_storefront, name='create_product_w_price_storefront'),
 	path('login/', views.login_view, name='login_view'),
 	path('settings/<item>/', views.settings, name='settings'),
 	path('owner/', views.owner, name='owner'),

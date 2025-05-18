@@ -4002,6 +4002,27 @@ def create_product_w_price(request, post_id):
 	return base_redirect(request, 0)
 
 
+@login_required
+def create_product_w_price_storefront(request, storefront_id):
+	loggedinuser = User.objects.get(username=request.user.username)
+	loggedinanon = Anon.objects.get(username=loggedinuser)
+	loggedinauthor = Author.objects.get(username=request.user.username)
+	if request.method == "POST":
+		product_form = ProductForm(request.POST)
+		product_form.anon_user_id = loggedinanon.id
+		if product_form.is_valid():
+			product = product_form.save()
+			product.anon_user_id = loggedinanon.id
+			product.save()
+			loggedinanon.products.add(product)
+			loggedinanon.save()
+			storefront = Storefront.objects.get(id=int(storefront_id))
+			if storefront in loggedinanon.storefronts.all():
+				storefront.products.add(product)
+				storefront.save()
+	return base_redirect(request, 0)
+
+
 
 class KeyupCheckoutSessionView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
@@ -4012,6 +4033,18 @@ class KeyupCheckoutSessionView(LoginRequiredMixin, View):
         	if post in anon.posts.all():
         		post.products.add(price)
         		post.save()
+        return base_redirect(request, 0)
+
+
+class StorefrontKeyupCheckoutSessionView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        price = Price.objects.get(id=self.kwargs["pk"])
+        storefront = Storefront.objects.get(id=self.kwargs["storefront_id"])
+        anon = Anon.objects.get(username=request.user)
+        if price in anon.products.all():
+        	if storefront in anon.storefront.all():
+        		storefront.products.add(price)
+        		storefront.save()
         return base_redirect(request, 0)
 
 
@@ -9767,13 +9800,15 @@ def storefront(request, author, dictionary_id, storefront_title):
 
 	sale_form = SaleForm()
 	storefront_form = StorefrontForm(user_dic.first(), instance=user_storefront)
+	product_form = ProductForm()
+
 	page_views, created = Pageviews.objects.get_or_create(page="storefront")
 	page_views.views += 1
 	page_views.save()	
 
 
 	
-	the_response = render(request, "tob_storefront.html", {"storefront_form": storefront_form, "user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
+	the_response = render(request, "tob_storefront.html", {"storefront_form": storefront_form, "product_form": product_form, "user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
 	the_response.set_cookie('current', 'storefront')
 	the_response.set_cookie('author', author)
 	the_response.set_cookie('dictionary', dictionary_id)
