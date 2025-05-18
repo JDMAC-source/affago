@@ -9798,7 +9798,7 @@ def storefront(request, author, dictionary_id, storefront_title):
 	if request.user.username == author:
 		editing = True
 
-	sale_form = SaleForm()
+	sale_form = CourierForm()
 	storefront_form = StorefrontForm(user_dic.first(), instance=user_storefront)
 	product_form = ProductForm()
 
@@ -9808,7 +9808,7 @@ def storefront(request, author, dictionary_id, storefront_title):
 
 
 	
-	the_response = render(request, "tob_storefront.html", {"storefront_form": storefront_form, "product_form": product_form, "user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
+	the_response = render(request, "tob_storefront.html", {"storefront_form": storefront_form, "sale_form": sale_form, "product_form": product_form, "user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
 	the_response.set_cookie('current', 'storefront')
 	the_response.set_cookie('author', author)
 	the_response.set_cookie('dictionary', dictionary_id)

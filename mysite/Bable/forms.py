@@ -99,8 +99,8 @@ class TimeAndRangePricesForm(forms.ModelForm):
 class CourierForm(forms.ModelForm):
     class Meta:
         model = Courier
-        fields = ("to_country", "to_state", "to_city", "to_address", "to_name", "update",  "leave_from_time", "estimated_arrival_time", "deliver_to_instructions")
-    def __init__(self, request, *args, **kwargs):
+        fields = ("to_country", "to_state", "to_city", "to_address", "to_name", "update",  "leave_from_time", "leave_from_date", "estimated_arrival_time", "estimated_arrival_date", "deliver_to_instructions")
+    def __init__(self, *args, **kwargs):
         super(CourierForm, self).__init__(*args, **kwargs)
         
 
@@ -947,12 +947,7 @@ class ProductForm(forms.ModelForm):
         model = Price
         fields = ('name', 'stripe_price_id', 'stripe_product_id', 'price', 'url2purchase', 'description2purchase', 'description2helpsell', 'img', 'monthly',)
 
-class SaleForm(forms.ModelForm):
-    class Meta:
-        model = Price
-        fields = ('name', 'stripe_price_id', 'stripe_product_id', 'price', 'url2purchase', 'description2purchase', 'description2helpsell', 'img', 'monthly',)
- 
-       
+    
 
 class SearchURLForm(forms.ModelForm):
     class Meta:

@@ -79,7 +79,9 @@
 
 
 {% block authenticated_posts %}
-
+<style>
+	.dropdown-content1 { left: -4em; }
+</style>
 <div style="margin-top: 50px;">
 	<img id="storefront_image_1" src="{{ user_storefront.image_1 }}" style="width: 100vw;">
 	<section id="storefront_title" style="text-align: center; margin-left: {{ user_storefront.template_section_size_title_left }}px; margin-right: {{ user_storefront.template_section_size_title_right }}px; height: {{ user_storefront.template_section_size_title_height }}px;">{{ user_storefront.title }}</section>
@@ -101,16 +103,17 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
@@ -138,24 +141,27 @@
 			            {% else %}
 			            <img src="{% static 'babylonpolice.jpg' %}" style="width: 200px !important; max-height: 200px; margin: auto; width: fit-content;">
 			            {% endif %}
+			            {% if price %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform2')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform2>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
 			                    <button type="submit">Checkout</button>
 			                </form>
 			            </div>
+			            {% endif %}
 
 			        </div>
 			            {% endfor %}
@@ -179,16 +185,17 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform3')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform3>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
@@ -222,16 +229,17 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform2')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform2>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
@@ -261,16 +269,17 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform2')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform2>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
@@ -300,16 +309,18 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform2')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform2>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
@@ -343,16 +354,17 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform2')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform2>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
@@ -382,16 +394,17 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform2')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform2>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
@@ -421,16 +434,17 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform2')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform2>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
@@ -463,16 +477,17 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform2')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform2>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
@@ -502,16 +517,17 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform2')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform2>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
@@ -541,16 +557,17 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform2')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform2>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
@@ -587,16 +604,17 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:create_checkout_session' price.id user_storefront.id %}" method="POST">
+			                <p>{{ price.description2helpsell|slice:"144" }}</p>
+			                <form action="{% url 'Bable:api_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
-			                    <div onclick="openComment('saleform')">
+			                    <div onclick="openComment('saleform{{price.id}}')">
 			                    Address+
 			                	</div>
-			                	<div id=saleform>
+			                	<div id=saleform{{price.id}}>
 			                    {{ sale_form }}
 			                	</div>
 			                	<style>
-			                		#saleform {
+			                		#saleform{{price.id}} {
 			                			display:none;
 			                		}
 			                	</style>
@@ -622,7 +640,7 @@
         		display: none;
         	}
         </style>
-        <form id="new_product_form" action="{% url 'Bable:create_product_w_price' user_storefront.id %}" method='POST'>{% csrf_token %}{{ product_form }}<button type="submit">Submit </button></form>
+        <form id="new_product_form" action="{% url 'Bable:create_product_w_price_storefront' user_storefront.id %}" method='POST'>{% csrf_token %}{{ product_form }}<button type="submit">Submit </button></form>
 		<div onclick="openComment('new_products_')">
 			Add Old Products +
 		</div>
@@ -630,7 +648,7 @@
             <div class="col-12 mx-auto">
                 <div class="card-deck pricing-table">
 		<div id=new_products_form>
-			{% for price in loggedinanon.products.all %}
+			{% for price in user_anon.products.all %}
 				            
 			     <div class="card">
 			        <hr />
@@ -639,6 +657,7 @@
 			        <img src="{{ price.img }}" style="width: 200px; height: 200px; margin: auto; width: fit-content;">
 			        <div>
 			            <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
+			            <p>{{ price.description2helpsell|slice:"144" }}</p>
 			            <form action="{% url 'Bable:storefront-keyup-checkout-session' price.id user_storefront.id %}" method="POST">
 			                {% csrf_token %}
 
@@ -656,6 +675,9 @@
 		{% endif %}
 	{% endif %}
 </div>
+<script>
+	
+</script>
 {% endblock %}
 
 {% block unauthenticated_posts %}
@@ -673,14 +695,15 @@
 
 {% block scripts %}
 <script>
-	function openComment(starter) {
-			var element = document.getElementById(starter + "form");
-			if (element.style.display === "inline-block") {
-				element.style.display = "none";
-			} else {
-				element.style.display = "inline-block";
-			}
+	function openComment(tag_id) {
+		var element = document.getElementById(tag_id);
+		if(element.style.display === "block") {
+			element.style.display = "none";
+		} else {
+			element.style.display = "block";
 		}
+		
+	}
 
 	function openCommentThread(starter, com) {
 		var element = document.getElementById(starter).getElementById(com);

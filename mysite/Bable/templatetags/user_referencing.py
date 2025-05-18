@@ -17,7 +17,7 @@ def skip_how_many_keep_how_many(value, how_manies):
 	if int(how_manies.split('000')[1]) <= value.count():
 		return value[int(how_manies.split('000')[0]):int(how_manies.split('000')[1])]
 	else:
-		return value
+		return None
 
 @register.filter(is_safe=True)
 def stripwww(value):

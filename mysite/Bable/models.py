@@ -925,8 +925,10 @@ class Courier(models.Model):
 	to_name = models.CharField(max_length=1440, default="")
 	update = models.CharField(max_length=1440, default="")
 	creation_date = models.DateTimeField(timezone.now)
-	leave_from_time = models.DateTimeField(timezone.now)
-	estimated_arrival_time = models.DateTimeField(timezone.now)
+	leave_from_date = models.DateField(default=timezone.now().date())
+	leave_from_time = models.TimeField(default=(12, 00))
+	estimated_arrival_time = models.TimeField(default=(12, 00))
+	estimated_arrival_date = models.DateField(default=timezone.now().date()+timedelta(+24))
 	driver = models.CharField(max_length=140, default='') # USERNAME
 	order = models.IntegerField(default=0)
 	fees = models.IntegerField(default=0)
