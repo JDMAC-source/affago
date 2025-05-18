@@ -56,19 +56,19 @@
 				<a href="{% url 'Bable:storefront_landing_page' user_storefront.author.username user_dic.first.id user_storefront.title %}">Landing Page</a>
 			</div>
 			<div class="universal_pronunciation">
-				<a href="{% url 'Bable:storefront_index' user_storefront.author.username user_dic.first.id user_storefront.title %}">Index</a>
+				<a href="{% url 'Bable:storefront_index' user_storefront.author.username user_storefront.title %}">Index</a>
 			</div>
 			<div class="mutawords">
-				<a href="{% url 'Bable:storefront_about' user_storefront.author.username user_dic.first.id user_storefront.title %}">About</a>
+				<a href="{% url 'Bable:storefront_about' user_storefront.author.username user_storefront.title %}">About</a>
 			</div>
 			<div class="dictionaries">
-				<a href="{% url 'Bable:storefront_story' user_storefront.author.username user_dic.first.id user_storefront.title %}">Story of Us</a>
+				<a href="{% url 'Bable:storefront_story' user_storefront.author.username user_storefront.title %}">Story of Us</a>
 			</div>
 			<div class="user_view">
-				<a href="{% url 'Bable:storefront_product_list' user_storefront.author.username user_dic.first.id user_storefront.title %}">Products List</a>
+				<a href="{% url 'Bable:storefront_product_list' user_storefront.author.username user_storefront.title %}">Products List</a>
 			</div>
 			<div class="word_attributes">
-				<a href="{% url 'Bable:storefront_past_purchases' user_storefront.author.username user_dic.first.id user_storefront.title %}">Past Purchases</a>
+				<a href="{% url 'Bable:storefront_past_purchases' user_storefront.author.username user_storefront.title %}">Past Purchases</a>
 			</div>
 			
 		</div>
@@ -98,7 +98,7 @@
             <div class="col-12 mx-auto">
                 <div class="card-deck pricing-table">
 
-			            {% for price in users_post.products.all %}
+			            {% for price in user_storefront.products.all %}
 
                      <div class="card">
 			            <hr />
@@ -111,7 +111,7 @@
 			            {% endif %}
 			            <div>
 			                <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-			                <form action="{% url 'Bable:api_checkout_session' users_post.id 0 %}" method="POST">
+			                <form action="{% url 'Bable:create_checkout_session' price.id user_storefront.id %}" method="POST">
 			                    {% csrf_token %}
 			                    <div onclick="openComment('saleform')">
 			                    Address+
@@ -154,27 +154,27 @@
             <div class="col-12 mx-auto">
                 <div class="card-deck pricing-table">
 		<div id=new_products_form>
-		{% for price in loggedinanon.products.all %}
-			            
-     <div class="card">
-        <hr />
-        
-        <a href="{% url 'Bable:tob_product' price.id %}"><h3>{{ price.name }}</h3></a>
-        <img src="{{ price.img }}" style="width: 200px; height: 200px; margin: auto; width: fit-content;">
-        <div>
-            <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
-            <form action="{% url 'Bable:keyup-checkout-session' price.id users_post.id %}" method="POST">
-                {% csrf_token %}
-                <button type="submit">Add to post</button>
-            </form>
-        </div>
+			{% for price in loggedinanon.products.all %}
+				            
+			     <div class="card">
+			        <hr />
+			        
+			        <a href="{% url 'Bable:tob_product' price.id %}"><h3>{{ price.name }}</h3></a>
+			        <img src="{{ price.img }}" style="width: 200px; height: 200px; margin: auto; width: fit-content;">
+			        <div>
+			            <h5>${{ price.get_display_price }} AUD {% if price.monthly %}per month{% endif %}</h5>
+			            <form action="{% url 'Bable:keyup-checkout-session' price.id users_post.id %}" method="POST">
+			                {% csrf_token %}
+			                <button type="submit">Add to post</button>
+			            </form>
+			        </div>
 
-    </div>
-        {% endfor %}
-    </div>
+			    </div>
+	        {% endfor %}
+	    </div>
     </div></div></div>
-		<div class=postdel>
-			<a href="{% url 'Bable:delete_own_post' users_post.author.username users_post.id %}">X</a>
+		<div class=storefrontdel>
+			<a href="{% url 'Bable:delete_own_storefront' user_storefront.author.username user_storefront.id %}">X</a>
 		</div>
 		{% endif %}
 	{% endif %}

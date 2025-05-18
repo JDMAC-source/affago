@@ -947,6 +947,10 @@ class ProductForm(forms.ModelForm):
         model = Price
         fields = ('name', 'stripe_price_id', 'stripe_product_id', 'price', 'url2purchase', 'description2purchase', 'description2helpsell', 'img', 'monthly',)
 
+class SaleForm(forms.ModelForm):
+    class Meta:
+        model = Price
+        fields = ('name', 'stripe_price_id', 'stripe_product_id', 'price', 'url2purchase', 'description2purchase', 'description2helpsell', 'img', 'monthly',)
  
        
 

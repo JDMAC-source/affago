@@ -188,6 +188,16 @@ def dics_word(value, dictionaries):
 	
 	return value
 
+@register.filter(is_safe=True)
+def dic_word(value, dic):
+	for word in dic.words.all():
+		if '/'+dic.the_dictionary_itself+'/'+word.the_word_itself in value.split(" "):
+			value.replace('/{}/{}'.format(dic.the_dictionary_itself, word.the_word_itself), '<a class=plain href="{}">{}</a>'.format(reverse('Bable:tob_users_dic_word_count', kwargs={'user':dic.author.username, 'dictionary':dic.the_dictionary_itself, 'word':word.the_word_itself, 'count':0}), word.the_word_itself))
+	
+	return value
+
+
+
 
 from django.utils.safestring import mark_safe
 

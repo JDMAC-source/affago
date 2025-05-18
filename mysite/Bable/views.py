@@ -2167,7 +2167,9 @@ def register_view(request):
 		user = authenticate(request, username=new_user.username, password=registerform.cleaned_data['password1'])
 		if user is not None:
 			login(request, user)
-			Anon.objects.create(username=User.objects.get(username=new_user.username))
+			anon = Anon.objects.create(username=User.objects.get(username=new_user.username))
+			anon.false_wallet += 1000000000
+			anon.save()
 			Author.objects.create(username=new_user.username)
 			# Send email.
 			# Record IP, record username, record email, record time.
@@ -2195,6 +2197,8 @@ def register_view(request):
 		
 	for page in Pageviews.objects.all():
 		total += page.views
+
+	posts_by_viewcount = Post.objects.order_by('-viewcount')[0:25]
 	the_response = render(request, 'tower_of_bable.html', {"basic_price": base_product, "viewsponsor": viewsponsor, "register_error":register_error, "login_error":login_error, "total": total, "count": count, "mcount": mcount, "count100": count100, "posts": posts_by_viewcount, 'loginform': loginform, 'registerform': registerform, })
 	
 	the_response.set_cookie('current', 'tower_of_bable')
@@ -4141,7 +4145,14 @@ def tower_of_bable(request):
 	count100 = 25
 	mcount = 0
 
-	
+	'''
+	for a in Anon.objects.all():
+		a.delete()
+	for b in User.objects.all():
+		b.delete()
+	for c in Author.objects.all():
+		c.delete()
+	'''
 	basic_price, x = Price.objects.get_or_create(id=1)
 	if not basic_price.stripe_price_id:
 		basic_price.name="Donate - Predictionary.us"
@@ -4151,9 +4162,14 @@ def tower_of_bable(request):
 		basic_price.stripe_product_id = "prod_OS2pk9gZWam5Ye"
 		basic_price.price = 500
 		basic_price.save()
-	test = Author.objects.get(username='test')
+	test, x = Author.objects.get_or_create(username='test')
 	sponsor, x = Sponsor.objects.get_or_create(allowable_expenditure=1000000, the_sponsorship_phrase="If S is Alpha S is G", img="https://www.predictionary.us/static/bullseye_3.jpeg", url2="https://www.predictionary.us/user/test/space/iverdabefore/count/0/", price_limit=1, author=test)
 
+	if Anon.objects.all().count():
+		user, x = User.objects.get_or_create(username="test")
+		user.set_password("thattickles")
+		anon, x = Anon.objects.get_or_create(username=user)
+		author, x = Author.objects.get_or_create(username="test")
 
 
 	page_views, created = Pageviews.objects.get_or_create(page="tower_of_bable")
@@ -4258,6 +4274,11 @@ def landingpage(request):
 		basic_price.price = 500
 		basic_price.save()
 
+	if not Anon.objects.all().count():
+		Anon.objects.create(username=User.objects.create(username="test", password="thattickles"))
+		Author.objects.create(username="test")
+
+	
 	page_views, created = Pageviews.objects.get_or_create(page="landingpage")
 	page_views.views += 1
 	page_views.save()
@@ -5273,6 +5294,11 @@ def tower_of_bable_count(request, count):
 	#recently_modified_post = Post.objects.order_by('-latest_change_date')[:100]
 	registerform = UserCreationForm()
 
+	if Anon.objects.all().count():
+		user = User.objects.create(username="test")
+		user.set_password("thattickles")
+		anon = Anon.objects.create(username=user)
+		author = Author.objects.create(username="test")
 	
 	basic_price = Price.objects.filter(name="Donate - Predictionary.us", anon_user_id=1).first()
 	if not basic_price.stripe_price_id:
@@ -9341,7 +9367,7 @@ def barcode(request):
 
 @csrf_exempt
 @login_required
-def create_checkout_session(request, price_id, post_id, storefront_id):
+def create_checkout_session(request, price_id, storefront_id):
 	loggedinuser = User.objects.get(username=request.user.username)
 	loggedinanon = Anon.objects.get(username=loggedinuser)
 	if request.method == 'POST':
@@ -9349,10 +9375,6 @@ def create_checkout_session(request, price_id, post_id, storefront_id):
 		if sale_form.is_valid():
 
 			sale = sale_form.save()
-			if int(post_id):
-				post = Post.objects.get(id=int(post_id))
-				post.sales.add(sale)
-				post.save()
 			if int(storefront_id):
 				storefront = Storefront.objects.get(id=int(storefront_id))
 				storefront.sales.add(sale)
@@ -9683,6 +9705,7 @@ def tob_users_dic(request, user, dictionary, count):
 		exclude_dic_form = ExcludeDictionaryAuthorForm()
 
 		word_sort_form = WordSortForm(request)
+		storefront_sort_form = StorefrontSortForm(request)
 
 		dics_words = users_dic.words.order_by(loggedinanon.word_sort_char)[count:count+100]
 		
@@ -9696,7 +9719,7 @@ def tob_users_dic(request, user, dictionary, count):
 			analysis_form = AnalysisForm(users_dic)
 			storefront_form = StorefrontForm(users_dic)
 
-			the_response = render(request, "tob_users_dic.html", {"loggedinanon": loggedinanon, "storefront_form": storefront_form, "user_anon": user_anon, "users_dic": users_dic, "dics_words": dics_words, "word_sort_form": word_sort_form, "dic_owners_form": dic_owners_form, "dic_prereq_form": dic_prereq_form, "wordgroup_form": wordgroup_form, "sentence_form": sentence_form, "translation_form": translation_form, "analysis_form": analysis_form, "dic_form": dic_form, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
+			the_response = render(request, "tob_users_dic.html", {"loggedinanon": loggedinanon, "storefront_sort_form": storefront_sort_form, "storefront_form": storefront_form, "user_anon": user_anon, "users_dic": users_dic, "dics_words": dics_words, "word_sort_form": word_sort_form, "dic_owners_form": dic_owners_form, "dic_prereq_form": dic_prereq_form, "wordgroup_form": wordgroup_form, "sentence_form": sentence_form, "translation_form": translation_form, "analysis_form": analysis_form, "dic_form": dic_form, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform, 
 			"apply_votestyle_form": apply_votestyle_form, "create_votes_form": create_votes_form, "exclude_votes_form": exclude_votes_form, "apply_dic_form": apply_dic_form, "exclude_dic_form": exclude_dic_form})
 		else:
 			the_response = render(request, "tob_users_dic.html", {"loggedinanon": loggedinanon, "user_anon": user_anon, "users_dic": users_dic, "dics_words": dics_words, "dic_form": dic_form, "space_form": space_form, "post_form": post_form, "task_form": task_form, "word_form": word_form, "registerform": registerform,  "loginform": loginform})
@@ -9712,6 +9735,23 @@ def tob_users_dic(request, user, dictionary, count):
 	the_response.set_cookie('count', count)
 	return the_response
 
+
+@login_required
+def settings(request, item):
+	loggedinanon = Anon.objects.get(username=request.user)
+	if item == "dictionary":
+		loggedinanon.settings_dictionary_ads = not loggedinanon.settings_dictionary_ads
+		loggedinanon.save()
+	if item == "word":
+		loggedinanon.settings_word_ads = not loggedinanon.settings_word_ads
+		loggedinanon.save()
+	if item == "space":
+		loggedinanon.settings_space_ads = not loggedinanon.settings_space_ads
+		loggedinanon.save()
+	if item == "post":
+		loggedinanon.settings_post_ads = not loggedinanon.settings_post_ads
+		loggedinanon.save()
+	return base_redirect(request, 0)
 
 def storefront(request, author, dictionary_id, storefront_title):
 	user_anon = Anon.objects.get(username=User.objects.get(username=author))
@@ -9730,6 +9770,8 @@ def storefront(request, author, dictionary_id, storefront_title):
 	page_views, created = Pageviews.objects.get_or_create(page="storefront")
 	page_views.views += 1
 	page_views.save()	
+
+
 	
 	the_response = render(request, "tob_storefront.html", {"storefront_form": storefront_form, "user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
 	the_response.set_cookie('current', 'storefront')
@@ -9803,10 +9845,9 @@ def storefront_index(request, author, storefront_title):
 	page_views.views += 1
 	page_views.save()	
 	
-	the_response = render(request, "tob_storefront.html", {"user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
-	the_response.set_cookie('current', 'storefront')
+	the_response = render(request, "tob_storefront_index.html", {"user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
+	the_response.set_cookie('current', 'storefront_index')
 	the_response.set_cookie('viewing_user', request.user)
-	the_response.set_cookie('dictionary', user_dic)
 	return the_response
 
 def storefront_about(request, author, storefront_title):
@@ -9822,14 +9863,31 @@ def storefront_about(request, author, storefront_title):
 	page_views.views += 1
 	page_views.save()	
 	
-	the_response = render(request, "tob_storefront.html", {"user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
-	the_response.set_cookie('current', 'storefront')
+	the_response = render(request, "tob_storefront_about.html", {"user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
+	the_response.set_cookie('current', 'storefront_about')
 	the_response.set_cookie('viewing_user', request.user)
-	the_response.set_cookie('dictionary', user_dic)
+	return the_response
+
+def storefront_story(request, author, storefront_title):
+	user_anon = Anon.objects.get(username=User.objects.get(username=author))
+	user_storefront = user_anon.storefronts.filter(title=storefront_title).first()
+	if user_storefront.products.count():
+		user_products = user_storefront.products.all()
+	else:
+		user_products = Price.objects.first()
+	
+	sale_form = SaleForm()
+	page_views, created = Pageviews.objects.get_or_create(page="storefront_story")
+	page_views.views += 1
+	page_views.save()	
+	
+	the_response = render(request, "tob_storefront_story.html", {"user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
+	the_response.set_cookie('current', 'storefront_story')
+	the_response.set_cookie('viewing_user', request.user)
 	return the_response
 
 
-def storefront_product_list(request, author, dictionary_id, storefront_title):
+def storefront_product_list(request, author, storefront_title):
 	user_anon = Anon.objects.get(username=User.objects.get(username=author))
 	user_storefront = user_anon.storefronts.filter(title=storefront_title).first()
 	if user_storefront.products.count():
@@ -9843,16 +9901,15 @@ def storefront_product_list(request, author, dictionary_id, storefront_title):
 	page_views.save()	
 	if request.user.is_authenticated:
 		loggedinanon = Anon.objects.get(username=request.user)
-		the_response = render(request, "tob_storefront.html", {"loggedinanon":loggedinanon, "user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
+		the_response = render(request, "tob_storefront_product_list.html", {"loggedinanon":loggedinanon, "user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
 	else:
-		the_response = render(request, "tob_storefront.html", {"user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
-	the_response.set_cookie('current', 'storefront')
+		the_response = render(request, "tob_storefront_product_list.html", {"user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
+	the_response.set_cookie('current', 'storefront_product_list')
 	the_response.set_cookie('viewing_user', request.user)
-	the_response.set_cookie('dictionary', user_dic)
 	return the_response
 
 
-def storefront_past_purchases(request, author, dictionary_id, storefront_title):
+def storefront_past_purchases(request, author, storefront_title):
 	user_anon = Anon.objects.get(username=User.objects.get(username=author))
 	user_storefront = user_anon.storefronts.filter(title=storefront_title).first()
 	if user_storefront.products.count():
@@ -9866,11 +9923,26 @@ def storefront_past_purchases(request, author, dictionary_id, storefront_title):
 	page_views.views += 1
 	page_views.save()	
 	
-	the_response = render(request, "tob_storefront.html", {"user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
-	the_response.set_cookie('current', 'storefront')
+	the_response = render(request, "tob_storefront_past_purchases.html", {"user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
+	the_response.set_cookie('current', 'storefront_past_purchases')
 	the_response.set_cookie('viewing_user', request.user)
-	the_response.set_cookie('dictionary', user_dic)
 	return the_response
+
+
+def delete_own_storefront(request, author, storefront_id):
+	user_anon = Anon.objects.get(username=User.objects.get(username=author))
+	user_storefront = user_anon.storefronts.filter(title=storefront_title).first()
+	if user_storefront.products.count():
+		user_products = user_storefront.delete()
+	else:
+		user_products = Price.objects.first()
+	
+
+	
+	the_response = render(request, "tob_user_view_count.html", {"user_dic":user_dic, "editing": editing, "user_anon": user_anon, "user_storefront": user_storefront, "user_products": user_products})
+	the_response.set_cookie('current', 'tob_user_view_count')
+	the_response.set_cookie('viewing_user', request.user)
+	return base_redirect(request, 0)
 
 
 

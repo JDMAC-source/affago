@@ -620,6 +620,20 @@ select {
 	z-index: 88;
 }
 
+.dropdown-contentuu {
+	z-index: 1;
+	display: none;
+	position: absolute;
+	left: -4em;
+	top: 1.75em;
+	background-color: #2f2f2f;
+	z-index: 88;
+}
+
+#account:hover .dropdown-contentuu {
+	display: block;
+}
+
 .dropdown-content2 div p {
 	margin-left: 0.5em;
 }

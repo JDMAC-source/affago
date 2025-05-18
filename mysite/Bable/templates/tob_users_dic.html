@@ -75,10 +75,10 @@ User: {{ user_anon.username }}'s Dic: {{ users_dic.the_dictionary_itself }} - Pr
 			</div>
 			<div class=dictionary_price>
 				{% if users_dic.public %}
-					<a href="{% url 'Bable:want_to_purchase_dic' users_dic.id 0 %}" style="color: green;">Price: BUY NOW e{{ users_dic.entry_fee }} + c{{ users_dic.continuation_fee }}/mth</a>
+					<a href="{% url 'Bable:want_to_purchase_dic' users_dic.id 0 %}" style="color: green;">Price: BUY NOW entry {{ users_dic.entry_fee }} + continuation {{ users_dic.continuation_fee }}/mth</a>
 				{% else %}
 					{% if users_dic.for_sale %}
-						<a href="{% url 'Bable:want_to_purchase_dic' users_dic.id 0 %}" style="color: green;">Price: BUY NOW e{{ users_dic.entry_fee }} + c{{ users_dic.continuation_fee }}/mth (Invite Only)</a>
+						<a href="{% url 'Bable:want_to_purchase_dic' users_dic.id 0 %}" style="color: green;">Price: BUY NOW entry {{ users_dic.entry_fee }} + continuation {{ users_dic.continuation_fee }}/mth (Invite Only)</a>
 					{% else %}
 						Price: Not For Sale
 					{% endif %}
@@ -514,25 +514,39 @@ User: {{ user_anon.username }}'s Dic: {{ users_dic.the_dictionary_itself }} - Pr
 			</div>
 		{% endif %}
 	</div>
-	<div class=storefronts>
-		<h4>Storefronts: {{ users_dic.storefronts.count }}</h4>
-		<div class=spasectionsort>
-			<form name=space_sort action="{% url 'Bable:change_storefront_sort_char' %}" method=post>
+	<div class=storefronts style="margin-left: 40px;">
+		<h4 style="margin-bottom: 0px;">Storefronts: {{ users_dic.storefronts.count }}</h4>
+		<div class=spasectionsort style="margin-left: 20px;">
+			<form name=storefront_sort action="{% url 'Bable:change_storefront_sort_char' %}" method=post>
 				{% csrf_token %}
 				{{ storefront_sort_form }}
 			</form>
 			<script>
-				var form = document.querySelector('form[name="storefront_sort"]');
-				form.addEventListener('change', function() {
-				    form.submit();
+				var form2 = document.querySelector('form[name="storefront_sort"]');
+				form2.addEventListener('change', function() {
+				    form2.submit();
 				});
 			</script>
 		</div>
+		<div class=allstorefronts style="margin-left: 20px;">
 		{% for storefront in users_dic.storefronts.all %}
-			<div class=storefront>
-				<a href="{% url 'Bable:storefront' users_dic.author.username users_dic.id storefront.title %}">{{ storefront.title }}</a>{{ storefront.logo|dics_word:users_dic }}
+			<div class=storefront style="margin-bottom: 20px;">
+				<a href="{% url 'Bable:storefront' users_dic.author.username users_dic.id storefront.title %}">{{ storefront.title }}</a>
+				<br/>
+				Logo: {{ storefront.logo.the_word_itself|dic_word:users_dic }} 
+				<br/>
+				Viewcount: {{ storefront.viewcount }} 
+				<br/>
+				Latest Change: {{ storefront.latest_change_date }}
+				<br/>
+				Products Count: {{ storefront.products_count }}
+				<br/>
+				Sales Count: {{ storefront.sales_count }}
+				<br/>
+				Total Through Put: ${{ storefront.total_through_put }}
 			</div>
 		{% endfor %}
+		</div>
 	</div>
 {% endblock %}
 

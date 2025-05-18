@@ -1074,12 +1074,17 @@ class Storefront(models.Model):
 	products_count = models.IntegerField(default=0)
 	sales = models.ManyToManyField(Sale, default=None)
 	sales_count = models.IntegerField(default=0)
+	total_through_put = models.IntegerField(default=0)
 	business_admin = models.ManyToManyField(Author, default=None, related_name="business_admin")
 	business_admins_count = models.IntegerField(default=0)
 
 	views = models.IntegerField(default=0)
 
 	latest_change_date = models.DateTimeField(default=timezone.now)
+
+
+	class Meta:
+		unique_together = (('author', 'title'),)
 
 	def total_product_value(self):
 		tally = 0
@@ -2946,6 +2951,12 @@ class Anon(models.Model):
 
 	owned_variable_views = models.ManyToManyField(UserSpecificJavaScriptVariableViewLearning, default=None, related_name="owned_variable_views")
 	viewed_variable_views = models.ManyToManyField(UserSpecificJavaScriptVariableViewLearning, default=None, related_name="viewed_variable_views")
+
+
+	settings_word_ads = models.BooleanField(default=True)
+	settings_post_ads = models.BooleanField(default=True)
+	settings_dictionary_ads = models.BooleanField(default=True)
+	settings_space_ads = models.BooleanField(default=True)
 
 
 	loans = models.ManyToManyField(Loan, default=None)

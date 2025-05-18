@@ -46,7 +46,7 @@ Storefronts - {{ request.META.HTTP_HOST|stripwww }}
 			Logo: <a href="{% url 'Bable:tob_word' storefront.logo.id %}">{{ storefront.logo.the_word_itself }}</a>
 		</div>
 		<div>
-			Title: <a href="{% url 'Bable:storefront' storefront.author.username storefront.logo.home_dictionary.to_full.id storefront.id %}">{{ storefront.title }}</a>
+			Title: <a href="{% url 'Bable:storefront' storefront.author.username storefront.logo.home_dictionary.to_full.id storefront.title %}">{{ storefront.title }}</a>
 		</div>
 		<div>
 			Preview Text: {{ storefront.preview_text }}
