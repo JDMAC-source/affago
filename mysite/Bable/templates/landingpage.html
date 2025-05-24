@@ -59,7 +59,7 @@ Affago.org - You can't predict from what you don't know.
 					<div style="display: inline-block;"><a href="{% url 'Bable:landingpage' %}">Landing</a></div>
 				</div>
 				<div style="position:relative;border-radius:inherit;top:0;right:0;bottom:0;left:0" data-framer-background-image-wrapper="true">
-					<img src="https://framerusercontent.com/images/WTe1RB61eECaaPFpZaMd1jfyViA.jpg?scale-down-to=512" alt="" style="display:block;width:100%;height:100%;border-radius:inherit;object-position:center;object-fit:cover;image-rendering:auto">
+					<img src="{% static 'intro_image.avif' %}" alt="" style="display:block;width:100%;height:100%;border-radius:inherit;object-position:center;object-fit:cover;image-rendering:auto">
 				</div>
 			</div>
 			<div class="framer-19un3sn" data-framer-name="Left" name="Left" style="margin: 20px;width: 25em; position: relative; display: inline-block;">
@@ -82,7 +82,7 @@ Affago.org - You can't predict from what you don't know.
 		</div>
 		<div class="framer-ffcig2" data-framer-name="Image" name="Image" style="border-radius: 25px; width: fit-content; display: inline-block;">
 			<div style="position:relative;border-radius:inherit;top:0;right:0;bottom:0;left:0" data-framer-background-image-wrapper="true">
-				<img src="https://framerusercontent.com/images/NuQtJKBat8tTdmR3Rm22AHCrcY.jpg?scale-down-to=512" alt="" style="display:block;width:100%;height:100%;border-radius:inherit;object-position:center;object-fit:cover;image-rendering:auto">
+				<img src="{% static 'intro_second_image.avif' %}" alt="" style="display:block;width:100%;height:100%;border-radius:inherit;object-position:center;object-fit:cover;image-rendering:auto">
 			</div>
 		</div>
 	</div>
@@ -177,7 +177,7 @@ Affago.org - You can't predict from what you don't know.
 		<div class="framer-2wtj6u" data-framer-name="Item" name="Item" style="width: fit-content; display: inline-block; vertical-align: middle;">
 			<div class="framer-f95jnu" data-framer-name="Image" name="Image" style="border-radius: 25px; width: fit-content; display: inline-block;">
 				<div style="position:relative;border-radius:inherit;top:0;right:0;bottom:0;left:0" data-framer-background-image-wrapper="true">
-					<img src="https://framerusercontent.com/images/R8ntaayRmFwu0FllRJClXsiLg.jpg?scale-down-to=512" alt="" style="display:block;width:100%;height:100%;border-radius:inherit;object-position:center;object-fit:cover;image-rendering:auto" loading="lazy">
+					<img src="{% static 'first_image.avif' %}" alt="" style="display:block;width:100%;height:100%;border-radius:inherit;object-position:center;object-fit:cover;image-rendering:auto" loading="lazy">
 				</div>
 			</div>
 			<div class="framer-ufpk7g" data-framer-name="Content" name="Content" style="align-items: center; display: inline-block; width: 25em;">
@@ -192,7 +192,7 @@ Affago.org - You can't predict from what you don't know.
 		<div class="framer-1n6g3v9" data-framer-name="Item" name="Item"  style="width: fit-content; display: inline-block; vertical-align: middle;">
 			<div class="framer-195xxgr" data-framer-name="Image" name="Image" style="border-radius: 25px; width: fit-content; display: inline-block;">
 				<div style="position:relative;border-radius:inherit;top:0;right:0;bottom:0;left:0" data-framer-background-image-wrapper="true">
-					<img src="https://framerusercontent.com/images/YBgm1PtGXbMhbqVSNNjBAXQuCkM.jpg?scale-down-to=512" alt="" style="display:block;width:100%;height:100%;border-radius:inherit;object-position:center;object-fit:cover;image-rendering:auto" loading="lazy">
+					<img src="{% static 'second_image.avif' %}" alt="" style="display:block;width:100%;height:100%;border-radius:inherit;object-position:center;object-fit:cover;image-rendering:auto" loading="lazy">
 				</div>
 			</div>
 			<div class="framer-1bdvr9z" data-framer-name="Content" name="Content" style="align-items: center; display: inline-block; width: 25em;">
@@ -207,7 +207,7 @@ Affago.org - You can't predict from what you don't know.
 		<div class="framer-m8tyzb" data-framer-name="Item" name="Item"  style="width: fit-content; display: inline-block; vertical-align: middle;">
 			<div class="framer-h9016g" data-framer-name="Image" name="Image" style="border-radius: 25px; width: fit-content; display: inline-block; vertical-align: middle;">
 				<div style="position:relative;border-radius:inherit;top:0;right:0;bottom:0;left:0" data-framer-background-image-wrapper="true">
-					<img src="https://framerusercontent.com/images/hirUh0JklDDJkavlroxsGh4FUo.jpg?scale-down-to=512" alt="" style="display:block;width:100%;height:100%;border-radius:inherit;object-position:center;object-fit:cover;image-rendering:auto" loading="lazy"></div>
+					<img src="{% static 'third_image.avif' %}" alt="" style="display:block;width:100%;height:100%;border-radius:inherit;object-position:center;object-fit:cover;image-rendering:auto" loading="lazy"></div>
 				</div>
 				<div class="framer-b5qmn" data-framer-name="Content" name="Content" style="align-items: center; display: inline-block; width: 25em;">
 					<div class="framer-1entnio" style="outline:none;display:inline-block;flex-direction:column;justify-content:flex-start;flex-shrink:0;transform:none" data-framer-component-type="RichTextContainer">
@@ -269,7 +269,7 @@ Affago.org - You can't predict from what you don't know.
 	<div class=donate>
 		<div class=dictionary-bottom>
 			<a href="{% url 'Bable:tob_product' basic_price.id %}"><h3>{{ basic_price.name }}</h3></a>
-	        <img src="{% static 'babylonpolice.com.gif' %}" style="width: 200px; height: 200px; margin: auto; width: fit-content; border-radius: 20px;">
+	        <img src="{% static '$$$888.png' %}" style="width: 200px; height: 200px; margin: auto; width: fit-content; border-radius: 20px;">
 	        <div style="display: flex; align-items: center;">
 	            <p style="background-color: white; width: fit-content; margin-right: 20px;">${{ basic_price.get_display_price }} AUD</p>
 	            <form action="{% url 'Bable:create-checkout-session' basic_price.id %}" method="POST">
